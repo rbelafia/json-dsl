@@ -1,0 +1,236 @@
+grammar org.xtext.example.mydsl.JsonDsl with org.eclipse.xtext.common.Terminals
+
+generate jsonDsl "http://www.xtext.org/example/mydsl/JsonDsl"
+
+
+Model:
+	(stmts += SimpleStatement)*;
+
+/*Statement:
+	(OpenStatement | ClosedStatement) ';'
+;
+
+OpenStatement:
+	OpenIf | OpenIfElse | OpenWhile
+;
+
+OpenIf:
+	'IF' condition=Expression 'THEN' (then=SimpleStatement | then=OpenStatement)
+;
+
+OpenIfElse:
+	'IF' condition=Expression 'THEN' then=ClosedStatement 'ELSE' else=OpenStatement
+;
+
+OpenWhile:
+	'WHILE' condition=Expression 'DO' loop=OpenStatement
+;
+
+ClosedStatement:
+	SimpleStatement | IfElseClosed | WhileClosed
+;
+
+IfElseClosed:
+	'IF' condition=Expression 'THEN' then=ClosedStatement 'ELSE' else=ClosedStatement
+;
+
+WhileClosed:
+	'WHILE' condition=Expression 'DO' loop=ClosedStatement
+;*/
+
+SimpleStatement:
+	(Assignment | Expression | ProcCall) ';'
+;
+
+
+Assignment:
+	(leftHandSide=VariableCall) '=' (rightHandSide=Expression)
+;
+
+Expression:
+	BinaryExpression
+;
+
+BinaryExpression:
+	OrExpression
+;
+
+OrExpression:
+	values+=AndExpression (('OR') values+=AndExpression)*
+;
+
+AndExpression:
+	values+=EqExpression (('AND') values+=EqExpression)*
+;
+
+EqExpression:
+	values+=CompExpression (('=='|'!=') values+=CompExpression)*
+;
+
+
+CompExpression:
+	values+=AddExpression (('>' | '>=' | '<' | '<=') values+=AddExpression)*
+;
+
+AddExpression:
+	values+=MultExpression (('+' | '-') values+=MultExpression)*
+;
+
+
+MultExpression:
+	values+=UnaryMinusExpression (('*' | '/' | '%') values+=UnaryMinusExpression)*
+;
+
+UnaryMinusExpression:
+	('-' value=UnaryMinusExpression) | value=NegationExpression
+;
+
+NegationExpression:
+	('!' value=NegationExpression) | value=PrimaryExpression 
+;
+
+
+PrimaryExpression:
+	VariableCall | Constant | FunctionCall | ('(' Expression ')')  | FieldInvoquer | {PrimaryExpression} Pointer
+;
+
+FieldInvoquer:
+	field=FIELD_NAME
+;
+
+Pointer:
+	'?'
+;
+
+VariableCall:
+	name=ID (caller+=AuxiliarCaller)*
+;
+
+AuxiliarCaller:
+	(FieldCaller | ArrayCaller) /*(caller=AuxiliarCaller)?*/
+;
+
+FieldCaller:
+	'~' key=FIELD_NAME
+;
+
+ArrayCaller:
+	'[' index+=NUMBER (',' index+=NUMBER)* ']'
+;
+
+FunctionCall:
+	Load| Store | Export | Depth | FieldInfo | Extract | Select | Concat | Sum | Product | Mean | Add | Insert | Rename | Remove | Erase | Delete
+;
+
+
+Load:
+	'LOAD' fileName=STRING 
+;
+
+
+Store:
+	'STORE' expression=Expression 'IN' fileName=STRING 
+;
+
+Export:
+	'EXPORT_CSV' expression=Expression 'IN' fileName=STRING
+;
+
+ProcCall:
+	'PRINT' expression=Expression
+;
+
+Depth:
+	'GET_DEPTH' expression=Expression
+;
+
+FieldInfo:
+	'GET_INFOS' expression=Expression
+;
+
+Extract:
+	'EXTRACT' value=Expression auxiliar=ArithmeticAuxiliar 
+;
+
+Select:
+	'SELECT' fields+=FIELD_NAME (',' fields+=FIELD_NAME)* 'FROM' from=Expression ('WHERE' condition=Expression)? 
+;
+
+Concat:
+	'CONCAT' first=Expression 'WITH' second=Expression
+;
+
+Sum:
+	'SUM' expression=Expression auxiliar=ArithmeticAuxiliar
+;
+
+Product:
+	'PRODUCT' expression=Expression auxiliar=ArithmeticAuxiliar
+;
+
+Mean:
+	'MEAN' expression=Expression auxiliar=ArithmeticAuxiliar
+;
+
+ArithmeticAuxiliar:
+	{ArithmeticAuxiliar} ('ON' fields+=FIELD_NAME (',' fields+=FIELD_NAME)*)? ('WHERE' condition=Expression)? 
+;
+
+Add:
+	'ADD' value=Expression 'IN' variable=Expression ('ON' fields+=FIELD_NAME (',' fields+=FIELD_NAME)*)?
+;
+
+Insert:
+	'INSERT' value=Expression 'IN' variable=Expression specifier=ArraySpecifier
+;
+
+Rename:
+	'RENAME' call=VariableCall 'ON' fields+=FIELD_NAME (',' fields+=FIELD_NAME)* 'TO' nfields+=FIELD_NAME (',' nfields+=FIELD_NAME)*
+;
+
+Erase:
+	'ERASE' value=Expression ('ON' fields+=FIELD_NAME (',' fields+=FIELD_NAME)*)?
+;
+
+Delete:
+	'DELETE' fields+=FIELD_NAME (',' fields+=FIELD_NAME)* 'FROM' from=Expression ('WHERE' '(' condition=Expression ')')? 
+;
+
+Remove:
+	'REMOVE' variable=VariableCall specifier=ArraySpecifier
+;
+
+ArraySpecifier:
+	{ArraySpecifier} ('AT' index+=Expression (',' fields+=Expression)* )? ('WHERE' condition=Expression)? 
+;
+
+
+Constant:
+	{Constant} Primitive | Array | Object
+;
+
+Primitive:
+	STRING | NUMBER | BOOL | NULL
+;
+
+Array:
+	{Array} '[' (values+=Expression (',' values+=Expression)*)? ']' 
+;
+
+Object:
+	{Object} '{' (fields+=Field (',' fields+=Field)*)? '}'
+;
+
+Field:
+	key=FIELD_NAME ':' value=Expression
+;
+
+terminal FIELD_NAME : '$' ID;
+
+terminal NULL : 'null';
+
+terminal BOOL : 'true' | 'false';
+
+terminal NUMBER : INT | DOUBLE;
+
+terminal DOUBLE : (INT)+ '.' (INT)*;

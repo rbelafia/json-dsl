@@ -1,0 +1,219 @@
+/*
+ * TYPE SYSTEM
+ * Implicit and dynamic
+ * Based on the JSON based types
+ */
+ 
+ // String
+ string = "Hello";
+ 
+ // Numbers (makes no difference between integer and double)
+ number = 5;
+ number = 0.56;
+ 
+ // Boolean
+ bool = true;
+ 
+ // Null
+ nil = null;
+ 
+ // Object
+ object = {};
+ object = {
+ 	$name: "John",
+ 	$date: {
+ 		$day: 27,
+ 		$month: "August",
+ 		$year: 2020
+ 	}
+ };
+ john = object~$name;
+ 
+ // Array
+ array = [1, 3, 0, 1];
+ three = array[2];
+ 
+ 
+ 
+ 
+ 
+ 
+ /*
+ * BASIC OPERATIONS
+ * Arithmetic, Logical, Comparison
+ */	
+ 
+ // arithmetic operations on numbers
+ product = 5 * 6;
+ 
+ // concatenate strings with addition
+ concat = "Hello " + "World";
+ 
+ // performs logical operations on booleans
+ xor = (a OR b) AND (!a OR !b);
+ 
+ // comparison operation
+ compare = x <= 3;
+ 
+ // unary negation
+ negative = -product;
+ 
+ // apply arithmetic operations on each members of an array
+ opposite = -1 * [3, 6, 7, -2];
+ 
+ // operations can be computed between array
+ compare_arrays = [true, false, true] AND [false, true, true, true]; // = [false, false, true, false]
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+/*
+ * PRINT PROCEDURE
+ */
+  
+PRINT file~$age;
+
+
+
+
+
+
+
+  
+/*
+ * READ WRITE TOOLS
+ */
+
+// read function
+file = LOAD "filename.json";
+
+// store function
+STORE file~$date IN "date.json";
+
+// export to CSV function
+EXPORT_CSV file~$teachers IN "date.csv";
+
+
+
+
+
+
+
+/*
+ * GET INFORMATIONS FROM A JSON OBJECT
+ */
+ 
+// Compute the depth of an object (for example =2)
+depth = GET_DEPTH file~$teachers; 
+
+// Obtain informations on the fields of an objects (key names and values type)
+infors = GET_INFOS file;
+
+
+
+
+
+
+
+/*
+ * EXTRACT AND CONCAT SUBSET OF JSON
+ */
+
+// A "JZ" style ...
+teachers = EXTRACT file~$teachers ON $name, $age WHERE $age < 35;
+
+// ... or a more SQL style
+teachers = SELECT $name, $age FROM file~$teachers WHERE $age < 35;
+
+// A concatenation function
+concatenation = CONCAT [1, 2, 3, 4] WITH [6, 7, 9];
+
+
+
+
+
+
+
+/*
+ * SUM, PRODUCT AND MEAN FUNCTIONS
+ */
+ 
+// sum function
+sum_age = SUM file~$teachers ON $age;
+
+product_height = PRODUCT file~$teachers ON $height;
+
+// mean function on many argument
+// for example compute {age: 32.5, height: 1.74}
+mean = MEAN file~$teachers ON $age, $height WHERE $age<40;
+
+
+/*
+ * ADD FIELD IN OBJECT
+ */
+ 
+ object = {};
+ 
+ ADD {$city: "Montpellier"} IN object;
+ ADD {$date: {}} IN object;
+ 
+ ADD {$day: 24, $month: 8, $year: 2020} IN object ON $date;
+ // or
+ ADD {$day: 24, $month: 8, $year: 2020} IN object~$date;
+ 
+/*
+ * INSERT VALUE IN ARRAY
+ */
+ 
+ array = [1, 2, 3];
+ 
+ INSERT 4 IN array; // array = [1, 2, 3, 4]
+ 
+ /*
+  * MODIFY TOOLS
+  */
+  
+  object = {$city: "Montpellier"};
+  object~$city = "Paris";
+  
+  RENAME object ON $city TO $ville;
+  
+  array = [1, 2, 3];
+  array[2, 3] = 0; // array = [1, 0, 0]
+  
+  /*
+   * ERASE FIELD FROM AN OBJECT
+   */
+  
+  object = {$city: "Montpellier"};
+  
+  // A JZ style ...
+  ERASE object ON $city;
+  
+  // ... or a SQL STYME
+  DELETE $city FROM object;
+  
+  /*
+   * REMOVE VALUE VALUE FROM AN ARRAY
+   */
+   array = [1, 2, 3, 4];
+   REMOVE array AT 2; // array = [1, 3, 4]
+   REMOVE array WHERE ? < 3; // array = [1]
+   
+   INSERT 0 IN array WHERE ? < 4;
+
+
+
+
+
+
+   
+   
+   
+   
+ 
+ 
