@@ -20,7 +20,7 @@ package org.xtext.example.mydsl.jsonDsl;
  * @model
  * @generated
  */
-public interface FieldInfo extends FunctionCall
+public interface FieldInfo extends InfoFunctions
 {
   /**
    * Returns the value of the '<em><b>Expression</b></em>' containment reference.

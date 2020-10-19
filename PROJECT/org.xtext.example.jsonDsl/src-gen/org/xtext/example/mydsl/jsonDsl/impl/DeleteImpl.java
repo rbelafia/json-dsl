@@ -15,7 +15,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.example.mydsl.jsonDsl.Delete;
 import org.xtext.example.mydsl.jsonDsl.Expression;
@@ -30,43 +31,43 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.DeleteImpl#getFields <em>Fields</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.DeleteImpl#getFrom <em>From</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.DeleteImpl#getCondition <em>Condition</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.DeleteImpl#getFromExpression <em>From Expression</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.DeleteImpl#getWhereExpression <em>Where Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class DeleteImpl extends FunctionCallImpl implements Delete
+public class DeleteImpl extends AlterFunctionsImpl implements Delete
 {
   /**
-   * The cached value of the '{@link #getFields() <em>Fields</em>}' attribute list.
+   * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getFields()
    * @generated
    * @ordered
    */
-  protected EList<String> fields;
+  protected EList<Expression> fields;
 
   /**
-   * The cached value of the '{@link #getFrom() <em>From</em>}' containment reference.
+   * The cached value of the '{@link #getFromExpression() <em>From Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFrom()
+   * @see #getFromExpression()
    * @generated
    * @ordered
    */
-  protected Expression from;
+  protected Expression fromExpression;
 
   /**
-   * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference.
+   * The cached value of the '{@link #getWhereExpression() <em>Where Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getCondition()
+   * @see #getWhereExpression()
    * @generated
    * @ordered
    */
-  protected Expression condition;
+  protected Expression whereExpression;
 
   /**
    * <!-- begin-user-doc -->
@@ -95,11 +96,11 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
    * @generated
    */
   @Override
-  public EList<String> getFields()
+  public EList<Expression> getFields()
   {
     if (fields == null)
     {
-      fields = new EDataTypeEList<String>(String.class, this, JsonDslPackage.DELETE__FIELDS);
+      fields = new EObjectContainmentEList<Expression>(Expression.class, this, JsonDslPackage.DELETE__FIELDS);
     }
     return fields;
   }
@@ -110,9 +111,9 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
    * @generated
    */
   @Override
-  public Expression getFrom()
+  public Expression getFromExpression()
   {
-    return from;
+    return fromExpression;
   }
 
   /**
@@ -120,13 +121,13 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetFrom(Expression newFrom, NotificationChain msgs)
+  public NotificationChain basicSetFromExpression(Expression newFromExpression, NotificationChain msgs)
   {
-    Expression oldFrom = from;
-    from = newFrom;
+    Expression oldFromExpression = fromExpression;
+    fromExpression = newFromExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.DELETE__FROM, oldFrom, newFrom);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.DELETE__FROM_EXPRESSION, oldFromExpression, newFromExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -138,20 +139,20 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
    * @generated
    */
   @Override
-  public void setFrom(Expression newFrom)
+  public void setFromExpression(Expression newFromExpression)
   {
-    if (newFrom != from)
+    if (newFromExpression != fromExpression)
     {
       NotificationChain msgs = null;
-      if (from != null)
-        msgs = ((InternalEObject)from).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.DELETE__FROM, null, msgs);
-      if (newFrom != null)
-        msgs = ((InternalEObject)newFrom).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.DELETE__FROM, null, msgs);
-      msgs = basicSetFrom(newFrom, msgs);
+      if (fromExpression != null)
+        msgs = ((InternalEObject)fromExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.DELETE__FROM_EXPRESSION, null, msgs);
+      if (newFromExpression != null)
+        msgs = ((InternalEObject)newFromExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.DELETE__FROM_EXPRESSION, null, msgs);
+      msgs = basicSetFromExpression(newFromExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.DELETE__FROM, newFrom, newFrom));
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.DELETE__FROM_EXPRESSION, newFromExpression, newFromExpression));
   }
 
   /**
@@ -160,9 +161,9 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
    * @generated
    */
   @Override
-  public Expression getCondition()
+  public Expression getWhereExpression()
   {
-    return condition;
+    return whereExpression;
   }
 
   /**
@@ -170,13 +171,13 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetCondition(Expression newCondition, NotificationChain msgs)
+  public NotificationChain basicSetWhereExpression(Expression newWhereExpression, NotificationChain msgs)
   {
-    Expression oldCondition = condition;
-    condition = newCondition;
+    Expression oldWhereExpression = whereExpression;
+    whereExpression = newWhereExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.DELETE__CONDITION, oldCondition, newCondition);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.DELETE__WHERE_EXPRESSION, oldWhereExpression, newWhereExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -188,20 +189,20 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
    * @generated
    */
   @Override
-  public void setCondition(Expression newCondition)
+  public void setWhereExpression(Expression newWhereExpression)
   {
-    if (newCondition != condition)
+    if (newWhereExpression != whereExpression)
     {
       NotificationChain msgs = null;
-      if (condition != null)
-        msgs = ((InternalEObject)condition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.DELETE__CONDITION, null, msgs);
-      if (newCondition != null)
-        msgs = ((InternalEObject)newCondition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.DELETE__CONDITION, null, msgs);
-      msgs = basicSetCondition(newCondition, msgs);
+      if (whereExpression != null)
+        msgs = ((InternalEObject)whereExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.DELETE__WHERE_EXPRESSION, null, msgs);
+      if (newWhereExpression != null)
+        msgs = ((InternalEObject)newWhereExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.DELETE__WHERE_EXPRESSION, null, msgs);
+      msgs = basicSetWhereExpression(newWhereExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.DELETE__CONDITION, newCondition, newCondition));
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.DELETE__WHERE_EXPRESSION, newWhereExpression, newWhereExpression));
   }
 
   /**
@@ -214,10 +215,12 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
   {
     switch (featureID)
     {
-      case JsonDslPackage.DELETE__FROM:
-        return basicSetFrom(null, msgs);
-      case JsonDslPackage.DELETE__CONDITION:
-        return basicSetCondition(null, msgs);
+      case JsonDslPackage.DELETE__FIELDS:
+        return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
+      case JsonDslPackage.DELETE__FROM_EXPRESSION:
+        return basicSetFromExpression(null, msgs);
+      case JsonDslPackage.DELETE__WHERE_EXPRESSION:
+        return basicSetWhereExpression(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -234,10 +237,10 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
     {
       case JsonDslPackage.DELETE__FIELDS:
         return getFields();
-      case JsonDslPackage.DELETE__FROM:
-        return getFrom();
-      case JsonDslPackage.DELETE__CONDITION:
-        return getCondition();
+      case JsonDslPackage.DELETE__FROM_EXPRESSION:
+        return getFromExpression();
+      case JsonDslPackage.DELETE__WHERE_EXPRESSION:
+        return getWhereExpression();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -255,13 +258,13 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
     {
       case JsonDslPackage.DELETE__FIELDS:
         getFields().clear();
-        getFields().addAll((Collection<? extends String>)newValue);
+        getFields().addAll((Collection<? extends Expression>)newValue);
         return;
-      case JsonDslPackage.DELETE__FROM:
-        setFrom((Expression)newValue);
+      case JsonDslPackage.DELETE__FROM_EXPRESSION:
+        setFromExpression((Expression)newValue);
         return;
-      case JsonDslPackage.DELETE__CONDITION:
-        setCondition((Expression)newValue);
+      case JsonDslPackage.DELETE__WHERE_EXPRESSION:
+        setWhereExpression((Expression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -280,11 +283,11 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
       case JsonDslPackage.DELETE__FIELDS:
         getFields().clear();
         return;
-      case JsonDslPackage.DELETE__FROM:
-        setFrom((Expression)null);
+      case JsonDslPackage.DELETE__FROM_EXPRESSION:
+        setFromExpression((Expression)null);
         return;
-      case JsonDslPackage.DELETE__CONDITION:
-        setCondition((Expression)null);
+      case JsonDslPackage.DELETE__WHERE_EXPRESSION:
+        setWhereExpression((Expression)null);
         return;
     }
     super.eUnset(featureID);
@@ -302,29 +305,12 @@ public class DeleteImpl extends FunctionCallImpl implements Delete
     {
       case JsonDslPackage.DELETE__FIELDS:
         return fields != null && !fields.isEmpty();
-      case JsonDslPackage.DELETE__FROM:
-        return from != null;
-      case JsonDslPackage.DELETE__CONDITION:
-        return condition != null;
+      case JsonDslPackage.DELETE__FROM_EXPRESSION:
+        return fromExpression != null;
+      case JsonDslPackage.DELETE__WHERE_EXPRESSION:
+        return whereExpression != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (fields: ");
-    result.append(fields);
-    result.append(')');
-    return result.toString();
   }
 
 } //DeleteImpl

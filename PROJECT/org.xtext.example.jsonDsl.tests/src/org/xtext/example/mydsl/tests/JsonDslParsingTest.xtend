@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.xtext.example.mydsl.jsonDsl.Model
+import org.xtext.example.mydsl.jsonDsl.*
+import org.xtext.example.mydsl.jsonDsl.impl.*
+import java.util.HashMap
 
 @ExtendWith(InjectionExtension)
 @InjectWith(JsonDslInjectorProvider)
@@ -21,10 +24,19 @@ class JsonDslParsingTest {
 	@Test
 	def void loadModel() {
 		val result = parseHelper.parse('''
-			Hello Xtext!
+			2.4e3
 		''')
+		
+		val stmts = result.stmts
+		
+		var elementTable = new HashMap<String, Object>
+		
+		stmts.forEach[ element, index |
+			println((element as Primitive).getStr())
+		]
+		
 		Assertions.assertNotNull(result)
-		val errors = result.eResource.errors
-		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		//val errors = result.eResource.errors
+		//Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 	}
 }

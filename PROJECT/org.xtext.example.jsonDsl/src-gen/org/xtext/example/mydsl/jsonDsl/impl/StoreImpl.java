@@ -24,12 +24,11 @@ import org.xtext.example.mydsl.jsonDsl.Store;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.StoreImpl#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.StoreImpl#getFileName <em>File Name</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class StoreImpl extends FunctionCallImpl implements Store
+public class StoreImpl extends IOFunctionsImpl implements Store
 {
   /**
    * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
@@ -40,26 +39,6 @@ public class StoreImpl extends FunctionCallImpl implements Store
    * @ordered
    */
   protected Expression expression;
-
-  /**
-   * The default value of the '{@link #getFileName() <em>File Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getFileName()
-   * @generated
-   * @ordered
-   */
-  protected static final String FILE_NAME_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getFileName() <em>File Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getFileName()
-   * @generated
-   * @ordered
-   */
-  protected String fileName = FILE_NAME_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -138,31 +117,6 @@ public class StoreImpl extends FunctionCallImpl implements Store
    * @generated
    */
   @Override
-  public String getFileName()
-  {
-    return fileName;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setFileName(String newFileName)
-  {
-    String oldFileName = fileName;
-    fileName = newFileName;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.STORE__FILE_NAME, oldFileName, fileName));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
@@ -185,8 +139,6 @@ public class StoreImpl extends FunctionCallImpl implements Store
     {
       case JsonDslPackage.STORE__EXPRESSION:
         return getExpression();
-      case JsonDslPackage.STORE__FILE_NAME:
-        return getFileName();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -203,9 +155,6 @@ public class StoreImpl extends FunctionCallImpl implements Store
     {
       case JsonDslPackage.STORE__EXPRESSION:
         setExpression((Expression)newValue);
-        return;
-      case JsonDslPackage.STORE__FILE_NAME:
-        setFileName((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -224,9 +173,6 @@ public class StoreImpl extends FunctionCallImpl implements Store
       case JsonDslPackage.STORE__EXPRESSION:
         setExpression((Expression)null);
         return;
-      case JsonDslPackage.STORE__FILE_NAME:
-        setFileName(FILE_NAME_EDEFAULT);
-        return;
     }
     super.eUnset(featureID);
   }
@@ -243,27 +189,8 @@ public class StoreImpl extends FunctionCallImpl implements Store
     {
       case JsonDslPackage.STORE__EXPRESSION:
         return expression != null;
-      case JsonDslPackage.STORE__FILE_NAME:
-        return FILE_NAME_EDEFAULT == null ? fileName != null : !FILE_NAME_EDEFAULT.equals(fileName);
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (fileName: ");
-    result.append(fileName);
-    result.append(')');
-    return result.toString();
   }
 
 } //StoreImpl

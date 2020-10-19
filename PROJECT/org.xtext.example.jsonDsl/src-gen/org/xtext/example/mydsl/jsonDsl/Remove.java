@@ -13,27 +13,50 @@ package org.xtext.example.mydsl.jsonDsl;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.Remove#getValue <em>Value</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.Remove#getVariable <em>Variable</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Remove#getSpecifier <em>Specifier</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.Remove#getWhereExpression <em>Where Expression</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getRemove()
  * @model
  * @generated
  */
-public interface Remove extends FunctionCall
+public interface Remove extends AlterFunctions
 {
+  /**
+   * Returns the value of the '<em><b>Value</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Value</em>' containment reference.
+   * @see #setValue(Expression)
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getRemove_Value()
+   * @model containment="true"
+   * @generated
+   */
+  Expression getValue();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Remove#getValue <em>Value</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Value</em>' containment reference.
+   * @see #getValue()
+   * @generated
+   */
+  void setValue(Expression value);
+
   /**
    * Returns the value of the '<em><b>Variable</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Variable</em>' containment reference.
-   * @see #setVariable(VariableCall)
+   * @see #setVariable(Expression)
    * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getRemove_Variable()
    * @model containment="true"
    * @generated
    */
-  VariableCall getVariable();
+  Expression getVariable();
 
   /**
    * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Remove#getVariable <em>Variable</em>}' containment reference.
@@ -43,28 +66,28 @@ public interface Remove extends FunctionCall
    * @see #getVariable()
    * @generated
    */
-  void setVariable(VariableCall value);
+  void setVariable(Expression value);
 
   /**
-   * Returns the value of the '<em><b>Specifier</b></em>' containment reference.
+   * Returns the value of the '<em><b>Where Expression</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Specifier</em>' containment reference.
-   * @see #setSpecifier(ArraySpecifier)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getRemove_Specifier()
+   * @return the value of the '<em>Where Expression</em>' containment reference.
+   * @see #setWhereExpression(Expression)
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getRemove_WhereExpression()
    * @model containment="true"
    * @generated
    */
-  ArraySpecifier getSpecifier();
+  Expression getWhereExpression();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Remove#getSpecifier <em>Specifier</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Remove#getWhereExpression <em>Where Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Specifier</em>' containment reference.
-   * @see #getSpecifier()
+   * @param value the new value of the '<em>Where Expression</em>' containment reference.
+   * @see #getWhereExpression()
    * @generated
    */
-  void setSpecifier(ArraySpecifier value);
+  void setWhereExpression(Expression value);
 
 } // Remove

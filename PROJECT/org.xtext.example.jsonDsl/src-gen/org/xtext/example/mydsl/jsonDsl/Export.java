@@ -14,14 +14,13 @@ package org.xtext.example.mydsl.jsonDsl;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.Export#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Export#getFileName <em>File Name</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getExport()
  * @model
  * @generated
  */
-public interface Export extends FunctionCall
+public interface Export extends IOFunctions
 {
   /**
    * Returns the value of the '<em><b>Expression</b></em>' containment reference.
@@ -44,27 +43,5 @@ public interface Export extends FunctionCall
    * @generated
    */
   void setExpression(Expression value);
-
-  /**
-   * Returns the value of the '<em><b>File Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>File Name</em>' attribute.
-   * @see #setFileName(String)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getExport_FileName()
-   * @model
-   * @generated
-   */
-  String getFileName();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Export#getFileName <em>File Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>File Name</em>' attribute.
-   * @see #getFileName()
-   * @generated
-   */
-  void setFileName(String value);
 
 } // Export

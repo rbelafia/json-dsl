@@ -3,6 +3,7 @@
  */
 package org.xtext.example.mydsl.jsonDsl;
 
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -13,58 +14,25 @@ package org.xtext.example.mydsl.jsonDsl;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Concat#getFirst <em>First</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Concat#getSecond <em>Second</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.Concat#getExpressions <em>Expressions</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getConcat()
  * @model
  * @generated
  */
-public interface Concat extends FunctionCall
+public interface Concat extends ManipFunctions
 {
   /**
-   * Returns the value of the '<em><b>First</b></em>' containment reference.
+   * Returns the value of the '<em><b>Expressions</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.jsonDsl.Expression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>First</em>' containment reference.
-   * @see #setFirst(Expression)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getConcat_First()
+   * @return the value of the '<em>Expressions</em>' containment reference list.
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getConcat_Expressions()
    * @model containment="true"
    * @generated
    */
-  Expression getFirst();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Concat#getFirst <em>First</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>First</em>' containment reference.
-   * @see #getFirst()
-   * @generated
-   */
-  void setFirst(Expression value);
-
-  /**
-   * Returns the value of the '<em><b>Second</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Second</em>' containment reference.
-   * @see #setSecond(Expression)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getConcat_Second()
-   * @model containment="true"
-   * @generated
-   */
-  Expression getSecond();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Concat#getSecond <em>Second</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Second</em>' containment reference.
-   * @see #getSecond()
-   * @generated
-   */
-  void setSecond(Expression value);
+  EList<Expression> getExpressions();
 
 } // Concat

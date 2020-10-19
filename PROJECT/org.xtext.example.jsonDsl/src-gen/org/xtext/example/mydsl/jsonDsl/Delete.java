@@ -15,70 +15,70 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.Delete#getFields <em>Fields</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Delete#getFrom <em>From</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Delete#getCondition <em>Condition</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.Delete#getFromExpression <em>From Expression</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.Delete#getWhereExpression <em>Where Expression</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getDelete()
  * @model
  * @generated
  */
-public interface Delete extends FunctionCall
+public interface Delete extends AlterFunctions
 {
   /**
-   * Returns the value of the '<em><b>Fields</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Fields</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.jsonDsl.Expression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Fields</em>' attribute list.
+   * @return the value of the '<em>Fields</em>' containment reference list.
    * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getDelete_Fields()
-   * @model unique="false"
-   * @generated
-   */
-  EList<String> getFields();
-
-  /**
-   * Returns the value of the '<em><b>From</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>From</em>' containment reference.
-   * @see #setFrom(Expression)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getDelete_From()
    * @model containment="true"
    * @generated
    */
-  Expression getFrom();
+  EList<Expression> getFields();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Delete#getFrom <em>From</em>}' containment reference.
+   * Returns the value of the '<em><b>From Expression</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>From</em>' containment reference.
-   * @see #getFrom()
-   * @generated
-   */
-  void setFrom(Expression value);
-
-  /**
-   * Returns the value of the '<em><b>Condition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Condition</em>' containment reference.
-   * @see #setCondition(Expression)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getDelete_Condition()
+   * @return the value of the '<em>From Expression</em>' containment reference.
+   * @see #setFromExpression(Expression)
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getDelete_FromExpression()
    * @model containment="true"
    * @generated
    */
-  Expression getCondition();
+  Expression getFromExpression();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Delete#getCondition <em>Condition</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Delete#getFromExpression <em>From Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Condition</em>' containment reference.
-   * @see #getCondition()
+   * @param value the new value of the '<em>From Expression</em>' containment reference.
+   * @see #getFromExpression()
    * @generated
    */
-  void setCondition(Expression value);
+  void setFromExpression(Expression value);
+
+  /**
+   * Returns the value of the '<em><b>Where Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Where Expression</em>' containment reference.
+   * @see #setWhereExpression(Expression)
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getDelete_WhereExpression()
+   * @model containment="true"
+   * @generated
+   */
+  Expression getWhereExpression();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Delete#getWhereExpression <em>Where Expression</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Where Expression</em>' containment reference.
+   * @see #getWhereExpression()
+   * @generated
+   */
+  void setWhereExpression(Expression value);
 
 } // Delete

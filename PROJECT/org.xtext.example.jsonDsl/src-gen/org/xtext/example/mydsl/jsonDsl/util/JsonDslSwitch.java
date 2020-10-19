@@ -8,50 +8,7 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 
-import org.xtext.example.mydsl.jsonDsl.Add;
-import org.xtext.example.mydsl.jsonDsl.AddExpression;
-import org.xtext.example.mydsl.jsonDsl.AndExpression;
-import org.xtext.example.mydsl.jsonDsl.ArithmeticAuxiliar;
-import org.xtext.example.mydsl.jsonDsl.Array;
-import org.xtext.example.mydsl.jsonDsl.ArrayCaller;
-import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
-import org.xtext.example.mydsl.jsonDsl.Assignment;
-import org.xtext.example.mydsl.jsonDsl.AuxiliarCaller;
-import org.xtext.example.mydsl.jsonDsl.BinaryExpression;
-import org.xtext.example.mydsl.jsonDsl.CompExpression;
-import org.xtext.example.mydsl.jsonDsl.Concat;
-import org.xtext.example.mydsl.jsonDsl.Constant;
-import org.xtext.example.mydsl.jsonDsl.Delete;
-import org.xtext.example.mydsl.jsonDsl.Depth;
-import org.xtext.example.mydsl.jsonDsl.EqExpression;
-import org.xtext.example.mydsl.jsonDsl.Erase;
-import org.xtext.example.mydsl.jsonDsl.Export;
-import org.xtext.example.mydsl.jsonDsl.Expression;
-import org.xtext.example.mydsl.jsonDsl.Extract;
-import org.xtext.example.mydsl.jsonDsl.Field;
-import org.xtext.example.mydsl.jsonDsl.FieldCaller;
-import org.xtext.example.mydsl.jsonDsl.FieldInfo;
-import org.xtext.example.mydsl.jsonDsl.FieldInvoquer;
-import org.xtext.example.mydsl.jsonDsl.FunctionCall;
-import org.xtext.example.mydsl.jsonDsl.Insert;
-import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
-import org.xtext.example.mydsl.jsonDsl.Load;
-import org.xtext.example.mydsl.jsonDsl.Mean;
-import org.xtext.example.mydsl.jsonDsl.Model;
-import org.xtext.example.mydsl.jsonDsl.MultExpression;
-import org.xtext.example.mydsl.jsonDsl.NegationExpression;
-import org.xtext.example.mydsl.jsonDsl.OrExpression;
-import org.xtext.example.mydsl.jsonDsl.PrimaryExpression;
-import org.xtext.example.mydsl.jsonDsl.ProcCall;
-import org.xtext.example.mydsl.jsonDsl.Product;
-import org.xtext.example.mydsl.jsonDsl.Remove;
-import org.xtext.example.mydsl.jsonDsl.Rename;
-import org.xtext.example.mydsl.jsonDsl.Select;
-import org.xtext.example.mydsl.jsonDsl.SimpleStatement;
-import org.xtext.example.mydsl.jsonDsl.Store;
-import org.xtext.example.mydsl.jsonDsl.Sum;
-import org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression;
-import org.xtext.example.mydsl.jsonDsl.VariableCall;
+import org.xtext.example.mydsl.jsonDsl.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -143,63 +100,6 @@ public class JsonDslSwitch<T> extends Switch<T>
         Expression expression = (Expression)theEObject;
         T result = caseExpression(expression);
         if (result == null) result = caseSimpleStatement(expression);
-        if (result == null) result = casePrimaryExpression(expression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.BINARY_EXPRESSION:
-      {
-        BinaryExpression binaryExpression = (BinaryExpression)theEObject;
-        T result = caseBinaryExpression(binaryExpression);
-        if (result == null) result = caseExpression(binaryExpression);
-        if (result == null) result = caseSimpleStatement(binaryExpression);
-        if (result == null) result = casePrimaryExpression(binaryExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.OR_EXPRESSION:
-      {
-        OrExpression orExpression = (OrExpression)theEObject;
-        T result = caseOrExpression(orExpression);
-        if (result == null) result = caseBinaryExpression(orExpression);
-        if (result == null) result = caseExpression(orExpression);
-        if (result == null) result = caseSimpleStatement(orExpression);
-        if (result == null) result = casePrimaryExpression(orExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.AND_EXPRESSION:
-      {
-        AndExpression andExpression = (AndExpression)theEObject;
-        T result = caseAndExpression(andExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.EQ_EXPRESSION:
-      {
-        EqExpression eqExpression = (EqExpression)theEObject;
-        T result = caseEqExpression(eqExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.COMP_EXPRESSION:
-      {
-        CompExpression compExpression = (CompExpression)theEObject;
-        T result = caseCompExpression(compExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.ADD_EXPRESSION:
-      {
-        AddExpression addExpression = (AddExpression)theEObject;
-        T result = caseAddExpression(addExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.MULT_EXPRESSION:
-      {
-        MultExpression multExpression = (MultExpression)theEObject;
-        T result = caseMultExpression(multExpression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -207,28 +107,35 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         UnaryMinusExpression unaryMinusExpression = (UnaryMinusExpression)theEObject;
         T result = caseUnaryMinusExpression(unaryMinusExpression);
+        if (result == null) result = caseExpression(unaryMinusExpression);
+        if (result == null) result = caseSimpleStatement(unaryMinusExpression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case JsonDslPackage.NEGATION_EXPRESSION:
+      case JsonDslPackage.UNARY_PLUS_EXPRESSION:
       {
-        NegationExpression negationExpression = (NegationExpression)theEObject;
-        T result = caseNegationExpression(negationExpression);
+        UnaryPlusExpression unaryPlusExpression = (UnaryPlusExpression)theEObject;
+        T result = caseUnaryPlusExpression(unaryPlusExpression);
+        if (result == null) result = caseExpression(unaryPlusExpression);
+        if (result == null) result = caseSimpleStatement(unaryPlusExpression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case JsonDslPackage.PRIMARY_EXPRESSION:
+      case JsonDslPackage.LOGICAL_NEGATION_EXPRESSION:
       {
-        PrimaryExpression primaryExpression = (PrimaryExpression)theEObject;
-        T result = casePrimaryExpression(primaryExpression);
+        LogicalNegationExpression logicalNegationExpression = (LogicalNegationExpression)theEObject;
+        T result = caseLogicalNegationExpression(logicalNegationExpression);
+        if (result == null) result = caseExpression(logicalNegationExpression);
+        if (result == null) result = caseSimpleStatement(logicalNegationExpression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case JsonDslPackage.FIELD_INVOQUER:
+      case JsonDslPackage.BRACKET_EXPRESSION:
       {
-        FieldInvoquer fieldInvoquer = (FieldInvoquer)theEObject;
-        T result = caseFieldInvoquer(fieldInvoquer);
-        if (result == null) result = casePrimaryExpression(fieldInvoquer);
+        BracketExpression bracketExpression = (BracketExpression)theEObject;
+        T result = caseBracketExpression(bracketExpression);
+        if (result == null) result = caseExpression(bracketExpression);
+        if (result == null) result = caseSimpleStatement(bracketExpression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -236,7 +143,8 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         VariableCall variableCall = (VariableCall)theEObject;
         T result = caseVariableCall(variableCall);
-        if (result == null) result = casePrimaryExpression(variableCall);
+        if (result == null) result = caseExpression(variableCall);
+        if (result == null) result = caseSimpleStatement(variableCall);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -263,11 +171,48 @@ public class JsonDslSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case JsonDslPackage.FUNCTION_CALL:
+      case JsonDslPackage.IO_FUNCTIONS:
       {
-        FunctionCall functionCall = (FunctionCall)theEObject;
-        T result = caseFunctionCall(functionCall);
-        if (result == null) result = casePrimaryExpression(functionCall);
+        IOFunctions ioFunctions = (IOFunctions)theEObject;
+        T result = caseIOFunctions(ioFunctions);
+        if (result == null) result = caseExpression(ioFunctions);
+        if (result == null) result = caseSimpleStatement(ioFunctions);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.INFO_FUNCTIONS:
+      {
+        InfoFunctions infoFunctions = (InfoFunctions)theEObject;
+        T result = caseInfoFunctions(infoFunctions);
+        if (result == null) result = caseExpression(infoFunctions);
+        if (result == null) result = caseSimpleStatement(infoFunctions);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.MANIP_FUNCTIONS:
+      {
+        ManipFunctions manipFunctions = (ManipFunctions)theEObject;
+        T result = caseManipFunctions(manipFunctions);
+        if (result == null) result = caseExpression(manipFunctions);
+        if (result == null) result = caseSimpleStatement(manipFunctions);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.ARITH_FUNCTIONS:
+      {
+        ArithFunctions arithFunctions = (ArithFunctions)theEObject;
+        T result = caseArithFunctions(arithFunctions);
+        if (result == null) result = caseExpression(arithFunctions);
+        if (result == null) result = caseSimpleStatement(arithFunctions);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.ALTER_FUNCTIONS:
+      {
+        AlterFunctions alterFunctions = (AlterFunctions)theEObject;
+        T result = caseAlterFunctions(alterFunctions);
+        if (result == null) result = caseExpression(alterFunctions);
+        if (result == null) result = caseSimpleStatement(alterFunctions);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -275,8 +220,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Load load = (Load)theEObject;
         T result = caseLoad(load);
-        if (result == null) result = caseFunctionCall(load);
-        if (result == null) result = casePrimaryExpression(load);
+        if (result == null) result = caseIOFunctions(load);
+        if (result == null) result = caseExpression(load);
+        if (result == null) result = caseSimpleStatement(load);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -284,8 +230,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Store store = (Store)theEObject;
         T result = caseStore(store);
-        if (result == null) result = caseFunctionCall(store);
-        if (result == null) result = casePrimaryExpression(store);
+        if (result == null) result = caseIOFunctions(store);
+        if (result == null) result = caseExpression(store);
+        if (result == null) result = caseSimpleStatement(store);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -293,8 +240,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Export export = (Export)theEObject;
         T result = caseExport(export);
-        if (result == null) result = caseFunctionCall(export);
-        if (result == null) result = casePrimaryExpression(export);
+        if (result == null) result = caseIOFunctions(export);
+        if (result == null) result = caseExpression(export);
+        if (result == null) result = caseSimpleStatement(export);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -310,8 +258,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Depth depth = (Depth)theEObject;
         T result = caseDepth(depth);
-        if (result == null) result = caseFunctionCall(depth);
-        if (result == null) result = casePrimaryExpression(depth);
+        if (result == null) result = caseInfoFunctions(depth);
+        if (result == null) result = caseExpression(depth);
+        if (result == null) result = caseSimpleStatement(depth);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -319,17 +268,19 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         FieldInfo fieldInfo = (FieldInfo)theEObject;
         T result = caseFieldInfo(fieldInfo);
-        if (result == null) result = caseFunctionCall(fieldInfo);
-        if (result == null) result = casePrimaryExpression(fieldInfo);
+        if (result == null) result = caseInfoFunctions(fieldInfo);
+        if (result == null) result = caseExpression(fieldInfo);
+        if (result == null) result = caseSimpleStatement(fieldInfo);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case JsonDslPackage.EXTRACT:
+      case JsonDslPackage.CONTAINS:
       {
-        Extract extract = (Extract)theEObject;
-        T result = caseExtract(extract);
-        if (result == null) result = caseFunctionCall(extract);
-        if (result == null) result = casePrimaryExpression(extract);
+        Contains contains = (Contains)theEObject;
+        T result = caseContains(contains);
+        if (result == null) result = caseInfoFunctions(contains);
+        if (result == null) result = caseExpression(contains);
+        if (result == null) result = caseSimpleStatement(contains);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -337,8 +288,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Select select = (Select)theEObject;
         T result = caseSelect(select);
-        if (result == null) result = caseFunctionCall(select);
-        if (result == null) result = casePrimaryExpression(select);
+        if (result == null) result = caseManipFunctions(select);
+        if (result == null) result = caseExpression(select);
+        if (result == null) result = caseSimpleStatement(select);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -346,8 +298,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Concat concat = (Concat)theEObject;
         T result = caseConcat(concat);
-        if (result == null) result = caseFunctionCall(concat);
-        if (result == null) result = casePrimaryExpression(concat);
+        if (result == null) result = caseManipFunctions(concat);
+        if (result == null) result = caseExpression(concat);
+        if (result == null) result = caseSimpleStatement(concat);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -355,8 +308,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Sum sum = (Sum)theEObject;
         T result = caseSum(sum);
-        if (result == null) result = caseFunctionCall(sum);
-        if (result == null) result = casePrimaryExpression(sum);
+        if (result == null) result = caseArithFunctions(sum);
+        if (result == null) result = caseExpression(sum);
+        if (result == null) result = caseSimpleStatement(sum);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -364,8 +318,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Product product = (Product)theEObject;
         T result = caseProduct(product);
-        if (result == null) result = caseFunctionCall(product);
-        if (result == null) result = casePrimaryExpression(product);
+        if (result == null) result = caseArithFunctions(product);
+        if (result == null) result = caseExpression(product);
+        if (result == null) result = caseSimpleStatement(product);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -373,15 +328,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Mean mean = (Mean)theEObject;
         T result = caseMean(mean);
-        if (result == null) result = caseFunctionCall(mean);
-        if (result == null) result = casePrimaryExpression(mean);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.ARITHMETIC_AUXILIAR:
-      {
-        ArithmeticAuxiliar arithmeticAuxiliar = (ArithmeticAuxiliar)theEObject;
-        T result = caseArithmeticAuxiliar(arithmeticAuxiliar);
+        if (result == null) result = caseArithFunctions(mean);
+        if (result == null) result = caseExpression(mean);
+        if (result == null) result = caseSimpleStatement(mean);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -389,8 +338,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Add add = (Add)theEObject;
         T result = caseAdd(add);
-        if (result == null) result = caseFunctionCall(add);
-        if (result == null) result = casePrimaryExpression(add);
+        if (result == null) result = caseAlterFunctions(add);
+        if (result == null) result = caseExpression(add);
+        if (result == null) result = caseSimpleStatement(add);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -398,8 +348,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Insert insert = (Insert)theEObject;
         T result = caseInsert(insert);
-        if (result == null) result = caseFunctionCall(insert);
-        if (result == null) result = casePrimaryExpression(insert);
+        if (result == null) result = caseAlterFunctions(insert);
+        if (result == null) result = caseExpression(insert);
+        if (result == null) result = caseSimpleStatement(insert);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -407,17 +358,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Rename rename = (Rename)theEObject;
         T result = caseRename(rename);
-        if (result == null) result = caseFunctionCall(rename);
-        if (result == null) result = casePrimaryExpression(rename);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.ERASE:
-      {
-        Erase erase = (Erase)theEObject;
-        T result = caseErase(erase);
-        if (result == null) result = caseFunctionCall(erase);
-        if (result == null) result = casePrimaryExpression(erase);
+        if (result == null) result = caseAlterFunctions(rename);
+        if (result == null) result = caseExpression(rename);
+        if (result == null) result = caseSimpleStatement(rename);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -425,8 +368,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Delete delete = (Delete)theEObject;
         T result = caseDelete(delete);
-        if (result == null) result = caseFunctionCall(delete);
-        if (result == null) result = casePrimaryExpression(delete);
+        if (result == null) result = caseAlterFunctions(delete);
+        if (result == null) result = caseExpression(delete);
+        if (result == null) result = caseSimpleStatement(delete);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -434,15 +378,9 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Remove remove = (Remove)theEObject;
         T result = caseRemove(remove);
-        if (result == null) result = caseFunctionCall(remove);
-        if (result == null) result = casePrimaryExpression(remove);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.ARRAY_SPECIFIER:
-      {
-        ArraySpecifier arraySpecifier = (ArraySpecifier)theEObject;
-        T result = caseArraySpecifier(arraySpecifier);
+        if (result == null) result = caseAlterFunctions(remove);
+        if (result == null) result = caseExpression(remove);
+        if (result == null) result = caseSimpleStatement(remove);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -450,7 +388,18 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Constant constant = (Constant)theEObject;
         T result = caseConstant(constant);
-        if (result == null) result = casePrimaryExpression(constant);
+        if (result == null) result = caseExpression(constant);
+        if (result == null) result = caseSimpleStatement(constant);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.PRIMITIVE:
+      {
+        Primitive primitive = (Primitive)theEObject;
+        T result = casePrimitive(primitive);
+        if (result == null) result = caseConstant(primitive);
+        if (result == null) result = caseExpression(primitive);
+        if (result == null) result = caseSimpleStatement(primitive);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -459,16 +408,18 @@ public class JsonDslSwitch<T> extends Switch<T>
         Array array = (Array)theEObject;
         T result = caseArray(array);
         if (result == null) result = caseConstant(array);
-        if (result == null) result = casePrimaryExpression(array);
+        if (result == null) result = caseExpression(array);
+        if (result == null) result = caseSimpleStatement(array);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case JsonDslPackage.OBJECT:
+      case JsonDslPackage.JSON_OBJECT:
       {
-        org.xtext.example.mydsl.jsonDsl.Object object = (org.xtext.example.mydsl.jsonDsl.Object)theEObject;
-        T result = caseObject(object);
-        if (result == null) result = caseConstant(object);
-        if (result == null) result = casePrimaryExpression(object);
+        JSonObject jSonObject = (JSonObject)theEObject;
+        T result = caseJSonObject(jSonObject);
+        if (result == null) result = caseConstant(jSonObject);
+        if (result == null) result = caseExpression(jSonObject);
+        if (result == null) result = caseSimpleStatement(jSonObject);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -476,6 +427,132 @@ public class JsonDslSwitch<T> extends Switch<T>
       {
         Field field = (Field)theEObject;
         T result = caseField(field);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.DISJUNCTION_EXPRESSION:
+      {
+        DisjunctionExpression disjunctionExpression = (DisjunctionExpression)theEObject;
+        T result = caseDisjunctionExpression(disjunctionExpression);
+        if (result == null) result = caseExpression(disjunctionExpression);
+        if (result == null) result = caseSimpleStatement(disjunctionExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.CONJUNCTION_EXPRESSION:
+      {
+        ConjunctionExpression conjunctionExpression = (ConjunctionExpression)theEObject;
+        T result = caseConjunctionExpression(conjunctionExpression);
+        if (result == null) result = caseExpression(conjunctionExpression);
+        if (result == null) result = caseSimpleStatement(conjunctionExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.EQUALITY_EXPRESSION:
+      {
+        EqualityExpression equalityExpression = (EqualityExpression)theEObject;
+        T result = caseEqualityExpression(equalityExpression);
+        if (result == null) result = caseExpression(equalityExpression);
+        if (result == null) result = caseSimpleStatement(equalityExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.INEQUALITY_EXPRESSION:
+      {
+        InequalityExpression inequalityExpression = (InequalityExpression)theEObject;
+        T result = caseInequalityExpression(inequalityExpression);
+        if (result == null) result = caseExpression(inequalityExpression);
+        if (result == null) result = caseSimpleStatement(inequalityExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.SUPERI_EXPRESSION:
+      {
+        SuperiExpression superiExpression = (SuperiExpression)theEObject;
+        T result = caseSuperiExpression(superiExpression);
+        if (result == null) result = caseExpression(superiExpression);
+        if (result == null) result = caseSimpleStatement(superiExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.SUPERIOR_OR_EQUAL_EXPRESSION:
+      {
+        SuperiorOrEqualExpression superiorOrEqualExpression = (SuperiorOrEqualExpression)theEObject;
+        T result = caseSuperiorOrEqualExpression(superiorOrEqualExpression);
+        if (result == null) result = caseExpression(superiorOrEqualExpression);
+        if (result == null) result = caseSimpleStatement(superiorOrEqualExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.INFERI_EXPRESSION:
+      {
+        InferiExpression inferiExpression = (InferiExpression)theEObject;
+        T result = caseInferiExpression(inferiExpression);
+        if (result == null) result = caseExpression(inferiExpression);
+        if (result == null) result = caseSimpleStatement(inferiExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.INFERIOR_OR_EQUAL_EXPRESSION:
+      {
+        InferiorOrEqualExpression inferiorOrEqualExpression = (InferiorOrEqualExpression)theEObject;
+        T result = caseInferiorOrEqualExpression(inferiorOrEqualExpression);
+        if (result == null) result = caseExpression(inferiorOrEqualExpression);
+        if (result == null) result = caseSimpleStatement(inferiorOrEqualExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.ADDITION_EXPRESSION:
+      {
+        AdditionExpression additionExpression = (AdditionExpression)theEObject;
+        T result = caseAdditionExpression(additionExpression);
+        if (result == null) result = caseExpression(additionExpression);
+        if (result == null) result = caseSimpleStatement(additionExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.SUBSTRACTION_EXPRESSION:
+      {
+        SubstractionExpression substractionExpression = (SubstractionExpression)theEObject;
+        T result = caseSubstractionExpression(substractionExpression);
+        if (result == null) result = caseExpression(substractionExpression);
+        if (result == null) result = caseSimpleStatement(substractionExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.MULTIPLICATION_EXPRESSION:
+      {
+        MultiplicationExpression multiplicationExpression = (MultiplicationExpression)theEObject;
+        T result = caseMultiplicationExpression(multiplicationExpression);
+        if (result == null) result = caseExpression(multiplicationExpression);
+        if (result == null) result = caseSimpleStatement(multiplicationExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.DIVISION_EXPRESSION:
+      {
+        DivisionExpression divisionExpression = (DivisionExpression)theEObject;
+        T result = caseDivisionExpression(divisionExpression);
+        if (result == null) result = caseExpression(divisionExpression);
+        if (result == null) result = caseSimpleStatement(divisionExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.MODULO_EXPRESSION:
+      {
+        ModuloExpression moduloExpression = (ModuloExpression)theEObject;
+        T result = caseModuloExpression(moduloExpression);
+        if (result == null) result = caseExpression(moduloExpression);
+        if (result == null) result = caseSimpleStatement(moduloExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case JsonDslPackage.PRIMARY_EXPRESSION:
+      {
+        PrimaryExpression primaryExpression = (PrimaryExpression)theEObject;
+        T result = casePrimaryExpression(primaryExpression);
+        if (result == null) result = caseExpression(primaryExpression);
+        if (result == null) result = caseSimpleStatement(primaryExpression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -548,118 +625,6 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Binary Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Binary Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseBinaryExpression(BinaryExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Or Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Or Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseOrExpression(OrExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>And Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>And Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAndExpression(AndExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Eq Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Eq Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseEqExpression(EqExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Comp Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Comp Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseCompExpression(CompExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Add Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Add Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAddExpression(AddExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Mult Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Mult Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseMultExpression(MultExpression object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Unary Minus Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -676,49 +641,49 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Negation Expression</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Unary Plus Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Negation Expression</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Unary Plus Expression</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseNegationExpression(NegationExpression object)
+  public T caseUnaryPlusExpression(UnaryPlusExpression object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Primary Expression</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Logical Negation Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Primary Expression</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Logical Negation Expression</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T casePrimaryExpression(PrimaryExpression object)
+  public T caseLogicalNegationExpression(LogicalNegationExpression object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Field Invoquer</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Bracket Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Field Invoquer</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Bracket Expression</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseFieldInvoquer(FieldInvoquer object)
+  public T caseBracketExpression(BracketExpression object)
   {
     return null;
   }
@@ -788,17 +753,81 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Function Call</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>IO Functions</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Function Call</em>'.
+   * @return the result of interpreting the object as an instance of '<em>IO Functions</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseFunctionCall(FunctionCall object)
+  public T caseIOFunctions(IOFunctions object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Info Functions</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Info Functions</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseInfoFunctions(InfoFunctions object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Manip Functions</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Manip Functions</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseManipFunctions(ManipFunctions object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Arith Functions</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Arith Functions</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseArithFunctions(ArithFunctions object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Alter Functions</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Alter Functions</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAlterFunctions(AlterFunctions object)
   {
     return null;
   }
@@ -900,17 +929,17 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Extract</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Contains</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Extract</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Contains</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseExtract(Extract object)
+  public T caseContains(Contains object)
   {
     return null;
   }
@@ -996,22 +1025,6 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Arithmetic Auxiliar</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Arithmetic Auxiliar</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseArithmeticAuxiliar(ArithmeticAuxiliar object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Add</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1060,22 +1073,6 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Erase</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Erase</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseErase(Erase object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Delete</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1108,22 +1105,6 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Array Specifier</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Array Specifier</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseArraySpecifier(ArraySpecifier object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Constant</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1135,6 +1116,22 @@ public class JsonDslSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseConstant(Constant object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Primitive</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Primitive</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casePrimitive(Primitive object)
   {
     return null;
   }
@@ -1156,17 +1153,17 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Object</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>JSon Object</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Object</em>'.
+   * @return the result of interpreting the object as an instance of '<em>JSon Object</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseObject(org.xtext.example.mydsl.jsonDsl.Object object)
+  public T caseJSonObject(JSonObject object)
   {
     return null;
   }
@@ -1183,6 +1180,230 @@ public class JsonDslSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseField(Field object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Disjunction Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Disjunction Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseDisjunctionExpression(DisjunctionExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Conjunction Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Conjunction Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseConjunctionExpression(ConjunctionExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Equality Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Equality Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseEqualityExpression(EqualityExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Inequality Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Inequality Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseInequalityExpression(InequalityExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Superi Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Superi Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSuperiExpression(SuperiExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Superior Or Equal Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Superior Or Equal Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSuperiorOrEqualExpression(SuperiorOrEqualExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Inferi Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Inferi Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseInferiExpression(InferiExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Inferior Or Equal Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Inferior Or Equal Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseInferiorOrEqualExpression(InferiorOrEqualExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Addition Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Addition Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAdditionExpression(AdditionExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Substraction Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Substraction Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSubstractionExpression(SubstractionExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Multiplication Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Multiplication Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseMultiplicationExpression(MultiplicationExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Division Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Division Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseDivisionExpression(DivisionExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Modulo Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Modulo Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseModuloExpression(ModuloExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Primary Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Primary Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casePrimaryExpression(PrimaryExpression object)
   {
     return null;
   }

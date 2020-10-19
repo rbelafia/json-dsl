@@ -60,69 +60,6 @@ public interface JsonDslFactory extends EFactory
   Expression createExpression();
 
   /**
-   * Returns a new object of class '<em>Binary Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Binary Expression</em>'.
-   * @generated
-   */
-  BinaryExpression createBinaryExpression();
-
-  /**
-   * Returns a new object of class '<em>Or Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Or Expression</em>'.
-   * @generated
-   */
-  OrExpression createOrExpression();
-
-  /**
-   * Returns a new object of class '<em>And Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>And Expression</em>'.
-   * @generated
-   */
-  AndExpression createAndExpression();
-
-  /**
-   * Returns a new object of class '<em>Eq Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Eq Expression</em>'.
-   * @generated
-   */
-  EqExpression createEqExpression();
-
-  /**
-   * Returns a new object of class '<em>Comp Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Comp Expression</em>'.
-   * @generated
-   */
-  CompExpression createCompExpression();
-
-  /**
-   * Returns a new object of class '<em>Add Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Add Expression</em>'.
-   * @generated
-   */
-  AddExpression createAddExpression();
-
-  /**
-   * Returns a new object of class '<em>Mult Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Mult Expression</em>'.
-   * @generated
-   */
-  MultExpression createMultExpression();
-
-  /**
    * Returns a new object of class '<em>Unary Minus Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -132,31 +69,31 @@ public interface JsonDslFactory extends EFactory
   UnaryMinusExpression createUnaryMinusExpression();
 
   /**
-   * Returns a new object of class '<em>Negation Expression</em>'.
+   * Returns a new object of class '<em>Unary Plus Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Negation Expression</em>'.
+   * @return a new object of class '<em>Unary Plus Expression</em>'.
    * @generated
    */
-  NegationExpression createNegationExpression();
+  UnaryPlusExpression createUnaryPlusExpression();
 
   /**
-   * Returns a new object of class '<em>Primary Expression</em>'.
+   * Returns a new object of class '<em>Logical Negation Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Primary Expression</em>'.
+   * @return a new object of class '<em>Logical Negation Expression</em>'.
    * @generated
    */
-  PrimaryExpression createPrimaryExpression();
+  LogicalNegationExpression createLogicalNegationExpression();
 
   /**
-   * Returns a new object of class '<em>Field Invoquer</em>'.
+   * Returns a new object of class '<em>Bracket Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Field Invoquer</em>'.
+   * @return a new object of class '<em>Bracket Expression</em>'.
    * @generated
    */
-  FieldInvoquer createFieldInvoquer();
+  BracketExpression createBracketExpression();
 
   /**
    * Returns a new object of class '<em>Variable Call</em>'.
@@ -195,13 +132,49 @@ public interface JsonDslFactory extends EFactory
   ArrayCaller createArrayCaller();
 
   /**
-   * Returns a new object of class '<em>Function Call</em>'.
+   * Returns a new object of class '<em>IO Functions</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Function Call</em>'.
+   * @return a new object of class '<em>IO Functions</em>'.
    * @generated
    */
-  FunctionCall createFunctionCall();
+  IOFunctions createIOFunctions();
+
+  /**
+   * Returns a new object of class '<em>Info Functions</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Info Functions</em>'.
+   * @generated
+   */
+  InfoFunctions createInfoFunctions();
+
+  /**
+   * Returns a new object of class '<em>Manip Functions</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Manip Functions</em>'.
+   * @generated
+   */
+  ManipFunctions createManipFunctions();
+
+  /**
+   * Returns a new object of class '<em>Arith Functions</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Arith Functions</em>'.
+   * @generated
+   */
+  ArithFunctions createArithFunctions();
+
+  /**
+   * Returns a new object of class '<em>Alter Functions</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Alter Functions</em>'.
+   * @generated
+   */
+  AlterFunctions createAlterFunctions();
 
   /**
    * Returns a new object of class '<em>Load</em>'.
@@ -258,13 +231,13 @@ public interface JsonDslFactory extends EFactory
   FieldInfo createFieldInfo();
 
   /**
-   * Returns a new object of class '<em>Extract</em>'.
+   * Returns a new object of class '<em>Contains</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Extract</em>'.
+   * @return a new object of class '<em>Contains</em>'.
    * @generated
    */
-  Extract createExtract();
+  Contains createContains();
 
   /**
    * Returns a new object of class '<em>Select</em>'.
@@ -312,15 +285,6 @@ public interface JsonDslFactory extends EFactory
   Mean createMean();
 
   /**
-   * Returns a new object of class '<em>Arithmetic Auxiliar</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Arithmetic Auxiliar</em>'.
-   * @generated
-   */
-  ArithmeticAuxiliar createArithmeticAuxiliar();
-
-  /**
    * Returns a new object of class '<em>Add</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -348,15 +312,6 @@ public interface JsonDslFactory extends EFactory
   Rename createRename();
 
   /**
-   * Returns a new object of class '<em>Erase</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Erase</em>'.
-   * @generated
-   */
-  Erase createErase();
-
-  /**
    * Returns a new object of class '<em>Delete</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -375,15 +330,6 @@ public interface JsonDslFactory extends EFactory
   Remove createRemove();
 
   /**
-   * Returns a new object of class '<em>Array Specifier</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Array Specifier</em>'.
-   * @generated
-   */
-  ArraySpecifier createArraySpecifier();
-
-  /**
    * Returns a new object of class '<em>Constant</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -391,6 +337,15 @@ public interface JsonDslFactory extends EFactory
    * @generated
    */
   Constant createConstant();
+
+  /**
+   * Returns a new object of class '<em>Primitive</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Primitive</em>'.
+   * @generated
+   */
+  Primitive createPrimitive();
 
   /**
    * Returns a new object of class '<em>Array</em>'.
@@ -402,13 +357,13 @@ public interface JsonDslFactory extends EFactory
   Array createArray();
 
   /**
-   * Returns a new object of class '<em>Object</em>'.
+   * Returns a new object of class '<em>JSon Object</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Object</em>'.
+   * @return a new object of class '<em>JSon Object</em>'.
    * @generated
    */
-  Object createObject();
+  JSonObject createJSonObject();
 
   /**
    * Returns a new object of class '<em>Field</em>'.
@@ -418,6 +373,132 @@ public interface JsonDslFactory extends EFactory
    * @generated
    */
   Field createField();
+
+  /**
+   * Returns a new object of class '<em>Disjunction Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Disjunction Expression</em>'.
+   * @generated
+   */
+  DisjunctionExpression createDisjunctionExpression();
+
+  /**
+   * Returns a new object of class '<em>Conjunction Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Conjunction Expression</em>'.
+   * @generated
+   */
+  ConjunctionExpression createConjunctionExpression();
+
+  /**
+   * Returns a new object of class '<em>Equality Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Equality Expression</em>'.
+   * @generated
+   */
+  EqualityExpression createEqualityExpression();
+
+  /**
+   * Returns a new object of class '<em>Inequality Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Inequality Expression</em>'.
+   * @generated
+   */
+  InequalityExpression createInequalityExpression();
+
+  /**
+   * Returns a new object of class '<em>Superi Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Superi Expression</em>'.
+   * @generated
+   */
+  SuperiExpression createSuperiExpression();
+
+  /**
+   * Returns a new object of class '<em>Superior Or Equal Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Superior Or Equal Expression</em>'.
+   * @generated
+   */
+  SuperiorOrEqualExpression createSuperiorOrEqualExpression();
+
+  /**
+   * Returns a new object of class '<em>Inferi Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Inferi Expression</em>'.
+   * @generated
+   */
+  InferiExpression createInferiExpression();
+
+  /**
+   * Returns a new object of class '<em>Inferior Or Equal Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Inferior Or Equal Expression</em>'.
+   * @generated
+   */
+  InferiorOrEqualExpression createInferiorOrEqualExpression();
+
+  /**
+   * Returns a new object of class '<em>Addition Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Addition Expression</em>'.
+   * @generated
+   */
+  AdditionExpression createAdditionExpression();
+
+  /**
+   * Returns a new object of class '<em>Substraction Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Substraction Expression</em>'.
+   * @generated
+   */
+  SubstractionExpression createSubstractionExpression();
+
+  /**
+   * Returns a new object of class '<em>Multiplication Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Multiplication Expression</em>'.
+   * @generated
+   */
+  MultiplicationExpression createMultiplicationExpression();
+
+  /**
+   * Returns a new object of class '<em>Division Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Division Expression</em>'.
+   * @generated
+   */
+  DivisionExpression createDivisionExpression();
+
+  /**
+   * Returns a new object of class '<em>Modulo Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Modulo Expression</em>'.
+   * @generated
+   */
+  ModuloExpression createModuloExpression();
+
+  /**
+   * Returns a new object of class '<em>Primary Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Primary Expression</em>'.
+   * @generated
+   */
+  PrimaryExpression createPrimaryExpression();
 
   /**
    * Returns the package supported by this factory.

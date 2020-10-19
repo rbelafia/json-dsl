@@ -28,7 +28,7 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
  *
  * @generated
  */
-public class FieldInfoImpl extends FunctionCallImpl implements FieldInfo
+public class FieldInfoImpl extends InfoFunctionsImpl implements FieldInfo
 {
   /**
    * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.

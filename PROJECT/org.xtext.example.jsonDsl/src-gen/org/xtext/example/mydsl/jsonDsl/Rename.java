@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Rename extends FunctionCall
+public interface Rename extends AlterFunctions
 {
   /**
    * Returns the value of the '<em><b>Call</b></em>' containment reference.
@@ -48,27 +48,27 @@ public interface Rename extends FunctionCall
   void setCall(VariableCall value);
 
   /**
-   * Returns the value of the '<em><b>Fields</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Fields</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.jsonDsl.Expression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Fields</em>' attribute list.
+   * @return the value of the '<em>Fields</em>' containment reference list.
    * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getRename_Fields()
-   * @model unique="false"
+   * @model containment="true"
    * @generated
    */
-  EList<String> getFields();
+  EList<Expression> getFields();
 
   /**
-   * Returns the value of the '<em><b>Nfields</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Nfields</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.jsonDsl.Expression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Nfields</em>' attribute list.
+   * @return the value of the '<em>Nfields</em>' containment reference list.
    * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getRename_Nfields()
-   * @model unique="false"
+   * @model containment="true"
    * @generated
    */
-  EList<String> getNfields();
+  EList<Expression> getNfields();
 
 } // Rename

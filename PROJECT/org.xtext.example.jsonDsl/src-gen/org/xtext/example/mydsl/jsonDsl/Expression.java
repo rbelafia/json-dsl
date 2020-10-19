@@ -14,6 +14,6 @@ package org.xtext.example.mydsl.jsonDsl;
  * @model
  * @generated
  */
-public interface Expression extends SimpleStatement, PrimaryExpression
+public interface Expression extends SimpleStatement
 {
 } // Expression

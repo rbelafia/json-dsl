@@ -37,7 +37,7 @@ public class ArrayCallerImpl extends AuxiliarCallerImpl implements ArrayCaller
    * @generated
    * @ordered
    */
-  protected EList<String> index;
+  protected EList<Integer> index;
 
   /**
    * <!-- begin-user-doc -->
@@ -66,11 +66,11 @@ public class ArrayCallerImpl extends AuxiliarCallerImpl implements ArrayCaller
    * @generated
    */
   @Override
-  public EList<String> getIndex()
+  public EList<Integer> getIndex()
   {
     if (index == null)
     {
-      index = new EDataTypeEList<String>(String.class, this, JsonDslPackage.ARRAY_CALLER__INDEX);
+      index = new EDataTypeEList<Integer>(Integer.class, this, JsonDslPackage.ARRAY_CALLER__INDEX);
     }
     return index;
   }
@@ -104,7 +104,7 @@ public class ArrayCallerImpl extends AuxiliarCallerImpl implements ArrayCaller
     {
       case JsonDslPackage.ARRAY_CALLER__INDEX:
         getIndex().clear();
-        getIndex().addAll((Collection<? extends String>)newValue);
+        getIndex().addAll((Collection<? extends Integer>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

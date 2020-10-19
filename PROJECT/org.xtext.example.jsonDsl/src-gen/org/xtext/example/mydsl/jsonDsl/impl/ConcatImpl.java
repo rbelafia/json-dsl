@@ -3,13 +3,17 @@
  */
 package org.xtext.example.mydsl.jsonDsl.impl;
 
-import org.eclipse.emf.common.notify.Notification;
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.example.mydsl.jsonDsl.Concat;
 import org.xtext.example.mydsl.jsonDsl.Expression;
@@ -23,33 +27,22 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.ConcatImpl#getFirst <em>First</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.ConcatImpl#getSecond <em>Second</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.ConcatImpl#getExpressions <em>Expressions</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ConcatImpl extends FunctionCallImpl implements Concat
+public class ConcatImpl extends ManipFunctionsImpl implements Concat
 {
   /**
-   * The cached value of the '{@link #getFirst() <em>First</em>}' containment reference.
+   * The cached value of the '{@link #getExpressions() <em>Expressions</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFirst()
+   * @see #getExpressions()
    * @generated
    * @ordered
    */
-  protected Expression first;
-
-  /**
-   * The cached value of the '{@link #getSecond() <em>Second</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getSecond()
-   * @generated
-   * @ordered
-   */
-  protected Expression second;
+  protected EList<Expression> expressions;
 
   /**
    * <!-- begin-user-doc -->
@@ -78,98 +71,13 @@ public class ConcatImpl extends FunctionCallImpl implements Concat
    * @generated
    */
   @Override
-  public Expression getFirst()
+  public EList<Expression> getExpressions()
   {
-    return first;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetFirst(Expression newFirst, NotificationChain msgs)
-  {
-    Expression oldFirst = first;
-    first = newFirst;
-    if (eNotificationRequired())
+    if (expressions == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.CONCAT__FIRST, oldFirst, newFirst);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      expressions = new EObjectContainmentEList<Expression>(Expression.class, this, JsonDslPackage.CONCAT__EXPRESSIONS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setFirst(Expression newFirst)
-  {
-    if (newFirst != first)
-    {
-      NotificationChain msgs = null;
-      if (first != null)
-        msgs = ((InternalEObject)first).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.CONCAT__FIRST, null, msgs);
-      if (newFirst != null)
-        msgs = ((InternalEObject)newFirst).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.CONCAT__FIRST, null, msgs);
-      msgs = basicSetFirst(newFirst, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.CONCAT__FIRST, newFirst, newFirst));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Expression getSecond()
-  {
-    return second;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetSecond(Expression newSecond, NotificationChain msgs)
-  {
-    Expression oldSecond = second;
-    second = newSecond;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.CONCAT__SECOND, oldSecond, newSecond);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setSecond(Expression newSecond)
-  {
-    if (newSecond != second)
-    {
-      NotificationChain msgs = null;
-      if (second != null)
-        msgs = ((InternalEObject)second).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.CONCAT__SECOND, null, msgs);
-      if (newSecond != null)
-        msgs = ((InternalEObject)newSecond).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.CONCAT__SECOND, null, msgs);
-      msgs = basicSetSecond(newSecond, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.CONCAT__SECOND, newSecond, newSecond));
+    return expressions;
   }
 
   /**
@@ -182,10 +90,8 @@ public class ConcatImpl extends FunctionCallImpl implements Concat
   {
     switch (featureID)
     {
-      case JsonDslPackage.CONCAT__FIRST:
-        return basicSetFirst(null, msgs);
-      case JsonDslPackage.CONCAT__SECOND:
-        return basicSetSecond(null, msgs);
+      case JsonDslPackage.CONCAT__EXPRESSIONS:
+        return ((InternalEList<?>)getExpressions()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -200,10 +106,8 @@ public class ConcatImpl extends FunctionCallImpl implements Concat
   {
     switch (featureID)
     {
-      case JsonDslPackage.CONCAT__FIRST:
-        return getFirst();
-      case JsonDslPackage.CONCAT__SECOND:
-        return getSecond();
+      case JsonDslPackage.CONCAT__EXPRESSIONS:
+        return getExpressions();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -213,16 +117,15 @@ public class ConcatImpl extends FunctionCallImpl implements Concat
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case JsonDslPackage.CONCAT__FIRST:
-        setFirst((Expression)newValue);
-        return;
-      case JsonDslPackage.CONCAT__SECOND:
-        setSecond((Expression)newValue);
+      case JsonDslPackage.CONCAT__EXPRESSIONS:
+        getExpressions().clear();
+        getExpressions().addAll((Collection<? extends Expression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -238,11 +141,8 @@ public class ConcatImpl extends FunctionCallImpl implements Concat
   {
     switch (featureID)
     {
-      case JsonDslPackage.CONCAT__FIRST:
-        setFirst((Expression)null);
-        return;
-      case JsonDslPackage.CONCAT__SECOND:
-        setSecond((Expression)null);
+      case JsonDslPackage.CONCAT__EXPRESSIONS:
+        getExpressions().clear();
         return;
     }
     super.eUnset(featureID);
@@ -258,10 +158,8 @@ public class ConcatImpl extends FunctionCallImpl implements Concat
   {
     switch (featureID)
     {
-      case JsonDslPackage.CONCAT__FIRST:
-        return first != null;
-      case JsonDslPackage.CONCAT__SECOND:
-        return second != null;
+      case JsonDslPackage.CONCAT__EXPRESSIONS:
+        return expressions != null && !expressions.isEmpty();
     }
     return super.eIsSet(featureID);
   }

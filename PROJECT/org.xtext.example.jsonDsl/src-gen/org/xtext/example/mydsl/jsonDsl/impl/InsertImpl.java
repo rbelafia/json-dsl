@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
 import org.xtext.example.mydsl.jsonDsl.Expression;
 import org.xtext.example.mydsl.jsonDsl.Insert;
 import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
@@ -26,12 +25,12 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.InsertImpl#getValue <em>Value</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.InsertImpl#getVariable <em>Variable</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.InsertImpl#getSpecifier <em>Specifier</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.InsertImpl#getWhereExpression <em>Where Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class InsertImpl extends FunctionCallImpl implements Insert
+public class InsertImpl extends AlterFunctionsImpl implements Insert
 {
   /**
    * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
@@ -54,14 +53,14 @@ public class InsertImpl extends FunctionCallImpl implements Insert
   protected Expression variable;
 
   /**
-   * The cached value of the '{@link #getSpecifier() <em>Specifier</em>}' containment reference.
+   * The cached value of the '{@link #getWhereExpression() <em>Where Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getSpecifier()
+   * @see #getWhereExpression()
    * @generated
    * @ordered
    */
-  protected ArraySpecifier specifier;
+  protected Expression whereExpression;
 
   /**
    * <!-- begin-user-doc -->
@@ -190,9 +189,9 @@ public class InsertImpl extends FunctionCallImpl implements Insert
    * @generated
    */
   @Override
-  public ArraySpecifier getSpecifier()
+  public Expression getWhereExpression()
   {
-    return specifier;
+    return whereExpression;
   }
 
   /**
@@ -200,13 +199,13 @@ public class InsertImpl extends FunctionCallImpl implements Insert
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetSpecifier(ArraySpecifier newSpecifier, NotificationChain msgs)
+  public NotificationChain basicSetWhereExpression(Expression newWhereExpression, NotificationChain msgs)
   {
-    ArraySpecifier oldSpecifier = specifier;
-    specifier = newSpecifier;
+    Expression oldWhereExpression = whereExpression;
+    whereExpression = newWhereExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.INSERT__SPECIFIER, oldSpecifier, newSpecifier);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.INSERT__WHERE_EXPRESSION, oldWhereExpression, newWhereExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -218,20 +217,20 @@ public class InsertImpl extends FunctionCallImpl implements Insert
    * @generated
    */
   @Override
-  public void setSpecifier(ArraySpecifier newSpecifier)
+  public void setWhereExpression(Expression newWhereExpression)
   {
-    if (newSpecifier != specifier)
+    if (newWhereExpression != whereExpression)
     {
       NotificationChain msgs = null;
-      if (specifier != null)
-        msgs = ((InternalEObject)specifier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.INSERT__SPECIFIER, null, msgs);
-      if (newSpecifier != null)
-        msgs = ((InternalEObject)newSpecifier).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.INSERT__SPECIFIER, null, msgs);
-      msgs = basicSetSpecifier(newSpecifier, msgs);
+      if (whereExpression != null)
+        msgs = ((InternalEObject)whereExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.INSERT__WHERE_EXPRESSION, null, msgs);
+      if (newWhereExpression != null)
+        msgs = ((InternalEObject)newWhereExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.INSERT__WHERE_EXPRESSION, null, msgs);
+      msgs = basicSetWhereExpression(newWhereExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.INSERT__SPECIFIER, newSpecifier, newSpecifier));
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.INSERT__WHERE_EXPRESSION, newWhereExpression, newWhereExpression));
   }
 
   /**
@@ -248,8 +247,8 @@ public class InsertImpl extends FunctionCallImpl implements Insert
         return basicSetValue(null, msgs);
       case JsonDslPackage.INSERT__VARIABLE:
         return basicSetVariable(null, msgs);
-      case JsonDslPackage.INSERT__SPECIFIER:
-        return basicSetSpecifier(null, msgs);
+      case JsonDslPackage.INSERT__WHERE_EXPRESSION:
+        return basicSetWhereExpression(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -268,8 +267,8 @@ public class InsertImpl extends FunctionCallImpl implements Insert
         return getValue();
       case JsonDslPackage.INSERT__VARIABLE:
         return getVariable();
-      case JsonDslPackage.INSERT__SPECIFIER:
-        return getSpecifier();
+      case JsonDslPackage.INSERT__WHERE_EXPRESSION:
+        return getWhereExpression();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -290,8 +289,8 @@ public class InsertImpl extends FunctionCallImpl implements Insert
       case JsonDslPackage.INSERT__VARIABLE:
         setVariable((Expression)newValue);
         return;
-      case JsonDslPackage.INSERT__SPECIFIER:
-        setSpecifier((ArraySpecifier)newValue);
+      case JsonDslPackage.INSERT__WHERE_EXPRESSION:
+        setWhereExpression((Expression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -313,8 +312,8 @@ public class InsertImpl extends FunctionCallImpl implements Insert
       case JsonDslPackage.INSERT__VARIABLE:
         setVariable((Expression)null);
         return;
-      case JsonDslPackage.INSERT__SPECIFIER:
-        setSpecifier((ArraySpecifier)null);
+      case JsonDslPackage.INSERT__WHERE_EXPRESSION:
+        setWhereExpression((Expression)null);
         return;
     }
     super.eUnset(featureID);
@@ -334,8 +333,8 @@ public class InsertImpl extends FunctionCallImpl implements Insert
         return value != null;
       case JsonDslPackage.INSERT__VARIABLE:
         return variable != null;
-      case JsonDslPackage.INSERT__SPECIFIER:
-        return specifier != null;
+      case JsonDslPackage.INSERT__WHERE_EXPRESSION:
+        return whereExpression != null;
     }
     return super.eIsSet(featureID);
   }

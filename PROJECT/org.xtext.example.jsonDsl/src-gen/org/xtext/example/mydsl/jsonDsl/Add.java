@@ -14,7 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Add#getValue <em>Value</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.Add#getExpression <em>Expression</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.Add#getVariable <em>Variable</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.Add#getFields <em>Fields</em>}</li>
  * </ul>
@@ -23,29 +23,29 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Add extends FunctionCall
+public interface Add extends AlterFunctions
 {
   /**
-   * Returns the value of the '<em><b>Value</b></em>' containment reference.
+   * Returns the value of the '<em><b>Expression</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Value</em>' containment reference.
-   * @see #setValue(Expression)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getAdd_Value()
+   * @return the value of the '<em>Expression</em>' containment reference.
+   * @see #setExpression(Expression)
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getAdd_Expression()
    * @model containment="true"
    * @generated
    */
-  Expression getValue();
+  Expression getExpression();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Add#getValue <em>Value</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Add#getExpression <em>Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Value</em>' containment reference.
-   * @see #getValue()
+   * @param value the new value of the '<em>Expression</em>' containment reference.
+   * @see #getExpression()
    * @generated
    */
-  void setValue(Expression value);
+  void setExpression(Expression value);
 
   /**
    * Returns the value of the '<em><b>Variable</b></em>' containment reference.
@@ -70,15 +70,15 @@ public interface Add extends FunctionCall
   void setVariable(Expression value);
 
   /**
-   * Returns the value of the '<em><b>Fields</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Fields</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.jsonDsl.Expression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Fields</em>' attribute list.
+   * @return the value of the '<em>Fields</em>' containment reference list.
    * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getAdd_Fields()
-   * @model unique="false"
+   * @model containment="true"
    * @generated
    */
-  EList<String> getFields();
+  EList<Expression> getFields();
 
 } // Add

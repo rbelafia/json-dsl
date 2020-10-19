@@ -22,7 +22,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface VariableCall extends PrimaryExpression
+public interface VariableCall extends Expression
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.

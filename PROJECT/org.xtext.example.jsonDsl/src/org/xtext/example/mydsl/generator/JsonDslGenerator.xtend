@@ -7,6 +7,13 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import org.xtext.example.mydsl.jsonDsl.*
+import org.xtext.example.mydsl.jsonDsl.impl.*
+import org.eclipse.xtext.Conjunction
+import java.util.ArrayList
+import java.util.List
+import java.util.regex.Pattern
+import java.util.regex.Matcher
 
 /**
  * Generates code from your model files on save.
@@ -14,12 +21,101 @@ import org.eclipse.xtext.generator.IGeneratorContext
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 class JsonDslGenerator extends AbstractGenerator {
-
+	
+	def dispatch JZObject visit(SimpleStatement statement) {
+		println("SimpleStatement")
+		return null
+	}
+	
+	def dispatch JZObject visit(Assignment assignment) {
+		println(assignment.leftHandSide.name + "<-" + visit(assignment.rightHandSide))
+		return null
+	}
+	
+	def dispatch JZObject visit(ProcCall procCall) {
+		println(visit(procCall.expression))
+		return null
+	}
+	
+	def dispatch JZObject visit(Expression expression) {
+		return new JZNull()
+	}
+	
+	def dispatch JZObject visit(DisjunctionExpression disjunctionExpression) {
+		return visit(disjunctionExpression.left) || visit(disjunctionExpression.right); 
+	}
+	
+	def dispatch JZObject visit(ConjunctionExpression conjunctionExpression) {
+		return visit(conjunctionExpression.left) && visit(conjunctionExpression.right);
+	}
+	
+	def dispatch JZObject visit(AdditionExpression additionExpression) {
+		return visit(additionExpression.left) + visit(additionExpression.right);
+	}
+	
+	def dispatch JZObject visit(SubstractionExpression substractionExpression) {
+		return visit(substractionExpression.left) - visit(substractionExpression.right);
+	}
+	
+	def dispatch JZObject visit(MultiplicationExpression multiplicationExpression) {
+		return visit(multiplicationExpression.left) * visit(multiplicationExpression.right);
+	}
+	
+	def dispatch JZObject visit(DivisionExpression divisionExpression) {
+		return visit(divisionExpression.left) / visit(divisionExpression.right);
+	}
+	
+	def dispatch JZObject visit(ModuloExpression moduloExpression) {
+		return visit(moduloExpression.left) % visit(moduloExpression.right);
+	}
+	
+	def dispatch JZObject visit(UnaryMinusExpression unaryMinusExpression) {
+		return - visit(unaryMinusExpression.sub);
+	}
+	
+	def dispatch JZObject visit(UnaryPlusExpression unaryPlusExpression) {
+		return + visit(unaryPlusExpression.sub);
+	}
+	
+	def dispatch JZObject visit(LogicalNegationExpression logicalNegationExpression) {
+		return !visit(logicalNegationExpression.sub);
+	}
+	
+	def dispatch JZObject visit(BracketExpression bracketExpression) {
+		return visit(bracketExpression.sub);
+	}
+	
+	def dispatch JZObject visit(Array array) {
+		val res = new JZArray
+		res.addAll(array.values.map[e | visit(e)].toList)
+		return res
+	}
+	
+	def dispatch JZObject visit(JSonObject jSonObject) {
+		var JZJsonObject res = new JZJsonObject;
+		for(field : jSonObject.fields) {
+			res.addField((visit(field.key) as JZString).content, visit(field.value))
+		}
+		return res
+	}
+	
+	def dispatch JZObject visit(String string) {
+		return new JZString(string)
+	}
+	
+	def dispatch JZObject visit(Primitive const) {
+		if(const.str !== null) return new JZString(const.str)
+		else if (const.num !== null) return new JZNumber(Double.valueOf(const.num))
+		else if (const.bool !== null) return new JZBoolean(Boolean.parseBoolean(const.bool))
+		else return new JZNull()
+	}
+	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(Greeting)
-//				.map[name]
-//				.join(', '))
+		val root = resource.allContents.head as Model
+		
+		root.stmts.forEach[ element, index |
+			visit(element)
+		]
+		
 	}
 }

@@ -36,7 +36,7 @@ import org.xtext.example.mydsl.jsonDsl.VariableCall;
  *
  * @generated
  */
-public class VariableCallImpl extends PrimaryExpressionImpl implements VariableCall
+public class VariableCallImpl extends ExpressionImpl implements VariableCall
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.

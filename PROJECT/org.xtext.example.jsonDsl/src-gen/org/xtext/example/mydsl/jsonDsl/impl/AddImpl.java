@@ -15,7 +15,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.example.mydsl.jsonDsl.Add;
 import org.xtext.example.mydsl.jsonDsl.Expression;
@@ -29,24 +30,24 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.AddImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.AddImpl#getExpression <em>Expression</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.AddImpl#getVariable <em>Variable</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.AddImpl#getFields <em>Fields</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class AddImpl extends FunctionCallImpl implements Add
+public class AddImpl extends AlterFunctionsImpl implements Add
 {
   /**
-   * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
+   * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getValue()
+   * @see #getExpression()
    * @generated
    * @ordered
    */
-  protected Expression value;
+  protected Expression expression;
 
   /**
    * The cached value of the '{@link #getVariable() <em>Variable</em>}' containment reference.
@@ -59,14 +60,14 @@ public class AddImpl extends FunctionCallImpl implements Add
   protected Expression variable;
 
   /**
-   * The cached value of the '{@link #getFields() <em>Fields</em>}' attribute list.
+   * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getFields()
    * @generated
    * @ordered
    */
-  protected EList<String> fields;
+  protected EList<Expression> fields;
 
   /**
    * <!-- begin-user-doc -->
@@ -95,9 +96,9 @@ public class AddImpl extends FunctionCallImpl implements Add
    * @generated
    */
   @Override
-  public Expression getValue()
+  public Expression getExpression()
   {
-    return value;
+    return expression;
   }
 
   /**
@@ -105,13 +106,13 @@ public class AddImpl extends FunctionCallImpl implements Add
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetValue(Expression newValue, NotificationChain msgs)
+  public NotificationChain basicSetExpression(Expression newExpression, NotificationChain msgs)
   {
-    Expression oldValue = value;
-    value = newValue;
+    Expression oldExpression = expression;
+    expression = newExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.ADD__VALUE, oldValue, newValue);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.ADD__EXPRESSION, oldExpression, newExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -123,20 +124,20 @@ public class AddImpl extends FunctionCallImpl implements Add
    * @generated
    */
   @Override
-  public void setValue(Expression newValue)
+  public void setExpression(Expression newExpression)
   {
-    if (newValue != value)
+    if (newExpression != expression)
     {
       NotificationChain msgs = null;
-      if (value != null)
-        msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.ADD__VALUE, null, msgs);
-      if (newValue != null)
-        msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.ADD__VALUE, null, msgs);
-      msgs = basicSetValue(newValue, msgs);
+      if (expression != null)
+        msgs = ((InternalEObject)expression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.ADD__EXPRESSION, null, msgs);
+      if (newExpression != null)
+        msgs = ((InternalEObject)newExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.ADD__EXPRESSION, null, msgs);
+      msgs = basicSetExpression(newExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.ADD__VALUE, newValue, newValue));
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.ADD__EXPRESSION, newExpression, newExpression));
   }
 
   /**
@@ -195,11 +196,11 @@ public class AddImpl extends FunctionCallImpl implements Add
    * @generated
    */
   @Override
-  public EList<String> getFields()
+  public EList<Expression> getFields()
   {
     if (fields == null)
     {
-      fields = new EDataTypeEList<String>(String.class, this, JsonDslPackage.ADD__FIELDS);
+      fields = new EObjectContainmentEList<Expression>(Expression.class, this, JsonDslPackage.ADD__FIELDS);
     }
     return fields;
   }
@@ -214,10 +215,12 @@ public class AddImpl extends FunctionCallImpl implements Add
   {
     switch (featureID)
     {
-      case JsonDslPackage.ADD__VALUE:
-        return basicSetValue(null, msgs);
+      case JsonDslPackage.ADD__EXPRESSION:
+        return basicSetExpression(null, msgs);
       case JsonDslPackage.ADD__VARIABLE:
         return basicSetVariable(null, msgs);
+      case JsonDslPackage.ADD__FIELDS:
+        return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -232,8 +235,8 @@ public class AddImpl extends FunctionCallImpl implements Add
   {
     switch (featureID)
     {
-      case JsonDslPackage.ADD__VALUE:
-        return getValue();
+      case JsonDslPackage.ADD__EXPRESSION:
+        return getExpression();
       case JsonDslPackage.ADD__VARIABLE:
         return getVariable();
       case JsonDslPackage.ADD__FIELDS:
@@ -253,15 +256,15 @@ public class AddImpl extends FunctionCallImpl implements Add
   {
     switch (featureID)
     {
-      case JsonDslPackage.ADD__VALUE:
-        setValue((Expression)newValue);
+      case JsonDslPackage.ADD__EXPRESSION:
+        setExpression((Expression)newValue);
         return;
       case JsonDslPackage.ADD__VARIABLE:
         setVariable((Expression)newValue);
         return;
       case JsonDslPackage.ADD__FIELDS:
         getFields().clear();
-        getFields().addAll((Collection<? extends String>)newValue);
+        getFields().addAll((Collection<? extends Expression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -277,8 +280,8 @@ public class AddImpl extends FunctionCallImpl implements Add
   {
     switch (featureID)
     {
-      case JsonDslPackage.ADD__VALUE:
-        setValue((Expression)null);
+      case JsonDslPackage.ADD__EXPRESSION:
+        setExpression((Expression)null);
         return;
       case JsonDslPackage.ADD__VARIABLE:
         setVariable((Expression)null);
@@ -300,31 +303,14 @@ public class AddImpl extends FunctionCallImpl implements Add
   {
     switch (featureID)
     {
-      case JsonDslPackage.ADD__VALUE:
-        return value != null;
+      case JsonDslPackage.ADD__EXPRESSION:
+        return expression != null;
       case JsonDslPackage.ADD__VARIABLE:
         return variable != null;
       case JsonDslPackage.ADD__FIELDS:
         return fields != null && !fields.isEmpty();
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (fields: ");
-    result.append(fields);
-    result.append(')');
-    return result.toString();
   }
 
 } //AddImpl

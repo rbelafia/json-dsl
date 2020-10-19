@@ -9,62 +9,11 @@ package org.xtext.example.mydsl.jsonDsl;
  * A representation of the model object '<em><b>Mean</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Mean#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Mean#getAuxiliar <em>Auxiliar</em>}</li>
- * </ul>
  *
  * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getMean()
  * @model
  * @generated
  */
-public interface Mean extends FunctionCall
+public interface Mean extends ArithFunctions
 {
-  /**
-   * Returns the value of the '<em><b>Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Expression</em>' containment reference.
-   * @see #setExpression(Expression)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getMean_Expression()
-   * @model containment="true"
-   * @generated
-   */
-  Expression getExpression();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Mean#getExpression <em>Expression</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Expression</em>' containment reference.
-   * @see #getExpression()
-   * @generated
-   */
-  void setExpression(Expression value);
-
-  /**
-   * Returns the value of the '<em><b>Auxiliar</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Auxiliar</em>' containment reference.
-   * @see #setAuxiliar(ArithmeticAuxiliar)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getMean_Auxiliar()
-   * @model containment="true"
-   * @generated
-   */
-  ArithmeticAuxiliar getAuxiliar();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Mean#getAuxiliar <em>Auxiliar</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Auxiliar</em>' containment reference.
-   * @see #getAuxiliar()
-   * @generated
-   */
-  void setAuxiliar(ArithmeticAuxiliar value);
-
 } // Mean

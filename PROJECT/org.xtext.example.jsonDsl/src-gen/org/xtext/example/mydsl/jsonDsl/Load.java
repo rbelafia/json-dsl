@@ -9,39 +9,11 @@ package org.xtext.example.mydsl.jsonDsl;
  * A representation of the model object '<em><b>Load</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Load#getFileName <em>File Name</em>}</li>
- * </ul>
  *
  * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getLoad()
  * @model
  * @generated
  */
-public interface Load extends FunctionCall
+public interface Load extends IOFunctions
 {
-  /**
-   * Returns the value of the '<em><b>File Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>File Name</em>' attribute.
-   * @see #setFileName(String)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getLoad_FileName()
-   * @model
-   * @generated
-   */
-  String getFileName();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Load#getFileName <em>File Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>File Name</em>' attribute.
-   * @see #getFileName()
-   * @generated
-   */
-  void setFileName(String value);
-
 } // Load

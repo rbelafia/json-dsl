@@ -15,43 +15,49 @@ import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
 import org.eclipse.xtext.serializer.sequencer.AbstractDelegatingSemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 import org.xtext.example.mydsl.jsonDsl.Add;
-import org.xtext.example.mydsl.jsonDsl.AddExpression;
-import org.xtext.example.mydsl.jsonDsl.AndExpression;
-import org.xtext.example.mydsl.jsonDsl.ArithmeticAuxiliar;
+import org.xtext.example.mydsl.jsonDsl.AdditionExpression;
 import org.xtext.example.mydsl.jsonDsl.Array;
 import org.xtext.example.mydsl.jsonDsl.ArrayCaller;
-import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
 import org.xtext.example.mydsl.jsonDsl.Assignment;
-import org.xtext.example.mydsl.jsonDsl.CompExpression;
+import org.xtext.example.mydsl.jsonDsl.BracketExpression;
 import org.xtext.example.mydsl.jsonDsl.Concat;
-import org.xtext.example.mydsl.jsonDsl.Constant;
+import org.xtext.example.mydsl.jsonDsl.ConjunctionExpression;
+import org.xtext.example.mydsl.jsonDsl.Contains;
 import org.xtext.example.mydsl.jsonDsl.Delete;
 import org.xtext.example.mydsl.jsonDsl.Depth;
-import org.xtext.example.mydsl.jsonDsl.EqExpression;
-import org.xtext.example.mydsl.jsonDsl.Erase;
+import org.xtext.example.mydsl.jsonDsl.DisjunctionExpression;
+import org.xtext.example.mydsl.jsonDsl.DivisionExpression;
+import org.xtext.example.mydsl.jsonDsl.EqualityExpression;
 import org.xtext.example.mydsl.jsonDsl.Export;
-import org.xtext.example.mydsl.jsonDsl.Extract;
 import org.xtext.example.mydsl.jsonDsl.Field;
 import org.xtext.example.mydsl.jsonDsl.FieldCaller;
 import org.xtext.example.mydsl.jsonDsl.FieldInfo;
-import org.xtext.example.mydsl.jsonDsl.FieldInvoquer;
+import org.xtext.example.mydsl.jsonDsl.InequalityExpression;
+import org.xtext.example.mydsl.jsonDsl.InferiExpression;
+import org.xtext.example.mydsl.jsonDsl.InferiorOrEqualExpression;
 import org.xtext.example.mydsl.jsonDsl.Insert;
+import org.xtext.example.mydsl.jsonDsl.JSonObject;
 import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
 import org.xtext.example.mydsl.jsonDsl.Load;
+import org.xtext.example.mydsl.jsonDsl.LogicalNegationExpression;
 import org.xtext.example.mydsl.jsonDsl.Mean;
 import org.xtext.example.mydsl.jsonDsl.Model;
-import org.xtext.example.mydsl.jsonDsl.MultExpression;
-import org.xtext.example.mydsl.jsonDsl.NegationExpression;
-import org.xtext.example.mydsl.jsonDsl.OrExpression;
+import org.xtext.example.mydsl.jsonDsl.ModuloExpression;
+import org.xtext.example.mydsl.jsonDsl.MultiplicationExpression;
 import org.xtext.example.mydsl.jsonDsl.PrimaryExpression;
+import org.xtext.example.mydsl.jsonDsl.Primitive;
 import org.xtext.example.mydsl.jsonDsl.ProcCall;
 import org.xtext.example.mydsl.jsonDsl.Product;
 import org.xtext.example.mydsl.jsonDsl.Remove;
 import org.xtext.example.mydsl.jsonDsl.Rename;
 import org.xtext.example.mydsl.jsonDsl.Select;
 import org.xtext.example.mydsl.jsonDsl.Store;
+import org.xtext.example.mydsl.jsonDsl.SubstractionExpression;
 import org.xtext.example.mydsl.jsonDsl.Sum;
+import org.xtext.example.mydsl.jsonDsl.SuperiExpression;
+import org.xtext.example.mydsl.jsonDsl.SuperiorOrEqualExpression;
 import org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression;
+import org.xtext.example.mydsl.jsonDsl.UnaryPlusExpression;
 import org.xtext.example.mydsl.jsonDsl.VariableCall;
 import org.xtext.example.mydsl.services.JsonDslGrammarAccess;
 
@@ -72,14 +78,8 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case JsonDslPackage.ADD:
 				sequence_Add(context, (Add) semanticObject); 
 				return; 
-			case JsonDslPackage.ADD_EXPRESSION:
-				sequence_AddExpression(context, (AddExpression) semanticObject); 
-				return; 
-			case JsonDslPackage.AND_EXPRESSION:
-				sequence_AndExpression(context, (AndExpression) semanticObject); 
-				return; 
-			case JsonDslPackage.ARITHMETIC_AUXILIAR:
-				sequence_ArithmeticAuxiliar(context, (ArithmeticAuxiliar) semanticObject); 
+			case JsonDslPackage.ADDITION_EXPRESSION:
+				sequence_ExpressionLvl5(context, (AdditionExpression) semanticObject); 
 				return; 
 			case JsonDslPackage.ARRAY:
 				sequence_Array(context, (Array) semanticObject); 
@@ -87,20 +87,20 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case JsonDslPackage.ARRAY_CALLER:
 				sequence_ArrayCaller(context, (ArrayCaller) semanticObject); 
 				return; 
-			case JsonDslPackage.ARRAY_SPECIFIER:
-				sequence_ArraySpecifier(context, (ArraySpecifier) semanticObject); 
-				return; 
 			case JsonDslPackage.ASSIGNMENT:
 				sequence_Assignment(context, (Assignment) semanticObject); 
 				return; 
-			case JsonDslPackage.COMP_EXPRESSION:
-				sequence_CompExpression(context, (CompExpression) semanticObject); 
+			case JsonDslPackage.BRACKET_EXPRESSION:
+				sequence_BracketExpression(context, (BracketExpression) semanticObject); 
 				return; 
 			case JsonDslPackage.CONCAT:
 				sequence_Concat(context, (Concat) semanticObject); 
 				return; 
-			case JsonDslPackage.CONSTANT:
-				sequence_Constant(context, (Constant) semanticObject); 
+			case JsonDslPackage.CONJUNCTION_EXPRESSION:
+				sequence_ExpressionLvl2(context, (ConjunctionExpression) semanticObject); 
+				return; 
+			case JsonDslPackage.CONTAINS:
+				sequence_Contains(context, (Contains) semanticObject); 
 				return; 
 			case JsonDslPackage.DELETE:
 				sequence_Delete(context, (Delete) semanticObject); 
@@ -108,17 +108,17 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case JsonDslPackage.DEPTH:
 				sequence_Depth(context, (Depth) semanticObject); 
 				return; 
-			case JsonDslPackage.EQ_EXPRESSION:
-				sequence_EqExpression(context, (EqExpression) semanticObject); 
+			case JsonDslPackage.DISJUNCTION_EXPRESSION:
+				sequence_ExpressionLvl1(context, (DisjunctionExpression) semanticObject); 
 				return; 
-			case JsonDslPackage.ERASE:
-				sequence_Erase(context, (Erase) semanticObject); 
+			case JsonDslPackage.DIVISION_EXPRESSION:
+				sequence_ExpressionLvl6(context, (DivisionExpression) semanticObject); 
+				return; 
+			case JsonDslPackage.EQUALITY_EXPRESSION:
+				sequence_ExpressionLvl3(context, (EqualityExpression) semanticObject); 
 				return; 
 			case JsonDslPackage.EXPORT:
 				sequence_Export(context, (Export) semanticObject); 
-				return; 
-			case JsonDslPackage.EXTRACT:
-				sequence_Extract(context, (Extract) semanticObject); 
 				return; 
 			case JsonDslPackage.FIELD:
 				sequence_Field(context, (Field) semanticObject); 
@@ -129,14 +129,26 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case JsonDslPackage.FIELD_INFO:
 				sequence_FieldInfo(context, (FieldInfo) semanticObject); 
 				return; 
-			case JsonDslPackage.FIELD_INVOQUER:
-				sequence_FieldInvoquer(context, (FieldInvoquer) semanticObject); 
+			case JsonDslPackage.INEQUALITY_EXPRESSION:
+				sequence_ExpressionLvl3(context, (InequalityExpression) semanticObject); 
+				return; 
+			case JsonDslPackage.INFERI_EXPRESSION:
+				sequence_ExpressionLvl4(context, (InferiExpression) semanticObject); 
+				return; 
+			case JsonDslPackage.INFERIOR_OR_EQUAL_EXPRESSION:
+				sequence_ExpressionLvl4(context, (InferiorOrEqualExpression) semanticObject); 
 				return; 
 			case JsonDslPackage.INSERT:
 				sequence_Insert(context, (Insert) semanticObject); 
 				return; 
+			case JsonDslPackage.JSON_OBJECT:
+				sequence_JSonObject(context, (JSonObject) semanticObject); 
+				return; 
 			case JsonDslPackage.LOAD:
 				sequence_Load(context, (Load) semanticObject); 
+				return; 
+			case JsonDslPackage.LOGICAL_NEGATION_EXPRESSION:
+				sequence_LogicalNegationExpression(context, (LogicalNegationExpression) semanticObject); 
 				return; 
 			case JsonDslPackage.MEAN:
 				sequence_Mean(context, (Mean) semanticObject); 
@@ -144,20 +156,17 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case JsonDslPackage.MODEL:
 				sequence_Model(context, (Model) semanticObject); 
 				return; 
-			case JsonDslPackage.MULT_EXPRESSION:
-				sequence_MultExpression(context, (MultExpression) semanticObject); 
+			case JsonDslPackage.MODULO_EXPRESSION:
+				sequence_ExpressionLvl6(context, (ModuloExpression) semanticObject); 
 				return; 
-			case JsonDslPackage.NEGATION_EXPRESSION:
-				sequence_NegationExpression(context, (NegationExpression) semanticObject); 
-				return; 
-			case JsonDslPackage.OBJECT:
-				sequence_Object(context, (org.xtext.example.mydsl.jsonDsl.Object) semanticObject); 
-				return; 
-			case JsonDslPackage.OR_EXPRESSION:
-				sequence_OrExpression(context, (OrExpression) semanticObject); 
+			case JsonDslPackage.MULTIPLICATION_EXPRESSION:
+				sequence_ExpressionLvl6(context, (MultiplicationExpression) semanticObject); 
 				return; 
 			case JsonDslPackage.PRIMARY_EXPRESSION:
 				sequence_PrimaryExpression(context, (PrimaryExpression) semanticObject); 
+				return; 
+			case JsonDslPackage.PRIMITIVE:
+				sequence_Primitive(context, (Primitive) semanticObject); 
 				return; 
 			case JsonDslPackage.PROC_CALL:
 				sequence_ProcCall(context, (ProcCall) semanticObject); 
@@ -177,11 +186,23 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case JsonDslPackage.STORE:
 				sequence_Store(context, (Store) semanticObject); 
 				return; 
+			case JsonDslPackage.SUBSTRACTION_EXPRESSION:
+				sequence_ExpressionLvl5(context, (SubstractionExpression) semanticObject); 
+				return; 
 			case JsonDslPackage.SUM:
 				sequence_Sum(context, (Sum) semanticObject); 
 				return; 
+			case JsonDslPackage.SUPERI_EXPRESSION:
+				sequence_ExpressionLvl4(context, (SuperiExpression) semanticObject); 
+				return; 
+			case JsonDslPackage.SUPERIOR_OR_EQUAL_EXPRESSION:
+				sequence_ExpressionLvl4(context, (SuperiorOrEqualExpression) semanticObject); 
+				return; 
 			case JsonDslPackage.UNARY_MINUS_EXPRESSION:
 				sequence_UnaryMinusExpression(context, (UnaryMinusExpression) semanticObject); 
+				return; 
+			case JsonDslPackage.UNARY_PLUS_EXPRESSION:
+				sequence_UnaryPlusExpression(context, (UnaryPlusExpression) semanticObject); 
 				return; 
 			case JsonDslPackage.VARIABLE_CALL:
 				sequence_VariableCall(context, (VariableCall) semanticObject); 
@@ -193,50 +214,38 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     AddExpression returns AddExpression
-	 *
-	 * Constraint:
-	 *     (values+=MultExpression values+=MultExpression*)
-	 */
-	protected void sequence_AddExpression(ISerializationContext context, AddExpression semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
+	 *     SimpleStatement returns Add
+	 *     Expression returns Add
+	 *     ExpressionLvl1 returns Add
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Add
+	 *     ExpressionLvl2 returns Add
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Add
+	 *     ExpressionLvl3 returns Add
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Add
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Add
+	 *     ExpressionLvl4 returns Add
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Add
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Add
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Add
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Add
+	 *     ExpressionLvl5 returns Add
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Add
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Add
+	 *     ExpressionLvl6 returns Add
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Add
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Add
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Add
+	 *     ExpressionLvl7 returns Add
+	 *     ExpressionLvl8 returns Add
 	 *     PrimaryExpression returns Add
 	 *     FunctionCall returns Add
+	 *     AlterFunctions returns Add
 	 *     Add returns Add
 	 *
 	 * Constraint:
-	 *     (value=Expression variable=Expression (fields+=FIELD_NAME fields+=FIELD_NAME*)?)
+	 *     (expression=Expression variable=Expression (fields+=Expression fields+=Expression*)?)
 	 */
 	protected void sequence_Add(ISerializationContext context, Add semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     AndExpression returns AndExpression
-	 *
-	 * Constraint:
-	 *     (values+=EqExpression values+=EqExpression*)
-	 */
-	protected void sequence_AndExpression(ISerializationContext context, AndExpression semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ArithmeticAuxiliar returns ArithmeticAuxiliar
-	 *
-	 * Constraint:
-	 *     ((fields+=FIELD_NAME fields+=FIELD_NAME*)? condition=Expression?)
-	 */
-	protected void sequence_ArithmeticAuxiliar(ISerializationContext context, ArithmeticAuxiliar semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -247,7 +256,7 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ArrayCaller returns ArrayCaller
 	 *
 	 * Constraint:
-	 *     (index+=NUMBER index+=NUMBER*)
+	 *     (index+=INT index+=INT*)
 	 */
 	protected void sequence_ArrayCaller(ISerializationContext context, ArrayCaller semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -256,18 +265,29 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     ArraySpecifier returns ArraySpecifier
-	 *
-	 * Constraint:
-	 *     ((index+=Expression fields+=Expression*)? condition=Expression?)
-	 */
-	protected void sequence_ArraySpecifier(ISerializationContext context, ArraySpecifier semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
+	 *     SimpleStatement returns Array
+	 *     Expression returns Array
+	 *     ExpressionLvl1 returns Array
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Array
+	 *     ExpressionLvl2 returns Array
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Array
+	 *     ExpressionLvl3 returns Array
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Array
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Array
+	 *     ExpressionLvl4 returns Array
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Array
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Array
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Array
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Array
+	 *     ExpressionLvl5 returns Array
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Array
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Array
+	 *     ExpressionLvl6 returns Array
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Array
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Array
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Array
+	 *     ExpressionLvl7 returns Array
+	 *     ExpressionLvl8 returns Array
 	 *     PrimaryExpression returns Array
 	 *     Constant returns Array
 	 *     Array returns Array
@@ -304,60 +324,154 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     CompExpression returns CompExpression
+	 *     SimpleStatement returns BracketExpression
+	 *     Expression returns BracketExpression
+	 *     ExpressionLvl1 returns BracketExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns BracketExpression
+	 *     ExpressionLvl2 returns BracketExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns BracketExpression
+	 *     ExpressionLvl3 returns BracketExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns BracketExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns BracketExpression
+	 *     ExpressionLvl4 returns BracketExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns BracketExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns BracketExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns BracketExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns BracketExpression
+	 *     ExpressionLvl5 returns BracketExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns BracketExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns BracketExpression
+	 *     ExpressionLvl6 returns BracketExpression
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns BracketExpression
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns BracketExpression
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns BracketExpression
+	 *     ExpressionLvl7 returns BracketExpression
+	 *     ExpressionLvl8 returns BracketExpression
+	 *     PrimaryExpression returns BracketExpression
+	 *     BracketExpression returns BracketExpression
 	 *
 	 * Constraint:
-	 *     (values+=AddExpression values+=AddExpression*)
+	 *     sub=Expression
 	 */
-	protected void sequence_CompExpression(ISerializationContext context, CompExpression semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     PrimaryExpression returns Concat
-	 *     FunctionCall returns Concat
-	 *     Concat returns Concat
-	 *
-	 * Constraint:
-	 *     (first=Expression second=Expression)
-	 */
-	protected void sequence_Concat(ISerializationContext context, Concat semanticObject) {
+	protected void sequence_BracketExpression(ISerializationContext context, BracketExpression semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.CONCAT__FIRST) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.CONCAT__FIRST));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.CONCAT__SECOND) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.CONCAT__SECOND));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.BRACKET_EXPRESSION__SUB) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.BRACKET_EXPRESSION__SUB));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getConcatAccess().getFirstExpressionParserRuleCall_1_0(), semanticObject.getFirst());
-		feeder.accept(grammarAccess.getConcatAccess().getSecondExpressionParserRuleCall_3_0(), semanticObject.getSecond());
+		feeder.accept(grammarAccess.getBracketExpressionAccess().getSubExpressionParserRuleCall_1_0(), semanticObject.getSub());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     PrimaryExpression returns Constant
-	 *     Constant returns Constant
+	 *     SimpleStatement returns Concat
+	 *     Expression returns Concat
+	 *     ExpressionLvl1 returns Concat
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Concat
+	 *     ExpressionLvl2 returns Concat
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Concat
+	 *     ExpressionLvl3 returns Concat
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Concat
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Concat
+	 *     ExpressionLvl4 returns Concat
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Concat
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Concat
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Concat
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Concat
+	 *     ExpressionLvl5 returns Concat
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Concat
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Concat
+	 *     ExpressionLvl6 returns Concat
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Concat
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Concat
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Concat
+	 *     ExpressionLvl7 returns Concat
+	 *     ExpressionLvl8 returns Concat
+	 *     PrimaryExpression returns Concat
+	 *     FunctionCall returns Concat
+	 *     ManipFunctions returns Concat
+	 *     Concat returns Concat
 	 *
 	 * Constraint:
-	 *     {Constant}
+	 *     (expressions+=Expression expressions+=Expression)
 	 */
-	protected void sequence_Constant(ISerializationContext context, Constant semanticObject) {
+	protected void sequence_Concat(ISerializationContext context, Concat semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns Contains
+	 *     Expression returns Contains
+	 *     ExpressionLvl1 returns Contains
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Contains
+	 *     ExpressionLvl2 returns Contains
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Contains
+	 *     ExpressionLvl3 returns Contains
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Contains
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Contains
+	 *     ExpressionLvl4 returns Contains
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Contains
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Contains
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Contains
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Contains
+	 *     ExpressionLvl5 returns Contains
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Contains
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Contains
+	 *     ExpressionLvl6 returns Contains
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Contains
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Contains
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Contains
+	 *     ExpressionLvl7 returns Contains
+	 *     ExpressionLvl8 returns Contains
+	 *     PrimaryExpression returns Contains
+	 *     FunctionCall returns Contains
+	 *     InfoFunctions returns Contains
+	 *     Contains returns Contains
+	 *
+	 * Constraint:
+	 *     (keys+=Expression keys+=Expression* right=Expression)
+	 */
+	protected void sequence_Contains(ISerializationContext context, Contains semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns Delete
+	 *     Expression returns Delete
+	 *     ExpressionLvl1 returns Delete
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Delete
+	 *     ExpressionLvl2 returns Delete
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Delete
+	 *     ExpressionLvl3 returns Delete
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Delete
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Delete
+	 *     ExpressionLvl4 returns Delete
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Delete
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Delete
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Delete
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Delete
+	 *     ExpressionLvl5 returns Delete
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Delete
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Delete
+	 *     ExpressionLvl6 returns Delete
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Delete
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Delete
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Delete
+	 *     ExpressionLvl7 returns Delete
+	 *     ExpressionLvl8 returns Delete
 	 *     PrimaryExpression returns Delete
 	 *     FunctionCall returns Delete
+	 *     AlterFunctions returns Delete
 	 *     Delete returns Delete
 	 *
 	 * Constraint:
-	 *     (fields+=FIELD_NAME fields+=FIELD_NAME* from=Expression condition=Expression?)
+	 *     ((fields+=Expression fields+=Expression*)? fromExpression=Expression whereExpression=Expression?)
 	 */
 	protected void sequence_Delete(ISerializationContext context, Delete semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -366,8 +480,32 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns Depth
+	 *     Expression returns Depth
+	 *     ExpressionLvl1 returns Depth
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Depth
+	 *     ExpressionLvl2 returns Depth
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Depth
+	 *     ExpressionLvl3 returns Depth
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Depth
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Depth
+	 *     ExpressionLvl4 returns Depth
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Depth
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Depth
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Depth
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Depth
+	 *     ExpressionLvl5 returns Depth
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Depth
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Depth
+	 *     ExpressionLvl6 returns Depth
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Depth
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Depth
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Depth
+	 *     ExpressionLvl7 returns Depth
+	 *     ExpressionLvl8 returns Depth
 	 *     PrimaryExpression returns Depth
 	 *     FunctionCall returns Depth
+	 *     InfoFunctions returns Depth
 	 *     Depth returns Depth
 	 *
 	 * Constraint:
@@ -379,79 +517,495 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.DEPTH__EXPRESSION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getDepthAccess().getExpressionExpressionParserRuleCall_1_0(), semanticObject.getExpression());
+		feeder.accept(grammarAccess.getDepthAccess().getExpressionExpressionParserRuleCall_2_0(), semanticObject.getExpression());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     EqExpression returns EqExpression
-	 *
-	 * Constraint:
-	 *     (values+=CompExpression values+=CompExpression*)
-	 */
-	protected void sequence_EqExpression(ISerializationContext context, EqExpression semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     PrimaryExpression returns Erase
-	 *     FunctionCall returns Erase
-	 *     Erase returns Erase
-	 *
-	 * Constraint:
-	 *     (value=Expression (fields+=FIELD_NAME fields+=FIELD_NAME*)?)
-	 */
-	protected void sequence_Erase(ISerializationContext context, Erase semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
+	 *     SimpleStatement returns Export
+	 *     Expression returns Export
+	 *     ExpressionLvl1 returns Export
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Export
+	 *     ExpressionLvl2 returns Export
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Export
+	 *     ExpressionLvl3 returns Export
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Export
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Export
+	 *     ExpressionLvl4 returns Export
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Export
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Export
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Export
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Export
+	 *     ExpressionLvl5 returns Export
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Export
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Export
+	 *     ExpressionLvl6 returns Export
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Export
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Export
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Export
+	 *     ExpressionLvl7 returns Export
+	 *     ExpressionLvl8 returns Export
 	 *     PrimaryExpression returns Export
 	 *     FunctionCall returns Export
+	 *     IOFunctions returns Export
 	 *     Export returns Export
 	 *
 	 * Constraint:
-	 *     (expression=Expression fileName=STRING)
+	 *     (expression=Expression fileName=Expression)
 	 */
 	protected void sequence_Export(ISerializationContext context, Export semanticObject) {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.EXPORT__EXPRESSION) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.EXPORT__EXPRESSION));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.EXPORT__FILE_NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.EXPORT__FILE_NAME));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.IO_FUNCTIONS__FILE_NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.IO_FUNCTIONS__FILE_NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getExportAccess().getExpressionExpressionParserRuleCall_1_0(), semanticObject.getExpression());
-		feeder.accept(grammarAccess.getExportAccess().getFileNameSTRINGTerminalRuleCall_3_0(), semanticObject.getFileName());
+		feeder.accept(grammarAccess.getExportAccess().getExpressionExpressionParserRuleCall_2_0(), semanticObject.getExpression());
+		feeder.accept(grammarAccess.getExportAccess().getFileNameExpressionParserRuleCall_6_0(), semanticObject.getFileName());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     PrimaryExpression returns Extract
-	 *     FunctionCall returns Extract
-	 *     Extract returns Extract
+	 *     SimpleStatement returns DisjunctionExpression
+	 *     Expression returns DisjunctionExpression
+	 *     ExpressionLvl1 returns DisjunctionExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns DisjunctionExpression
 	 *
 	 * Constraint:
-	 *     (value=Expression auxiliar=ArithmeticAuxiliar)
+	 *     (left=ExpressionLvl1_DisjunctionExpression_1_0 right=ExpressionLvl2)
 	 */
-	protected void sequence_Extract(ISerializationContext context, Extract semanticObject) {
+	protected void sequence_ExpressionLvl1(ISerializationContext context, DisjunctionExpression semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.EXTRACT__VALUE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.EXTRACT__VALUE));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.EXTRACT__AUXILIAR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.EXTRACT__AUXILIAR));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.DISJUNCTION_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.DISJUNCTION_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.DISJUNCTION_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.DISJUNCTION_EXPRESSION__RIGHT));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getExtractAccess().getValueExpressionParserRuleCall_1_0(), semanticObject.getValue());
-		feeder.accept(grammarAccess.getExtractAccess().getAuxiliarArithmeticAuxiliarParserRuleCall_2_0(), semanticObject.getAuxiliar());
+		feeder.accept(grammarAccess.getExpressionLvl1Access().getDisjunctionExpressionLeftAction_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl1Access().getRightExpressionLvl2ParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns ConjunctionExpression
+	 *     Expression returns ConjunctionExpression
+	 *     ExpressionLvl1 returns ConjunctionExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns ConjunctionExpression
+	 *     ExpressionLvl2 returns ConjunctionExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns ConjunctionExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl2_ConjunctionExpression_1_0 right=ExpressionLvl3)
+	 */
+	protected void sequence_ExpressionLvl2(ISerializationContext context, ConjunctionExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.CONJUNCTION_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.CONJUNCTION_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.CONJUNCTION_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.CONJUNCTION_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl2Access().getConjunctionExpressionLeftAction_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl2Access().getRightExpressionLvl3ParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns EqualityExpression
+	 *     Expression returns EqualityExpression
+	 *     ExpressionLvl1 returns EqualityExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns EqualityExpression
+	 *     ExpressionLvl2 returns EqualityExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns EqualityExpression
+	 *     ExpressionLvl3 returns EqualityExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns EqualityExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns EqualityExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl3_EqualityExpression_1_0_0 right=ExpressionLvl4)
+	 */
+	protected void sequence_ExpressionLvl3(ISerializationContext context, EqualityExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.EQUALITY_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.EQUALITY_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.EQUALITY_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.EQUALITY_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl3Access().getEqualityExpressionLeftAction_1_0_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl3Access().getRightExpressionLvl4ParserRuleCall_1_0_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns InequalityExpression
+	 *     Expression returns InequalityExpression
+	 *     ExpressionLvl1 returns InequalityExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns InequalityExpression
+	 *     ExpressionLvl2 returns InequalityExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns InequalityExpression
+	 *     ExpressionLvl3 returns InequalityExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns InequalityExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns InequalityExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl3_InequalityExpression_1_1_0 right=ExpressionLvl4)
+	 */
+	protected void sequence_ExpressionLvl3(ISerializationContext context, InequalityExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.INEQUALITY_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.INEQUALITY_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.INEQUALITY_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.INEQUALITY_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl3Access().getInequalityExpressionLeftAction_1_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl3Access().getRightExpressionLvl4ParserRuleCall_1_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns InferiExpression
+	 *     Expression returns InferiExpression
+	 *     ExpressionLvl1 returns InferiExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns InferiExpression
+	 *     ExpressionLvl2 returns InferiExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns InferiExpression
+	 *     ExpressionLvl3 returns InferiExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns InferiExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns InferiExpression
+	 *     ExpressionLvl4 returns InferiExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns InferiExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns InferiExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns InferiExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns InferiExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl4_InferiExpression_1_2_0 right=ExpressionLvl5)
+	 */
+	protected void sequence_ExpressionLvl4(ISerializationContext context, InferiExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.INFERI_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.INFERI_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.INFERI_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.INFERI_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl4Access().getInferiExpressionLeftAction_1_2_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl4Access().getRightExpressionLvl5ParserRuleCall_1_2_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns InferiorOrEqualExpression
+	 *     Expression returns InferiorOrEqualExpression
+	 *     ExpressionLvl1 returns InferiorOrEqualExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns InferiorOrEqualExpression
+	 *     ExpressionLvl2 returns InferiorOrEqualExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns InferiorOrEqualExpression
+	 *     ExpressionLvl3 returns InferiorOrEqualExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns InferiorOrEqualExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns InferiorOrEqualExpression
+	 *     ExpressionLvl4 returns InferiorOrEqualExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns InferiorOrEqualExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns InferiorOrEqualExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns InferiorOrEqualExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns InferiorOrEqualExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl4_InferiorOrEqualExpression_1_3_0 right=ExpressionLvl5)
+	 */
+	protected void sequence_ExpressionLvl4(ISerializationContext context, InferiorOrEqualExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.INFERIOR_OR_EQUAL_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.INFERIOR_OR_EQUAL_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.INFERIOR_OR_EQUAL_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.INFERIOR_OR_EQUAL_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl4Access().getInferiorOrEqualExpressionLeftAction_1_3_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl4Access().getRightExpressionLvl5ParserRuleCall_1_3_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns SuperiExpression
+	 *     Expression returns SuperiExpression
+	 *     ExpressionLvl1 returns SuperiExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns SuperiExpression
+	 *     ExpressionLvl2 returns SuperiExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns SuperiExpression
+	 *     ExpressionLvl3 returns SuperiExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns SuperiExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns SuperiExpression
+	 *     ExpressionLvl4 returns SuperiExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns SuperiExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns SuperiExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns SuperiExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns SuperiExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl4_SuperiExpression_1_0_0 right=ExpressionLvl5)
+	 */
+	protected void sequence_ExpressionLvl4(ISerializationContext context, SuperiExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.SUPERI_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.SUPERI_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.SUPERI_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.SUPERI_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl4Access().getSuperiExpressionLeftAction_1_0_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl4Access().getRightExpressionLvl5ParserRuleCall_1_0_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns SuperiorOrEqualExpression
+	 *     Expression returns SuperiorOrEqualExpression
+	 *     ExpressionLvl1 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl2 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl3 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl4 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns SuperiorOrEqualExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns SuperiorOrEqualExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl4_SuperiorOrEqualExpression_1_1_0 right=ExpressionLvl5)
+	 */
+	protected void sequence_ExpressionLvl4(ISerializationContext context, SuperiorOrEqualExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.SUPERIOR_OR_EQUAL_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.SUPERIOR_OR_EQUAL_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.SUPERIOR_OR_EQUAL_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.SUPERIOR_OR_EQUAL_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl4Access().getSuperiorOrEqualExpressionLeftAction_1_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl4Access().getRightExpressionLvl5ParserRuleCall_1_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns AdditionExpression
+	 *     Expression returns AdditionExpression
+	 *     ExpressionLvl1 returns AdditionExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns AdditionExpression
+	 *     ExpressionLvl2 returns AdditionExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns AdditionExpression
+	 *     ExpressionLvl3 returns AdditionExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns AdditionExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns AdditionExpression
+	 *     ExpressionLvl4 returns AdditionExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns AdditionExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns AdditionExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns AdditionExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns AdditionExpression
+	 *     ExpressionLvl5 returns AdditionExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns AdditionExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns AdditionExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl5_AdditionExpression_1_0_0 right=ExpressionLvl6)
+	 */
+	protected void sequence_ExpressionLvl5(ISerializationContext context, AdditionExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.ADDITION_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.ADDITION_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.ADDITION_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.ADDITION_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl5Access().getAdditionExpressionLeftAction_1_0_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl5Access().getRightExpressionLvl6ParserRuleCall_1_0_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns SubstractionExpression
+	 *     Expression returns SubstractionExpression
+	 *     ExpressionLvl1 returns SubstractionExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns SubstractionExpression
+	 *     ExpressionLvl2 returns SubstractionExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns SubstractionExpression
+	 *     ExpressionLvl3 returns SubstractionExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns SubstractionExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns SubstractionExpression
+	 *     ExpressionLvl4 returns SubstractionExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns SubstractionExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns SubstractionExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns SubstractionExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns SubstractionExpression
+	 *     ExpressionLvl5 returns SubstractionExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns SubstractionExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns SubstractionExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl5_SubstractionExpression_1_1_0 right=ExpressionLvl6)
+	 */
+	protected void sequence_ExpressionLvl5(ISerializationContext context, SubstractionExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.SUBSTRACTION_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.SUBSTRACTION_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.SUBSTRACTION_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.SUBSTRACTION_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl5Access().getSubstractionExpressionLeftAction_1_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl5Access().getRightExpressionLvl6ParserRuleCall_1_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns DivisionExpression
+	 *     Expression returns DivisionExpression
+	 *     ExpressionLvl1 returns DivisionExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns DivisionExpression
+	 *     ExpressionLvl2 returns DivisionExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns DivisionExpression
+	 *     ExpressionLvl3 returns DivisionExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns DivisionExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns DivisionExpression
+	 *     ExpressionLvl4 returns DivisionExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns DivisionExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns DivisionExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns DivisionExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns DivisionExpression
+	 *     ExpressionLvl5 returns DivisionExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns DivisionExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns DivisionExpression
+	 *     ExpressionLvl6 returns DivisionExpression
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns DivisionExpression
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns DivisionExpression
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns DivisionExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl6_DivisionExpression_1_1_0 right=ExpressionLvl7)
+	 */
+	protected void sequence_ExpressionLvl6(ISerializationContext context, DivisionExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.DIVISION_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.DIVISION_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.DIVISION_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.DIVISION_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl6Access().getDivisionExpressionLeftAction_1_1_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl6Access().getRightExpressionLvl7ParserRuleCall_1_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns ModuloExpression
+	 *     Expression returns ModuloExpression
+	 *     ExpressionLvl1 returns ModuloExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns ModuloExpression
+	 *     ExpressionLvl2 returns ModuloExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns ModuloExpression
+	 *     ExpressionLvl3 returns ModuloExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns ModuloExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns ModuloExpression
+	 *     ExpressionLvl4 returns ModuloExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns ModuloExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns ModuloExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns ModuloExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns ModuloExpression
+	 *     ExpressionLvl5 returns ModuloExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns ModuloExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns ModuloExpression
+	 *     ExpressionLvl6 returns ModuloExpression
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns ModuloExpression
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns ModuloExpression
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns ModuloExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl6_ModuloExpression_1_2_0 right=ExpressionLvl7)
+	 */
+	protected void sequence_ExpressionLvl6(ISerializationContext context, ModuloExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.MODULO_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.MODULO_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.MODULO_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.MODULO_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl6Access().getModuloExpressionLeftAction_1_2_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl6Access().getRightExpressionLvl7ParserRuleCall_1_2_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns MultiplicationExpression
+	 *     Expression returns MultiplicationExpression
+	 *     ExpressionLvl1 returns MultiplicationExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns MultiplicationExpression
+	 *     ExpressionLvl2 returns MultiplicationExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns MultiplicationExpression
+	 *     ExpressionLvl3 returns MultiplicationExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns MultiplicationExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns MultiplicationExpression
+	 *     ExpressionLvl4 returns MultiplicationExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns MultiplicationExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns MultiplicationExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns MultiplicationExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns MultiplicationExpression
+	 *     ExpressionLvl5 returns MultiplicationExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns MultiplicationExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns MultiplicationExpression
+	 *     ExpressionLvl6 returns MultiplicationExpression
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns MultiplicationExpression
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns MultiplicationExpression
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns MultiplicationExpression
+	 *
+	 * Constraint:
+	 *     (left=ExpressionLvl6_MultiplicationExpression_1_0_0 right=ExpressionLvl7)
+	 */
+	protected void sequence_ExpressionLvl6(ISerializationContext context, MultiplicationExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.MULTIPLICATION_EXPRESSION__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.MULTIPLICATION_EXPRESSION__LEFT));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.MULTIPLICATION_EXPRESSION__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.MULTIPLICATION_EXPRESSION__RIGHT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExpressionLvl6Access().getMultiplicationExpressionLeftAction_1_0_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getExpressionLvl6Access().getRightExpressionLvl7ParserRuleCall_1_0_2_0(), semanticObject.getRight());
 		feeder.finish();
 	}
 	
@@ -462,7 +1016,7 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     FieldCaller returns FieldCaller
 	 *
 	 * Constraint:
-	 *     key=FIELD_NAME
+	 *     key=STRING
 	 */
 	protected void sequence_FieldCaller(ISerializationContext context, FieldCaller semanticObject) {
 		if (errorAcceptor != null) {
@@ -470,15 +1024,39 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.FIELD_CALLER__KEY));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getFieldCallerAccess().getKeyFIELD_NAMETerminalRuleCall_1_0(), semanticObject.getKey());
+		feeder.accept(grammarAccess.getFieldCallerAccess().getKeySTRINGTerminalRuleCall_1_0(), semanticObject.getKey());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns FieldInfo
+	 *     Expression returns FieldInfo
+	 *     ExpressionLvl1 returns FieldInfo
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns FieldInfo
+	 *     ExpressionLvl2 returns FieldInfo
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns FieldInfo
+	 *     ExpressionLvl3 returns FieldInfo
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns FieldInfo
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns FieldInfo
+	 *     ExpressionLvl4 returns FieldInfo
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns FieldInfo
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns FieldInfo
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns FieldInfo
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns FieldInfo
+	 *     ExpressionLvl5 returns FieldInfo
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns FieldInfo
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns FieldInfo
+	 *     ExpressionLvl6 returns FieldInfo
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns FieldInfo
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns FieldInfo
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns FieldInfo
+	 *     ExpressionLvl7 returns FieldInfo
+	 *     ExpressionLvl8 returns FieldInfo
 	 *     PrimaryExpression returns FieldInfo
 	 *     FunctionCall returns FieldInfo
+	 *     InfoFunctions returns FieldInfo
 	 *     FieldInfo returns FieldInfo
 	 *
 	 * Constraint:
@@ -490,26 +1068,7 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.FIELD_INFO__EXPRESSION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getFieldInfoAccess().getExpressionExpressionParserRuleCall_1_0(), semanticObject.getExpression());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     PrimaryExpression returns FieldInvoquer
-	 *     FieldInvoquer returns FieldInvoquer
-	 *
-	 * Constraint:
-	 *     field=FIELD_NAME
-	 */
-	protected void sequence_FieldInvoquer(ISerializationContext context, FieldInvoquer semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.FIELD_INVOQUER__FIELD) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.FIELD_INVOQUER__FIELD));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getFieldInvoquerAccess().getFieldFIELD_NAMETerminalRuleCall_0(), semanticObject.getField());
+		feeder.accept(grammarAccess.getFieldInfoAccess().getExpressionExpressionParserRuleCall_2_0(), semanticObject.getExpression());
 		feeder.finish();
 	}
 	
@@ -519,7 +1078,7 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     Field returns Field
 	 *
 	 * Constraint:
-	 *     (key=FIELD_NAME value=Expression)
+	 *     (key=Expression value=Expression)
 	 */
 	protected void sequence_Field(ISerializationContext context, Field semanticObject) {
 		if (errorAcceptor != null) {
@@ -529,7 +1088,7 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.FIELD__VALUE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getFieldAccess().getKeyFIELD_NAMETerminalRuleCall_0_0(), semanticObject.getKey());
+		feeder.accept(grammarAccess.getFieldAccess().getKeyExpressionParserRuleCall_0_0(), semanticObject.getKey());
 		feeder.accept(grammarAccess.getFieldAccess().getValueExpressionParserRuleCall_2_0(), semanticObject.getValue());
 		feeder.finish();
 	}
@@ -537,70 +1096,199 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns Insert
+	 *     Expression returns Insert
+	 *     ExpressionLvl1 returns Insert
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Insert
+	 *     ExpressionLvl2 returns Insert
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Insert
+	 *     ExpressionLvl3 returns Insert
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Insert
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Insert
+	 *     ExpressionLvl4 returns Insert
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Insert
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Insert
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Insert
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Insert
+	 *     ExpressionLvl5 returns Insert
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Insert
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Insert
+	 *     ExpressionLvl6 returns Insert
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Insert
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Insert
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Insert
+	 *     ExpressionLvl7 returns Insert
+	 *     ExpressionLvl8 returns Insert
 	 *     PrimaryExpression returns Insert
 	 *     FunctionCall returns Insert
+	 *     AlterFunctions returns Insert
 	 *     Insert returns Insert
 	 *
 	 * Constraint:
-	 *     (value=Expression variable=Expression specifier=ArraySpecifier)
+	 *     (value=Expression variable=Expression whereExpression=Expression?)
 	 */
 	protected void sequence_Insert(ISerializationContext context, Insert semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.INSERT__VALUE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.INSERT__VALUE));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.INSERT__VARIABLE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.INSERT__VARIABLE));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.INSERT__SPECIFIER) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.INSERT__SPECIFIER));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getInsertAccess().getValueExpressionParserRuleCall_1_0(), semanticObject.getValue());
-		feeder.accept(grammarAccess.getInsertAccess().getVariableExpressionParserRuleCall_3_0(), semanticObject.getVariable());
-		feeder.accept(grammarAccess.getInsertAccess().getSpecifierArraySpecifierParserRuleCall_4_0(), semanticObject.getSpecifier());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns JSonObject
+	 *     Expression returns JSonObject
+	 *     ExpressionLvl1 returns JSonObject
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns JSonObject
+	 *     ExpressionLvl2 returns JSonObject
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns JSonObject
+	 *     ExpressionLvl3 returns JSonObject
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns JSonObject
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns JSonObject
+	 *     ExpressionLvl4 returns JSonObject
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns JSonObject
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns JSonObject
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns JSonObject
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns JSonObject
+	 *     ExpressionLvl5 returns JSonObject
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns JSonObject
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns JSonObject
+	 *     ExpressionLvl6 returns JSonObject
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns JSonObject
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns JSonObject
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns JSonObject
+	 *     ExpressionLvl7 returns JSonObject
+	 *     ExpressionLvl8 returns JSonObject
+	 *     PrimaryExpression returns JSonObject
+	 *     Constant returns JSonObject
+	 *     JSonObject returns JSonObject
+	 *
+	 * Constraint:
+	 *     (fields+=Field fields+=Field*)?
+	 */
+	protected void sequence_JSonObject(ISerializationContext context, JSonObject semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns Load
+	 *     Expression returns Load
+	 *     ExpressionLvl1 returns Load
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Load
+	 *     ExpressionLvl2 returns Load
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Load
+	 *     ExpressionLvl3 returns Load
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Load
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Load
+	 *     ExpressionLvl4 returns Load
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Load
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Load
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Load
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Load
+	 *     ExpressionLvl5 returns Load
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Load
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Load
+	 *     ExpressionLvl6 returns Load
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Load
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Load
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Load
+	 *     ExpressionLvl7 returns Load
+	 *     ExpressionLvl8 returns Load
 	 *     PrimaryExpression returns Load
 	 *     FunctionCall returns Load
+	 *     IOFunctions returns Load
 	 *     Load returns Load
 	 *
 	 * Constraint:
-	 *     fileName=STRING
+	 *     fileName=Expression
 	 */
 	protected void sequence_Load(ISerializationContext context, Load semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.LOAD__FILE_NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.LOAD__FILE_NAME));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.IO_FUNCTIONS__FILE_NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.IO_FUNCTIONS__FILE_NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getLoadAccess().getFileNameSTRINGTerminalRuleCall_1_0(), semanticObject.getFileName());
+		feeder.accept(grammarAccess.getLoadAccess().getFileNameExpressionParserRuleCall_2_0(), semanticObject.getFileName());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns LogicalNegationExpression
+	 *     Expression returns LogicalNegationExpression
+	 *     ExpressionLvl1 returns LogicalNegationExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns LogicalNegationExpression
+	 *     ExpressionLvl2 returns LogicalNegationExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns LogicalNegationExpression
+	 *     ExpressionLvl3 returns LogicalNegationExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns LogicalNegationExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns LogicalNegationExpression
+	 *     ExpressionLvl4 returns LogicalNegationExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns LogicalNegationExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns LogicalNegationExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns LogicalNegationExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns LogicalNegationExpression
+	 *     ExpressionLvl5 returns LogicalNegationExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns LogicalNegationExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns LogicalNegationExpression
+	 *     ExpressionLvl6 returns LogicalNegationExpression
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns LogicalNegationExpression
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns LogicalNegationExpression
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns LogicalNegationExpression
+	 *     ExpressionLvl7 returns LogicalNegationExpression
+	 *     ExpressionLvl8 returns LogicalNegationExpression
+	 *     LogicalNegationExpression returns LogicalNegationExpression
+	 *
+	 * Constraint:
+	 *     sub=ExpressionLvl8
+	 */
+	protected void sequence_LogicalNegationExpression(ISerializationContext context, LogicalNegationExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.LOGICAL_NEGATION_EXPRESSION__SUB) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.LOGICAL_NEGATION_EXPRESSION__SUB));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLogicalNegationExpressionAccess().getSubExpressionLvl8ParserRuleCall_1_0(), semanticObject.getSub());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns Mean
+	 *     Expression returns Mean
+	 *     ExpressionLvl1 returns Mean
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Mean
+	 *     ExpressionLvl2 returns Mean
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Mean
+	 *     ExpressionLvl3 returns Mean
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Mean
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Mean
+	 *     ExpressionLvl4 returns Mean
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Mean
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Mean
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Mean
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Mean
+	 *     ExpressionLvl5 returns Mean
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Mean
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Mean
+	 *     ExpressionLvl6 returns Mean
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Mean
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Mean
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Mean
+	 *     ExpressionLvl7 returns Mean
+	 *     ExpressionLvl8 returns Mean
 	 *     PrimaryExpression returns Mean
 	 *     FunctionCall returns Mean
+	 *     ArithFunctions returns Mean
 	 *     Mean returns Mean
 	 *
 	 * Constraint:
-	 *     (expression=Expression auxiliar=ArithmeticAuxiliar)
+	 *     (expression=Expression (fields+=Expression fields+=Expression*)? whereExpression=Expression?)
 	 */
 	protected void sequence_Mean(ISerializationContext context, Mean semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.MEAN__EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.MEAN__EXPRESSION));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.MEAN__AUXILIAR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.MEAN__AUXILIAR));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getMeanAccess().getExpressionExpressionParserRuleCall_1_0(), semanticObject.getExpression());
-		feeder.accept(grammarAccess.getMeanAccess().getAuxiliarArithmeticAuxiliarParserRuleCall_2_0(), semanticObject.getAuxiliar());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -618,66 +1306,72 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     MultExpression returns MultExpression
-	 *
-	 * Constraint:
-	 *     (values+=UnaryMinusExpression values+=UnaryMinusExpression*)
-	 */
-	protected void sequence_MultExpression(ISerializationContext context, MultExpression semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     NegationExpression returns NegationExpression
-	 *
-	 * Constraint:
-	 *     (value=NegationExpression | value=PrimaryExpression)
-	 */
-	protected void sequence_NegationExpression(ISerializationContext context, NegationExpression semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     PrimaryExpression returns Object
-	 *     Constant returns Object
-	 *     Object returns Object
-	 *
-	 * Constraint:
-	 *     (fields+=Field fields+=Field*)?
-	 */
-	protected void sequence_Object(ISerializationContext context, org.xtext.example.mydsl.jsonDsl.Object semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     SimpleStatement returns OrExpression
-	 *     Expression returns OrExpression
-	 *     BinaryExpression returns OrExpression
-	 *     OrExpression returns OrExpression
-	 *     PrimaryExpression returns OrExpression
-	 *
-	 * Constraint:
-	 *     (values+=AndExpression values+=AndExpression*)
-	 */
-	protected void sequence_OrExpression(ISerializationContext context, OrExpression semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
+	 *     SimpleStatement returns PrimaryExpression
+	 *     Expression returns PrimaryExpression
+	 *     ExpressionLvl1 returns PrimaryExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns PrimaryExpression
+	 *     ExpressionLvl2 returns PrimaryExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns PrimaryExpression
+	 *     ExpressionLvl3 returns PrimaryExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns PrimaryExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns PrimaryExpression
+	 *     ExpressionLvl4 returns PrimaryExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns PrimaryExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns PrimaryExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns PrimaryExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns PrimaryExpression
+	 *     ExpressionLvl5 returns PrimaryExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns PrimaryExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns PrimaryExpression
+	 *     ExpressionLvl6 returns PrimaryExpression
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns PrimaryExpression
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns PrimaryExpression
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns PrimaryExpression
+	 *     ExpressionLvl7 returns PrimaryExpression
+	 *     ExpressionLvl8 returns PrimaryExpression
 	 *     PrimaryExpression returns PrimaryExpression
 	 *
 	 * Constraint:
 	 *     {PrimaryExpression}
 	 */
 	protected void sequence_PrimaryExpression(ISerializationContext context, PrimaryExpression semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns Primitive
+	 *     Expression returns Primitive
+	 *     ExpressionLvl1 returns Primitive
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Primitive
+	 *     ExpressionLvl2 returns Primitive
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Primitive
+	 *     ExpressionLvl3 returns Primitive
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Primitive
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Primitive
+	 *     ExpressionLvl4 returns Primitive
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Primitive
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Primitive
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Primitive
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Primitive
+	 *     ExpressionLvl5 returns Primitive
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Primitive
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Primitive
+	 *     ExpressionLvl6 returns Primitive
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Primitive
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Primitive
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Primitive
+	 *     ExpressionLvl7 returns Primitive
+	 *     ExpressionLvl8 returns Primitive
+	 *     PrimaryExpression returns Primitive
+	 *     Constant returns Primitive
+	 *     Primitive returns Primitive
+	 *
+	 * Constraint:
+	 *     (str=STRING | num=NUMBER | bool=BOOL | nil=NULL)
+	 */
+	protected void sequence_Primitive(ISerializationContext context, Primitive semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -696,65 +1390,119 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.PROC_CALL__EXPRESSION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getProcCallAccess().getExpressionExpressionParserRuleCall_1_0(), semanticObject.getExpression());
+		feeder.accept(grammarAccess.getProcCallAccess().getExpressionExpressionParserRuleCall_2_0(), semanticObject.getExpression());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns Product
+	 *     Expression returns Product
+	 *     ExpressionLvl1 returns Product
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Product
+	 *     ExpressionLvl2 returns Product
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Product
+	 *     ExpressionLvl3 returns Product
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Product
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Product
+	 *     ExpressionLvl4 returns Product
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Product
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Product
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Product
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Product
+	 *     ExpressionLvl5 returns Product
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Product
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Product
+	 *     ExpressionLvl6 returns Product
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Product
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Product
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Product
+	 *     ExpressionLvl7 returns Product
+	 *     ExpressionLvl8 returns Product
 	 *     PrimaryExpression returns Product
 	 *     FunctionCall returns Product
+	 *     ArithFunctions returns Product
 	 *     Product returns Product
 	 *
 	 * Constraint:
-	 *     (expression=Expression auxiliar=ArithmeticAuxiliar)
+	 *     (expression=Expression (fields+=Expression fields+=Expression*)? whereExpression=Expression?)
 	 */
 	protected void sequence_Product(ISerializationContext context, Product semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.PRODUCT__EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.PRODUCT__EXPRESSION));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.PRODUCT__AUXILIAR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.PRODUCT__AUXILIAR));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getProductAccess().getExpressionExpressionParserRuleCall_1_0(), semanticObject.getExpression());
-		feeder.accept(grammarAccess.getProductAccess().getAuxiliarArithmeticAuxiliarParserRuleCall_2_0(), semanticObject.getAuxiliar());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns Remove
+	 *     Expression returns Remove
+	 *     ExpressionLvl1 returns Remove
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Remove
+	 *     ExpressionLvl2 returns Remove
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Remove
+	 *     ExpressionLvl3 returns Remove
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Remove
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Remove
+	 *     ExpressionLvl4 returns Remove
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Remove
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Remove
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Remove
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Remove
+	 *     ExpressionLvl5 returns Remove
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Remove
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Remove
+	 *     ExpressionLvl6 returns Remove
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Remove
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Remove
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Remove
+	 *     ExpressionLvl7 returns Remove
+	 *     ExpressionLvl8 returns Remove
 	 *     PrimaryExpression returns Remove
 	 *     FunctionCall returns Remove
+	 *     AlterFunctions returns Remove
 	 *     Remove returns Remove
 	 *
 	 * Constraint:
-	 *     (variable=VariableCall specifier=ArraySpecifier)
+	 *     (value=Expression variable=Expression whereExpression=Expression?)
 	 */
 	protected void sequence_Remove(ISerializationContext context, Remove semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.REMOVE__VARIABLE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.REMOVE__VARIABLE));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.REMOVE__SPECIFIER) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.REMOVE__SPECIFIER));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getRemoveAccess().getVariableVariableCallParserRuleCall_1_0(), semanticObject.getVariable());
-		feeder.accept(grammarAccess.getRemoveAccess().getSpecifierArraySpecifierParserRuleCall_2_0(), semanticObject.getSpecifier());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns Rename
+	 *     Expression returns Rename
+	 *     ExpressionLvl1 returns Rename
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Rename
+	 *     ExpressionLvl2 returns Rename
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Rename
+	 *     ExpressionLvl3 returns Rename
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Rename
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Rename
+	 *     ExpressionLvl4 returns Rename
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Rename
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Rename
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Rename
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Rename
+	 *     ExpressionLvl5 returns Rename
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Rename
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Rename
+	 *     ExpressionLvl6 returns Rename
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Rename
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Rename
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Rename
+	 *     ExpressionLvl7 returns Rename
+	 *     ExpressionLvl8 returns Rename
 	 *     PrimaryExpression returns Rename
 	 *     FunctionCall returns Rename
+	 *     AlterFunctions returns Rename
 	 *     Rename returns Rename
 	 *
 	 * Constraint:
-	 *     (call=VariableCall fields+=FIELD_NAME fields+=FIELD_NAME* nfields+=FIELD_NAME nfields+=FIELD_NAME*)
+	 *     (call=VariableCall fields+=Expression fields+=Expression* nfields+=Expression nfields+=Expression*)
 	 */
 	protected void sequence_Rename(ISerializationContext context, Rename semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -763,12 +1511,36 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns Select
+	 *     Expression returns Select
+	 *     ExpressionLvl1 returns Select
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Select
+	 *     ExpressionLvl2 returns Select
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Select
+	 *     ExpressionLvl3 returns Select
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Select
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Select
+	 *     ExpressionLvl4 returns Select
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Select
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Select
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Select
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Select
+	 *     ExpressionLvl5 returns Select
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Select
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Select
+	 *     ExpressionLvl6 returns Select
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Select
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Select
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Select
+	 *     ExpressionLvl7 returns Select
+	 *     ExpressionLvl8 returns Select
 	 *     PrimaryExpression returns Select
 	 *     FunctionCall returns Select
+	 *     ManipFunctions returns Select
 	 *     Select returns Select
 	 *
 	 * Constraint:
-	 *     (fields+=FIELD_NAME fields+=FIELD_NAME* from=Expression condition=Expression?)
+	 *     ((fields+=Expression fields+=Expression*)? fromExpression=Expression whereExpression=Expression?)
 	 */
 	protected void sequence_Select(ISerializationContext context, Select semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -777,64 +1549,194 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns Store
+	 *     Expression returns Store
+	 *     ExpressionLvl1 returns Store
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Store
+	 *     ExpressionLvl2 returns Store
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Store
+	 *     ExpressionLvl3 returns Store
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Store
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Store
+	 *     ExpressionLvl4 returns Store
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Store
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Store
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Store
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Store
+	 *     ExpressionLvl5 returns Store
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Store
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Store
+	 *     ExpressionLvl6 returns Store
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Store
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Store
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Store
+	 *     ExpressionLvl7 returns Store
+	 *     ExpressionLvl8 returns Store
 	 *     PrimaryExpression returns Store
 	 *     FunctionCall returns Store
+	 *     IOFunctions returns Store
 	 *     Store returns Store
 	 *
 	 * Constraint:
-	 *     (expression=Expression fileName=STRING)
+	 *     (expression=Expression fileName=Expression)
 	 */
 	protected void sequence_Store(ISerializationContext context, Store semanticObject) {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.STORE__EXPRESSION) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.STORE__EXPRESSION));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.STORE__FILE_NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.STORE__FILE_NAME));
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.IO_FUNCTIONS__FILE_NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.IO_FUNCTIONS__FILE_NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getStoreAccess().getExpressionExpressionParserRuleCall_1_0(), semanticObject.getExpression());
-		feeder.accept(grammarAccess.getStoreAccess().getFileNameSTRINGTerminalRuleCall_3_0(), semanticObject.getFileName());
+		feeder.accept(grammarAccess.getStoreAccess().getExpressionExpressionParserRuleCall_2_0(), semanticObject.getExpression());
+		feeder.accept(grammarAccess.getStoreAccess().getFileNameExpressionParserRuleCall_6_0(), semanticObject.getFileName());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns Sum
+	 *     Expression returns Sum
+	 *     ExpressionLvl1 returns Sum
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Sum
+	 *     ExpressionLvl2 returns Sum
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Sum
+	 *     ExpressionLvl3 returns Sum
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Sum
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Sum
+	 *     ExpressionLvl4 returns Sum
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns Sum
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Sum
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns Sum
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Sum
+	 *     ExpressionLvl5 returns Sum
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Sum
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Sum
+	 *     ExpressionLvl6 returns Sum
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Sum
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Sum
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Sum
+	 *     ExpressionLvl7 returns Sum
+	 *     ExpressionLvl8 returns Sum
 	 *     PrimaryExpression returns Sum
 	 *     FunctionCall returns Sum
+	 *     ArithFunctions returns Sum
 	 *     Sum returns Sum
 	 *
 	 * Constraint:
-	 *     (expression=Expression auxiliar=ArithmeticAuxiliar)
+	 *     (expression=Expression (fields+=Expression fields+=Expression*)? whereExpression=Expression?)
 	 */
 	protected void sequence_Sum(ISerializationContext context, Sum semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.SUM__EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.SUM__EXPRESSION));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.SUM__AUXILIAR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.SUM__AUXILIAR));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getSumAccess().getExpressionExpressionParserRuleCall_1_0(), semanticObject.getExpression());
-		feeder.accept(grammarAccess.getSumAccess().getAuxiliarArithmeticAuxiliarParserRuleCall_2_0(), semanticObject.getAuxiliar());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     UnaryMinusExpression returns UnaryMinusExpression
-	 *
-	 * Constraint:
-	 *     (value=UnaryMinusExpression | value=NegationExpression)
-	 */
-	protected void sequence_UnaryMinusExpression(ISerializationContext context, UnaryMinusExpression semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     SimpleStatement returns UnaryMinusExpression
+	 *     Expression returns UnaryMinusExpression
+	 *     ExpressionLvl1 returns UnaryMinusExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns UnaryMinusExpression
+	 *     ExpressionLvl2 returns UnaryMinusExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns UnaryMinusExpression
+	 *     ExpressionLvl3 returns UnaryMinusExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns UnaryMinusExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns UnaryMinusExpression
+	 *     ExpressionLvl4 returns UnaryMinusExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns UnaryMinusExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns UnaryMinusExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns UnaryMinusExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns UnaryMinusExpression
+	 *     ExpressionLvl5 returns UnaryMinusExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns UnaryMinusExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns UnaryMinusExpression
+	 *     ExpressionLvl6 returns UnaryMinusExpression
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns UnaryMinusExpression
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns UnaryMinusExpression
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns UnaryMinusExpression
+	 *     ExpressionLvl7 returns UnaryMinusExpression
+	 *     UnaryMinusExpression returns UnaryMinusExpression
+	 *
+	 * Constraint:
+	 *     sub=ExpressionLvl7
+	 */
+	protected void sequence_UnaryMinusExpression(ISerializationContext context, UnaryMinusExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.UNARY_MINUS_EXPRESSION__SUB) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.UNARY_MINUS_EXPRESSION__SUB));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getUnaryMinusExpressionAccess().getSubExpressionLvl7ParserRuleCall_1_0(), semanticObject.getSub());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns UnaryPlusExpression
+	 *     Expression returns UnaryPlusExpression
+	 *     ExpressionLvl1 returns UnaryPlusExpression
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns UnaryPlusExpression
+	 *     ExpressionLvl2 returns UnaryPlusExpression
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns UnaryPlusExpression
+	 *     ExpressionLvl3 returns UnaryPlusExpression
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns UnaryPlusExpression
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns UnaryPlusExpression
+	 *     ExpressionLvl4 returns UnaryPlusExpression
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns UnaryPlusExpression
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns UnaryPlusExpression
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns UnaryPlusExpression
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns UnaryPlusExpression
+	 *     ExpressionLvl5 returns UnaryPlusExpression
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns UnaryPlusExpression
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns UnaryPlusExpression
+	 *     ExpressionLvl6 returns UnaryPlusExpression
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns UnaryPlusExpression
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns UnaryPlusExpression
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns UnaryPlusExpression
+	 *     ExpressionLvl7 returns UnaryPlusExpression
+	 *     UnaryPlusExpression returns UnaryPlusExpression
+	 *
+	 * Constraint:
+	 *     sub=ExpressionLvl7
+	 */
+	protected void sequence_UnaryPlusExpression(ISerializationContext context, UnaryPlusExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.UNARY_PLUS_EXPRESSION__SUB) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.UNARY_PLUS_EXPRESSION__SUB));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getUnaryPlusExpressionAccess().getSubExpressionLvl7ParserRuleCall_1_0(), semanticObject.getSub());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SimpleStatement returns VariableCall
+	 *     Expression returns VariableCall
+	 *     ExpressionLvl1 returns VariableCall
+	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns VariableCall
+	 *     ExpressionLvl2 returns VariableCall
+	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns VariableCall
+	 *     ExpressionLvl3 returns VariableCall
+	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns VariableCall
+	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns VariableCall
+	 *     ExpressionLvl4 returns VariableCall
+	 *     ExpressionLvl4.SuperiExpression_1_0_0 returns VariableCall
+	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns VariableCall
+	 *     ExpressionLvl4.InferiExpression_1_2_0 returns VariableCall
+	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns VariableCall
+	 *     ExpressionLvl5 returns VariableCall
+	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns VariableCall
+	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns VariableCall
+	 *     ExpressionLvl6 returns VariableCall
+	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns VariableCall
+	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns VariableCall
+	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns VariableCall
+	 *     ExpressionLvl7 returns VariableCall
+	 *     ExpressionLvl8 returns VariableCall
 	 *     PrimaryExpression returns VariableCall
 	 *     VariableCall returns VariableCall
 	 *

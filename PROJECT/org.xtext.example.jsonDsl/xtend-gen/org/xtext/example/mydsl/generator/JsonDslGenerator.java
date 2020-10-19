@@ -3,10 +3,46 @@
  */
 package org.xtext.example.mydsl.generator;
 
+import java.util.Arrays;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.InputOutput;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.eclipse.xtext.xbase.lib.ListExtensions;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
+import org.xtext.example.mydsl.generator.JZArray;
+import org.xtext.example.mydsl.generator.JZBoolean;
+import org.xtext.example.mydsl.generator.JZJsonObject;
+import org.xtext.example.mydsl.generator.JZNull;
+import org.xtext.example.mydsl.generator.JZNumber;
+import org.xtext.example.mydsl.generator.JZObject;
+import org.xtext.example.mydsl.generator.JZString;
+import org.xtext.example.mydsl.jsonDsl.AdditionExpression;
+import org.xtext.example.mydsl.jsonDsl.Array;
+import org.xtext.example.mydsl.jsonDsl.Assignment;
+import org.xtext.example.mydsl.jsonDsl.BracketExpression;
+import org.xtext.example.mydsl.jsonDsl.ConjunctionExpression;
+import org.xtext.example.mydsl.jsonDsl.DisjunctionExpression;
+import org.xtext.example.mydsl.jsonDsl.DivisionExpression;
+import org.xtext.example.mydsl.jsonDsl.Expression;
+import org.xtext.example.mydsl.jsonDsl.Field;
+import org.xtext.example.mydsl.jsonDsl.JSonObject;
+import org.xtext.example.mydsl.jsonDsl.LogicalNegationExpression;
+import org.xtext.example.mydsl.jsonDsl.Model;
+import org.xtext.example.mydsl.jsonDsl.ModuloExpression;
+import org.xtext.example.mydsl.jsonDsl.MultiplicationExpression;
+import org.xtext.example.mydsl.jsonDsl.Primitive;
+import org.xtext.example.mydsl.jsonDsl.ProcCall;
+import org.xtext.example.mydsl.jsonDsl.SimpleStatement;
+import org.xtext.example.mydsl.jsonDsl.SubstractionExpression;
+import org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression;
+import org.xtext.example.mydsl.jsonDsl.UnaryPlusExpression;
 
 /**
  * Generates code from your model files on save.
@@ -15,7 +51,190 @@ import org.eclipse.xtext.generator.IGeneratorContext;
  */
 @SuppressWarnings("all")
 public class JsonDslGenerator extends AbstractGenerator {
+  protected JZObject _visit(final SimpleStatement statement) {
+    InputOutput.<String>println("SimpleStatement");
+    return null;
+  }
+  
+  protected JZObject _visit(final Assignment assignment) {
+    String _name = assignment.getLeftHandSide().getName();
+    String _plus = (_name + "<-");
+    JZObject _visit = this.visit(assignment.getRightHandSide());
+    String _plus_1 = (_plus + _visit);
+    InputOutput.<String>println(_plus_1);
+    return null;
+  }
+  
+  protected JZObject _visit(final ProcCall procCall) {
+    InputOutput.<JZObject>println(this.visit(procCall.getExpression()));
+    return null;
+  }
+  
+  protected JZObject _visit(final Expression expression) {
+    return new JZNull();
+  }
+  
+  protected JZObject _visit(final DisjunctionExpression disjunctionExpression) {
+    JZObject _visit = this.visit(disjunctionExpression.getLeft());
+    JZObject _visit_1 = this.visit(disjunctionExpression.getRight());
+    return _visit.operator_or(_visit_1);
+  }
+  
+  protected JZObject _visit(final ConjunctionExpression conjunctionExpression) {
+    JZObject _visit = this.visit(conjunctionExpression.getLeft());
+    JZObject _visit_1 = this.visit(conjunctionExpression.getRight());
+    return _visit.operator_and(_visit_1);
+  }
+  
+  protected JZObject _visit(final AdditionExpression additionExpression) {
+    JZObject _visit = this.visit(additionExpression.getLeft());
+    JZObject _visit_1 = this.visit(additionExpression.getRight());
+    return _visit.operator_plus(_visit_1);
+  }
+  
+  protected JZObject _visit(final SubstractionExpression substractionExpression) {
+    JZObject _visit = this.visit(substractionExpression.getLeft());
+    JZObject _visit_1 = this.visit(substractionExpression.getRight());
+    return _visit.operator_minus(_visit_1);
+  }
+  
+  protected JZObject _visit(final MultiplicationExpression multiplicationExpression) {
+    JZObject _visit = this.visit(multiplicationExpression.getLeft());
+    JZObject _visit_1 = this.visit(multiplicationExpression.getRight());
+    return _visit.operator_multiply(_visit_1);
+  }
+  
+  protected JZObject _visit(final DivisionExpression divisionExpression) {
+    JZObject _visit = this.visit(divisionExpression.getLeft());
+    JZObject _visit_1 = this.visit(divisionExpression.getRight());
+    return _visit.operator_divide(_visit_1);
+  }
+  
+  protected JZObject _visit(final ModuloExpression moduloExpression) {
+    JZObject _visit = this.visit(moduloExpression.getLeft());
+    JZObject _visit_1 = this.visit(moduloExpression.getRight());
+    return _visit.operator_modulo(_visit_1);
+  }
+  
+  protected JZObject _visit(final UnaryMinusExpression unaryMinusExpression) {
+    JZObject _visit = this.visit(unaryMinusExpression.getSub());
+    return _visit.operator_minus();
+  }
+  
+  protected JZObject _visit(final UnaryPlusExpression unaryPlusExpression) {
+    JZObject _visit = this.visit(unaryPlusExpression.getSub());
+    return _visit.operator_plus();
+  }
+  
+  protected JZObject _visit(final LogicalNegationExpression logicalNegationExpression) {
+    JZObject _visit = this.visit(logicalNegationExpression.getSub());
+    return _visit.operator_not();
+  }
+  
+  protected JZObject _visit(final BracketExpression bracketExpression) {
+    return this.visit(bracketExpression.getSub());
+  }
+  
+  protected JZObject _visit(final Array array) {
+    final JZArray res = new JZArray();
+    final Function1<Expression, JZObject> _function = (Expression e) -> {
+      return this.visit(e);
+    };
+    res.addAll(IterableExtensions.<JZObject>toList(ListExtensions.<Expression, JZObject>map(array.getValues(), _function)));
+    return res;
+  }
+  
+  protected JZObject _visit(final JSonObject jSonObject) {
+    JZJsonObject res = new JZJsonObject();
+    EList<Field> _fields = jSonObject.getFields();
+    for (final Field field : _fields) {
+      JZObject _visit = this.visit(field.getKey());
+      res.addField(((JZString) _visit).content, this.visit(field.getValue()));
+    }
+    return res;
+  }
+  
+  protected JZObject _visit(final String string) {
+    return new JZString(string);
+  }
+  
+  protected JZObject _visit(final Primitive const_) {
+    String _str = const_.getStr();
+    boolean _tripleNotEquals = (_str != null);
+    if (_tripleNotEquals) {
+      String _str_1 = const_.getStr();
+      return new JZString(_str_1);
+    } else {
+      String _num = const_.getNum();
+      boolean _tripleNotEquals_1 = (_num != null);
+      if (_tripleNotEquals_1) {
+        Double _valueOf = Double.valueOf(const_.getNum());
+        return new JZNumber((_valueOf).doubleValue());
+      } else {
+        String _bool = const_.getBool();
+        boolean _tripleNotEquals_2 = (_bool != null);
+        if (_tripleNotEquals_2) {
+          boolean _parseBoolean = Boolean.parseBoolean(const_.getBool());
+          return new JZBoolean(_parseBoolean);
+        } else {
+          return new JZNull();
+        }
+      }
+    }
+  }
+  
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
+    EObject _head = IteratorExtensions.<EObject>head(resource.getAllContents());
+    final Model root = ((Model) _head);
+    final Procedure2<SimpleStatement, Integer> _function = (SimpleStatement element, Integer index) -> {
+      this.visit(element);
+    };
+    IterableExtensions.<SimpleStatement>forEach(root.getStmts(), _function);
+  }
+  
+  public JZObject visit(final Object array) {
+    if (array instanceof Array) {
+      return _visit((Array)array);
+    } else if (array instanceof JSonObject) {
+      return _visit((JSonObject)array);
+    } else if (array instanceof Primitive) {
+      return _visit((Primitive)array);
+    } else if (array instanceof AdditionExpression) {
+      return _visit((AdditionExpression)array);
+    } else if (array instanceof BracketExpression) {
+      return _visit((BracketExpression)array);
+    } else if (array instanceof ConjunctionExpression) {
+      return _visit((ConjunctionExpression)array);
+    } else if (array instanceof DisjunctionExpression) {
+      return _visit((DisjunctionExpression)array);
+    } else if (array instanceof DivisionExpression) {
+      return _visit((DivisionExpression)array);
+    } else if (array instanceof LogicalNegationExpression) {
+      return _visit((LogicalNegationExpression)array);
+    } else if (array instanceof ModuloExpression) {
+      return _visit((ModuloExpression)array);
+    } else if (array instanceof MultiplicationExpression) {
+      return _visit((MultiplicationExpression)array);
+    } else if (array instanceof SubstractionExpression) {
+      return _visit((SubstractionExpression)array);
+    } else if (array instanceof UnaryMinusExpression) {
+      return _visit((UnaryMinusExpression)array);
+    } else if (array instanceof UnaryPlusExpression) {
+      return _visit((UnaryPlusExpression)array);
+    } else if (array instanceof Assignment) {
+      return _visit((Assignment)array);
+    } else if (array instanceof Expression) {
+      return _visit((Expression)array);
+    } else if (array instanceof ProcCall) {
+      return _visit((ProcCall)array);
+    } else if (array instanceof SimpleStatement) {
+      return _visit((SimpleStatement)array);
+    } else if (array instanceof String) {
+      return _visit((String)array);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(array).toString());
+    }
   }
 }

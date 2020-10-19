@@ -10,50 +10,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.xtext.example.mydsl.jsonDsl.Add;
-import org.xtext.example.mydsl.jsonDsl.AddExpression;
-import org.xtext.example.mydsl.jsonDsl.AndExpression;
-import org.xtext.example.mydsl.jsonDsl.ArithmeticAuxiliar;
-import org.xtext.example.mydsl.jsonDsl.Array;
-import org.xtext.example.mydsl.jsonDsl.ArrayCaller;
-import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
-import org.xtext.example.mydsl.jsonDsl.Assignment;
-import org.xtext.example.mydsl.jsonDsl.AuxiliarCaller;
-import org.xtext.example.mydsl.jsonDsl.BinaryExpression;
-import org.xtext.example.mydsl.jsonDsl.CompExpression;
-import org.xtext.example.mydsl.jsonDsl.Concat;
-import org.xtext.example.mydsl.jsonDsl.Constant;
-import org.xtext.example.mydsl.jsonDsl.Delete;
-import org.xtext.example.mydsl.jsonDsl.Depth;
-import org.xtext.example.mydsl.jsonDsl.EqExpression;
-import org.xtext.example.mydsl.jsonDsl.Erase;
-import org.xtext.example.mydsl.jsonDsl.Export;
-import org.xtext.example.mydsl.jsonDsl.Expression;
-import org.xtext.example.mydsl.jsonDsl.Extract;
-import org.xtext.example.mydsl.jsonDsl.Field;
-import org.xtext.example.mydsl.jsonDsl.FieldCaller;
-import org.xtext.example.mydsl.jsonDsl.FieldInfo;
-import org.xtext.example.mydsl.jsonDsl.FieldInvoquer;
-import org.xtext.example.mydsl.jsonDsl.FunctionCall;
-import org.xtext.example.mydsl.jsonDsl.Insert;
-import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
-import org.xtext.example.mydsl.jsonDsl.Load;
-import org.xtext.example.mydsl.jsonDsl.Mean;
-import org.xtext.example.mydsl.jsonDsl.Model;
-import org.xtext.example.mydsl.jsonDsl.MultExpression;
-import org.xtext.example.mydsl.jsonDsl.NegationExpression;
-import org.xtext.example.mydsl.jsonDsl.OrExpression;
-import org.xtext.example.mydsl.jsonDsl.PrimaryExpression;
-import org.xtext.example.mydsl.jsonDsl.ProcCall;
-import org.xtext.example.mydsl.jsonDsl.Product;
-import org.xtext.example.mydsl.jsonDsl.Remove;
-import org.xtext.example.mydsl.jsonDsl.Rename;
-import org.xtext.example.mydsl.jsonDsl.Select;
-import org.xtext.example.mydsl.jsonDsl.SimpleStatement;
-import org.xtext.example.mydsl.jsonDsl.Store;
-import org.xtext.example.mydsl.jsonDsl.Sum;
-import org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression;
-import org.xtext.example.mydsl.jsonDsl.VariableCall;
+import org.xtext.example.mydsl.jsonDsl.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -139,59 +96,24 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
         return createExpressionAdapter();
       }
       @Override
-      public Adapter caseBinaryExpression(BinaryExpression object)
-      {
-        return createBinaryExpressionAdapter();
-      }
-      @Override
-      public Adapter caseOrExpression(OrExpression object)
-      {
-        return createOrExpressionAdapter();
-      }
-      @Override
-      public Adapter caseAndExpression(AndExpression object)
-      {
-        return createAndExpressionAdapter();
-      }
-      @Override
-      public Adapter caseEqExpression(EqExpression object)
-      {
-        return createEqExpressionAdapter();
-      }
-      @Override
-      public Adapter caseCompExpression(CompExpression object)
-      {
-        return createCompExpressionAdapter();
-      }
-      @Override
-      public Adapter caseAddExpression(AddExpression object)
-      {
-        return createAddExpressionAdapter();
-      }
-      @Override
-      public Adapter caseMultExpression(MultExpression object)
-      {
-        return createMultExpressionAdapter();
-      }
-      @Override
       public Adapter caseUnaryMinusExpression(UnaryMinusExpression object)
       {
         return createUnaryMinusExpressionAdapter();
       }
       @Override
-      public Adapter caseNegationExpression(NegationExpression object)
+      public Adapter caseUnaryPlusExpression(UnaryPlusExpression object)
       {
-        return createNegationExpressionAdapter();
+        return createUnaryPlusExpressionAdapter();
       }
       @Override
-      public Adapter casePrimaryExpression(PrimaryExpression object)
+      public Adapter caseLogicalNegationExpression(LogicalNegationExpression object)
       {
-        return createPrimaryExpressionAdapter();
+        return createLogicalNegationExpressionAdapter();
       }
       @Override
-      public Adapter caseFieldInvoquer(FieldInvoquer object)
+      public Adapter caseBracketExpression(BracketExpression object)
       {
-        return createFieldInvoquerAdapter();
+        return createBracketExpressionAdapter();
       }
       @Override
       public Adapter caseVariableCall(VariableCall object)
@@ -214,9 +136,29 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
         return createArrayCallerAdapter();
       }
       @Override
-      public Adapter caseFunctionCall(FunctionCall object)
+      public Adapter caseIOFunctions(IOFunctions object)
       {
-        return createFunctionCallAdapter();
+        return createIOFunctionsAdapter();
+      }
+      @Override
+      public Adapter caseInfoFunctions(InfoFunctions object)
+      {
+        return createInfoFunctionsAdapter();
+      }
+      @Override
+      public Adapter caseManipFunctions(ManipFunctions object)
+      {
+        return createManipFunctionsAdapter();
+      }
+      @Override
+      public Adapter caseArithFunctions(ArithFunctions object)
+      {
+        return createArithFunctionsAdapter();
+      }
+      @Override
+      public Adapter caseAlterFunctions(AlterFunctions object)
+      {
+        return createAlterFunctionsAdapter();
       }
       @Override
       public Adapter caseLoad(Load object)
@@ -249,9 +191,9 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
         return createFieldInfoAdapter();
       }
       @Override
-      public Adapter caseExtract(Extract object)
+      public Adapter caseContains(Contains object)
       {
-        return createExtractAdapter();
+        return createContainsAdapter();
       }
       @Override
       public Adapter caseSelect(Select object)
@@ -279,11 +221,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
         return createMeanAdapter();
       }
       @Override
-      public Adapter caseArithmeticAuxiliar(ArithmeticAuxiliar object)
-      {
-        return createArithmeticAuxiliarAdapter();
-      }
-      @Override
       public Adapter caseAdd(Add object)
       {
         return createAddAdapter();
@@ -299,11 +236,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
         return createRenameAdapter();
       }
       @Override
-      public Adapter caseErase(Erase object)
-      {
-        return createEraseAdapter();
-      }
-      @Override
       public Adapter caseDelete(Delete object)
       {
         return createDeleteAdapter();
@@ -314,14 +246,14 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
         return createRemoveAdapter();
       }
       @Override
-      public Adapter caseArraySpecifier(ArraySpecifier object)
-      {
-        return createArraySpecifierAdapter();
-      }
-      @Override
       public Adapter caseConstant(Constant object)
       {
         return createConstantAdapter();
+      }
+      @Override
+      public Adapter casePrimitive(Primitive object)
+      {
+        return createPrimitiveAdapter();
       }
       @Override
       public Adapter caseArray(Array object)
@@ -329,14 +261,84 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
         return createArrayAdapter();
       }
       @Override
-      public Adapter caseObject(org.xtext.example.mydsl.jsonDsl.Object object)
+      public Adapter caseJSonObject(JSonObject object)
       {
-        return createObjectAdapter();
+        return createJSonObjectAdapter();
       }
       @Override
       public Adapter caseField(Field object)
       {
         return createFieldAdapter();
+      }
+      @Override
+      public Adapter caseDisjunctionExpression(DisjunctionExpression object)
+      {
+        return createDisjunctionExpressionAdapter();
+      }
+      @Override
+      public Adapter caseConjunctionExpression(ConjunctionExpression object)
+      {
+        return createConjunctionExpressionAdapter();
+      }
+      @Override
+      public Adapter caseEqualityExpression(EqualityExpression object)
+      {
+        return createEqualityExpressionAdapter();
+      }
+      @Override
+      public Adapter caseInequalityExpression(InequalityExpression object)
+      {
+        return createInequalityExpressionAdapter();
+      }
+      @Override
+      public Adapter caseSuperiExpression(SuperiExpression object)
+      {
+        return createSuperiExpressionAdapter();
+      }
+      @Override
+      public Adapter caseSuperiorOrEqualExpression(SuperiorOrEqualExpression object)
+      {
+        return createSuperiorOrEqualExpressionAdapter();
+      }
+      @Override
+      public Adapter caseInferiExpression(InferiExpression object)
+      {
+        return createInferiExpressionAdapter();
+      }
+      @Override
+      public Adapter caseInferiorOrEqualExpression(InferiorOrEqualExpression object)
+      {
+        return createInferiorOrEqualExpressionAdapter();
+      }
+      @Override
+      public Adapter caseAdditionExpression(AdditionExpression object)
+      {
+        return createAdditionExpressionAdapter();
+      }
+      @Override
+      public Adapter caseSubstractionExpression(SubstractionExpression object)
+      {
+        return createSubstractionExpressionAdapter();
+      }
+      @Override
+      public Adapter caseMultiplicationExpression(MultiplicationExpression object)
+      {
+        return createMultiplicationExpressionAdapter();
+      }
+      @Override
+      public Adapter caseDivisionExpression(DivisionExpression object)
+      {
+        return createDivisionExpressionAdapter();
+      }
+      @Override
+      public Adapter caseModuloExpression(ModuloExpression object)
+      {
+        return createModuloExpressionAdapter();
+      }
+      @Override
+      public Adapter casePrimaryExpression(PrimaryExpression object)
+      {
+        return createPrimaryExpressionAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object)
@@ -421,111 +423,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.BinaryExpression <em>Binary Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.BinaryExpression
-   * @generated
-   */
-  public Adapter createBinaryExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.OrExpression <em>Or Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.OrExpression
-   * @generated
-   */
-  public Adapter createOrExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.AndExpression <em>And Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.AndExpression
-   * @generated
-   */
-  public Adapter createAndExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.EqExpression <em>Eq Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.EqExpression
-   * @generated
-   */
-  public Adapter createEqExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.CompExpression <em>Comp Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.CompExpression
-   * @generated
-   */
-  public Adapter createCompExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.AddExpression <em>Add Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.AddExpression
-   * @generated
-   */
-  public Adapter createAddExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.MultExpression <em>Mult Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.MultExpression
-   * @generated
-   */
-  public Adapter createMultExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression <em>Unary Minus Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -541,46 +438,46 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.NegationExpression <em>Negation Expression</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.UnaryPlusExpression <em>Unary Plus Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.NegationExpression
+   * @see org.xtext.example.mydsl.jsonDsl.UnaryPlusExpression
    * @generated
    */
-  public Adapter createNegationExpressionAdapter()
+  public Adapter createUnaryPlusExpressionAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.PrimaryExpression <em>Primary Expression</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.LogicalNegationExpression <em>Logical Negation Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.PrimaryExpression
+   * @see org.xtext.example.mydsl.jsonDsl.LogicalNegationExpression
    * @generated
    */
-  public Adapter createPrimaryExpressionAdapter()
+  public Adapter createLogicalNegationExpressionAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.FieldInvoquer <em>Field Invoquer</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.BracketExpression <em>Bracket Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.FieldInvoquer
+   * @see org.xtext.example.mydsl.jsonDsl.BracketExpression
    * @generated
    */
-  public Adapter createFieldInvoquerAdapter()
+  public Adapter createBracketExpressionAdapter()
   {
     return null;
   }
@@ -646,16 +543,76 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.FunctionCall <em>Function Call</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.IOFunctions <em>IO Functions</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.FunctionCall
+   * @see org.xtext.example.mydsl.jsonDsl.IOFunctions
    * @generated
    */
-  public Adapter createFunctionCallAdapter()
+  public Adapter createIOFunctionsAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.InfoFunctions <em>Info Functions</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.InfoFunctions
+   * @generated
+   */
+  public Adapter createInfoFunctionsAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.ManipFunctions <em>Manip Functions</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.ManipFunctions
+   * @generated
+   */
+  public Adapter createManipFunctionsAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.ArithFunctions <em>Arith Functions</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.ArithFunctions
+   * @generated
+   */
+  public Adapter createArithFunctionsAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.AlterFunctions <em>Alter Functions</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.AlterFunctions
+   * @generated
+   */
+  public Adapter createAlterFunctionsAdapter()
   {
     return null;
   }
@@ -751,16 +708,16 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Extract <em>Extract</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Contains <em>Contains</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.Extract
+   * @see org.xtext.example.mydsl.jsonDsl.Contains
    * @generated
    */
-  public Adapter createExtractAdapter()
+  public Adapter createContainsAdapter()
   {
     return null;
   }
@@ -841,21 +798,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.ArithmeticAuxiliar <em>Arithmetic Auxiliar</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.ArithmeticAuxiliar
-   * @generated
-   */
-  public Adapter createArithmeticAuxiliarAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Add <em>Add</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -901,21 +843,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Erase <em>Erase</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.Erase
-   * @generated
-   */
-  public Adapter createEraseAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Delete <em>Delete</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -946,21 +873,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.ArraySpecifier <em>Array Specifier</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.ArraySpecifier
-   * @generated
-   */
-  public Adapter createArraySpecifierAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Constant <em>Constant</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -971,6 +883,21 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createConstantAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Primitive <em>Primitive</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.Primitive
+   * @generated
+   */
+  public Adapter createPrimitiveAdapter()
   {
     return null;
   }
@@ -991,16 +918,16 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Object <em>Object</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.JSonObject <em>JSon Object</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.Object
+   * @see org.xtext.example.mydsl.jsonDsl.JSonObject
    * @generated
    */
-  public Adapter createObjectAdapter()
+  public Adapter createJSonObjectAdapter()
   {
     return null;
   }
@@ -1016,6 +943,216 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFieldAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.DisjunctionExpression <em>Disjunction Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.DisjunctionExpression
+   * @generated
+   */
+  public Adapter createDisjunctionExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.ConjunctionExpression <em>Conjunction Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.ConjunctionExpression
+   * @generated
+   */
+  public Adapter createConjunctionExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.EqualityExpression <em>Equality Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.EqualityExpression
+   * @generated
+   */
+  public Adapter createEqualityExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.InequalityExpression <em>Inequality Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.InequalityExpression
+   * @generated
+   */
+  public Adapter createInequalityExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.SuperiExpression <em>Superi Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.SuperiExpression
+   * @generated
+   */
+  public Adapter createSuperiExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.SuperiorOrEqualExpression <em>Superior Or Equal Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.SuperiorOrEqualExpression
+   * @generated
+   */
+  public Adapter createSuperiorOrEqualExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.InferiExpression <em>Inferi Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.InferiExpression
+   * @generated
+   */
+  public Adapter createInferiExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.InferiorOrEqualExpression <em>Inferior Or Equal Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.InferiorOrEqualExpression
+   * @generated
+   */
+  public Adapter createInferiorOrEqualExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.AdditionExpression <em>Addition Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.AdditionExpression
+   * @generated
+   */
+  public Adapter createAdditionExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.SubstractionExpression <em>Substraction Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.SubstractionExpression
+   * @generated
+   */
+  public Adapter createSubstractionExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.MultiplicationExpression <em>Multiplication Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.MultiplicationExpression
+   * @generated
+   */
+  public Adapter createMultiplicationExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.DivisionExpression <em>Division Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.DivisionExpression
+   * @generated
+   */
+  public Adapter createDivisionExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.ModuloExpression <em>Modulo Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.ModuloExpression
+   * @generated
+   */
+  public Adapter createModuloExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.PrimaryExpression <em>Primary Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.jsonDsl.PrimaryExpression
+   * @generated
+   */
+  public Adapter createPrimaryExpressionAdapter()
   {
     return null;
   }

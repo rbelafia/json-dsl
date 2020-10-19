@@ -1,42 +1,11 @@
 grammar org.xtext.example.mydsl.JsonDsl with org.eclipse.xtext.common.Terminals
 
 generate jsonDsl "http://www.xtext.org/example/mydsl/JsonDsl"
-
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 Model:
 	(stmts += SimpleStatement)*;
 
-/*Statement:
-	(OpenStatement | ClosedStatement) ';'
-;
-
-OpenStatement:
-	OpenIf | OpenIfElse | OpenWhile
-;
-
-OpenIf:
-	'IF' condition=Expression 'THEN' (then=SimpleStatement | then=OpenStatement)
-;
-
-OpenIfElse:
-	'IF' condition=Expression 'THEN' then=ClosedStatement 'ELSE' else=OpenStatement
-;
-
-OpenWhile:
-	'WHILE' condition=Expression 'DO' loop=OpenStatement
-;
-
-ClosedStatement:
-	SimpleStatement | IfElseClosed | WhileClosed
-;
-
-IfElseClosed:
-	'IF' condition=Expression 'THEN' then=ClosedStatement 'ELSE' else=ClosedStatement
-;
-
-WhileClosed:
-	'WHILE' condition=Expression 'DO' loop=ClosedStatement
-;*/
 
 SimpleStatement:
 	(Assignment | Expression | ProcCall) ';'
@@ -47,55 +16,81 @@ Assignment:
 	(leftHandSide=VariableCall) '=' (rightHandSide=Expression)
 ;
 
-Expression:
-	BinaryExpression
+Expression: ExpressionLvl1;
+
+
+ExpressionLvl1 returns Expression:
+	ExpressionLvl2 ({DisjunctionExpression.left = current} 'OR' right = ExpressionLvl2)*
 ;
 
-BinaryExpression:
-	OrExpression
+ExpressionLvl2 returns Expression:
+	ExpressionLvl3 ({ConjunctionExpression.left = current} 'AND' right = ExpressionLvl3)*
 ;
 
-OrExpression:
-	values+=AndExpression (('OR') values+=AndExpression)*
-;
-
-AndExpression:
-	values+=EqExpression (('AND') values+=EqExpression)*
-;
-
-EqExpression:
-	values+=CompExpression (('=='|'!=') values+=CompExpression)*
-;
-
-
-CompExpression:
-	values+=AddExpression (('>' | '>=' | '<' | '<=') values+=AddExpression)*
-;
-
-AddExpression:
-	values+=MultExpression (('+' | '-') values+=MultExpression)*
+ExpressionLvl3 returns Expression:
+	ExpressionLvl4 (
+		({EqualityExpression.left = current} '==' right = ExpressionLvl4)
+		|({InequalityExpression.left = current} '!=' right = ExpressionLvl4)
+	)*
 ;
 
 
-MultExpression:
-	values+=UnaryMinusExpression (('*' | '/' | '%') values+=UnaryMinusExpression)*
+ExpressionLvl4 returns Expression:
+	ExpressionLvl5 (
+		({SuperiExpression.left = current} '>' right = ExpressionLvl5)
+		|({SuperiorOrEqualExpression.left = current} '>=' right = ExpressionLvl5)
+		|({InferiExpression.left = current} '<' right = ExpressionLvl5)
+		|({InferiorOrEqualExpression.left = current} '<=' right = ExpressionLvl5)
+	)*
+;
+
+ExpressionLvl5 returns Expression:
+	ExpressionLvl6 (
+		({AdditionExpression.left = current} '+' right = ExpressionLvl6)
+		|({SubstractionExpression.left = current} '-' right = ExpressionLvl6)
+	)*
+;
+
+
+ExpressionLvl6 returns Expression:
+	ExpressionLvl7 (
+		({MultiplicationExpression.left = current} '*' right = ExpressionLvl7)
+		|({DivisionExpression.left = current} '/' right = ExpressionLvl7)
+		|({ModuloExpression.left = current} '%' right = ExpressionLvl7)
+	)*
+;
+
+ExpressionLvl7 returns Expression:
+	UnaryMinusExpression | UnaryPlusExpression | ExpressionLvl8
 ;
 
 UnaryMinusExpression:
-	('-' value=UnaryMinusExpression) | value=NegationExpression
+	'-' sub=ExpressionLvl7
 ;
 
-NegationExpression:
-	('!' value=NegationExpression) | value=PrimaryExpression 
+UnaryPlusExpression:
+	'+' sub=ExpressionLvl7
+;
+
+ExpressionLvl8 returns Expression:
+	LogicalNegationExpression | PrimaryExpression
+;
+
+LogicalNegationExpression:
+	'!' sub=ExpressionLvl8
 ;
 
 
-PrimaryExpression:
-	VariableCall | Constant | FunctionCall | ('(' Expression ')')  | FieldInvoquer | {PrimaryExpression} Pointer
+PrimaryExpression returns Expression:
+	VariableCall | 
+	Constant | 
+	FunctionCall | 
+	BracketExpression |
+	{PrimaryExpression} Pointer
 ;
 
-FieldInvoquer:
-	field=FIELD_NAME
+BracketExpression:
+	'(' sub=Expression ')'  
 ;
 
 Pointer:
@@ -111,126 +106,144 @@ AuxiliarCaller:
 ;
 
 FieldCaller:
-	'~' key=FIELD_NAME
+	'~' key=STRING
 ;
 
 ArrayCaller:
-	'[' index+=NUMBER (',' index+=NUMBER)* ']'
+	'[' index+=INT (',' index+=INT)* ']'
 ;
 
-FunctionCall:
-	Load| Store | Export | Depth | FieldInfo | Extract | Select | Concat | Sum | Product | Mean | Add | Insert | Rename | Remove | Erase | Delete
+FunctionCall returns Expression:
+	IOFunctions |
+	InfoFunctions |
+	ManipFunctions |
+	ArithFunctions | 
+	AlterFunctions
 ;
 
+IOFunctions:
+	Load | Store | Export
+;
+
+InfoFunctions :
+	Depth | FieldInfo | Contains
+;
+
+ManipFunctions :
+	Select |
+	Concat
+;
+
+ArithFunctions : Sum | Product | Mean ;
+
+AlterFunctions :
+	Add | Insert | Rename | Remove | Delete
+;
+
+
+// IO FUNCTIONS
 
 Load:
-	'LOAD' fileName=STRING 
+	'LOAD' '(' fileName=Expression ')' 
 ;
 
 
 Store:
-	'STORE' expression=Expression 'IN' fileName=STRING 
+	'STORE' '(' expression=Expression ')' 'IN' '(' fileName=Expression ')' 
 ;
 
 Export:
-	'EXPORT_CSV' expression=Expression 'IN' fileName=STRING
+	'EXPORT_CSV' '(' expression=Expression ')' 'IN' '(' fileName=Expression ')'
 ;
 
 ProcCall:
-	'PRINT' expression=Expression
+	'PRINT' '(' expression=Expression ')'
 ;
 
+
+// INFO FUNCTIONS
+
 Depth:
-	'GET_DEPTH' expression=Expression
+	'GET_DEPTH' '(' expression=Expression ')'
 ;
 
 FieldInfo:
-	'GET_INFOS' expression=Expression
+	'GET_INFOS' '(' expression=Expression ')'
 ;
 
-Extract:
-	'EXTRACT' value=Expression auxiliar=ArithmeticAuxiliar 
+Contains:
+	'IS' '(' keys+=Expression (',' keys+=Expression)*')'  'IN' '(' right=Expression ')'  
 ;
+
+
+// MANIP
 
 Select:
-	'SELECT' fields+=FIELD_NAME (',' fields+=FIELD_NAME)* 'FROM' from=Expression ('WHERE' condition=Expression)? 
+	'SELECT' '(' ('*' | (fields+=Expression (',' fields+=Expression)*)?) ')' 'FROM' '(' fromExpression=Expression ')' (=> 'WHERE' '(' whereExpression=Expression ')')? 
 ;
 
 Concat:
-	'CONCAT' first=Expression 'WITH' second=Expression
+	'CONCAT' '(' expressions+=Expression (',' expressions+=Expression) ')'
 ;
 
-Sum:
-	'SUM' expression=Expression auxiliar=ArithmeticAuxiliar
+Sum: 
+	'SUM' '(' expression=Expression ')' ('ON' '(' fields+= Expression (',' fields+=Expression)* ')')? (=> 'WHERE' '(' whereExpression=Expression ')')?  
 ;
 
 Product:
-	'PRODUCT' expression=Expression auxiliar=ArithmeticAuxiliar
+	'PRODUCT' '(' expression=Expression ')' ('ON' '(' fields+= Expression (',' fields+=Expression)* ')')? (=> 'WHERE' '(' whereExpression=Expression ')')? 
 ;
 
 Mean:
-	'MEAN' expression=Expression auxiliar=ArithmeticAuxiliar
-;
-
-ArithmeticAuxiliar:
-	{ArithmeticAuxiliar} ('ON' fields+=FIELD_NAME (',' fields+=FIELD_NAME)*)? ('WHERE' condition=Expression)? 
+	'MEAN' '(' expression=Expression ')' ('ON' '(' fields+= Expression (',' fields+=Expression)* ')')? (=> 'WHERE' '(' whereExpression=Expression ')')? 
 ;
 
 Add:
-	'ADD' value=Expression 'IN' variable=Expression ('ON' fields+=FIELD_NAME (',' fields+=FIELD_NAME)*)?
+	'ADD' '(' expression=Expression ')' 'IN' '(' variable=Expression ')' ('ON' '(' fields+= Expression (',' fields+=Expression)* ')')?
 ;
 
 Insert:
-	'INSERT' value=Expression 'IN' variable=Expression specifier=ArraySpecifier
+	'INSERT' '(' value=Expression ')' 'IN' '(' variable=Expression ')' ('(' 'WHERE' whereExpression=Expression ')')? 
 ;
 
 Rename:
-	'RENAME' call=VariableCall 'ON' fields+=FIELD_NAME (',' fields+=FIELD_NAME)* 'TO' nfields+=FIELD_NAME (',' nfields+=FIELD_NAME)*
-;
-
-Erase:
-	'ERASE' value=Expression ('ON' fields+=FIELD_NAME (',' fields+=FIELD_NAME)*)?
+	'RENAME' '(' call=VariableCall ')' 'ON' '(' fields+= Expression (',' fields+=Expression)* ')' 'TO' '(' nfields+=Expression (',' nfields+=Expression)* ')'
 ;
 
 Delete:
-	'DELETE' fields+=FIELD_NAME (',' fields+=FIELD_NAME)* 'FROM' from=Expression ('WHERE' '(' condition=Expression ')')? 
+	'DELETE' '(' ('*' | (fields+=Expression (',' fields+=Expression)*)?) ')' 'FROM' '(' fromExpression=Expression ')' (=> 'WHERE' '(' whereExpression=Expression ')')? 
 ;
 
 Remove:
-	'REMOVE' variable=VariableCall specifier=ArraySpecifier
-;
-
-ArraySpecifier:
-	{ArraySpecifier} ('AT' index+=Expression (',' fields+=Expression)* )? ('WHERE' condition=Expression)? 
+	'REMOVE' '(' value=Expression ')' 'IN' '(' variable=Expression ')' ('(' 'WHERE' whereExpression=Expression ')')? 
 ;
 
 
 Constant:
-	{Constant} Primitive | Array | Object
+	Primitive | Array | JSonObject
 ;
 
 Primitive:
-	STRING | NUMBER | BOOL | NULL
+	str=STRING | num=NUMBER | bool=BOOL | nil=NULL
 ;
 
 Array:
 	{Array} '[' (values+=Expression (',' values+=Expression)*)? ']' 
 ;
 
-Object:
-	{Object} '{' (fields+=Field (',' fields+=Field)*)? '}'
+JSonObject:
+	{JSonObject} '{' (fields+=Field (',' fields+=Field)*)? '}'
 ;
 
 Field:
-	key=FIELD_NAME ':' value=Expression
+	key=Expression ':' value=Expression
 ;
 
-terminal FIELD_NAME : '$' ID;
+NUMBER : INT | DOUBLE;
 
 terminal NULL : 'null';
 
 terminal BOOL : 'true' | 'false';
 
-terminal NUMBER : INT | DOUBLE;
+terminal DOUBLE : ('0'..'9')+'.'('0'..'9')*('e'('0'..'9')+);
 
-terminal DOUBLE : (INT)+ '.' (INT)*;

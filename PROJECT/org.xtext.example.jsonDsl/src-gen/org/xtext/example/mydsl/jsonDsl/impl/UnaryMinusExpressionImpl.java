@@ -7,12 +7,11 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.xtext.example.mydsl.jsonDsl.Expression;
 import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
 import org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression;
 
@@ -24,22 +23,22 @@ import org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.UnaryMinusExpressionImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.UnaryMinusExpressionImpl#getSub <em>Sub</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class UnaryMinusExpressionImpl extends MinimalEObjectImpl.Container implements UnaryMinusExpression
+public class UnaryMinusExpressionImpl extends ExpressionImpl implements UnaryMinusExpression
 {
   /**
-   * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
+   * The cached value of the '{@link #getSub() <em>Sub</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getValue()
+   * @see #getSub()
    * @generated
    * @ordered
    */
-  protected EObject value;
+  protected Expression sub;
 
   /**
    * <!-- begin-user-doc -->
@@ -68,9 +67,9 @@ public class UnaryMinusExpressionImpl extends MinimalEObjectImpl.Container imple
    * @generated
    */
   @Override
-  public EObject getValue()
+  public Expression getSub()
   {
-    return value;
+    return sub;
   }
 
   /**
@@ -78,13 +77,13 @@ public class UnaryMinusExpressionImpl extends MinimalEObjectImpl.Container imple
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetValue(EObject newValue, NotificationChain msgs)
+  public NotificationChain basicSetSub(Expression newSub, NotificationChain msgs)
   {
-    EObject oldValue = value;
-    value = newValue;
+    Expression oldSub = sub;
+    sub = newSub;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.UNARY_MINUS_EXPRESSION__VALUE, oldValue, newValue);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.UNARY_MINUS_EXPRESSION__SUB, oldSub, newSub);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -96,20 +95,20 @@ public class UnaryMinusExpressionImpl extends MinimalEObjectImpl.Container imple
    * @generated
    */
   @Override
-  public void setValue(EObject newValue)
+  public void setSub(Expression newSub)
   {
-    if (newValue != value)
+    if (newSub != sub)
     {
       NotificationChain msgs = null;
-      if (value != null)
-        msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.UNARY_MINUS_EXPRESSION__VALUE, null, msgs);
-      if (newValue != null)
-        msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.UNARY_MINUS_EXPRESSION__VALUE, null, msgs);
-      msgs = basicSetValue(newValue, msgs);
+      if (sub != null)
+        msgs = ((InternalEObject)sub).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.UNARY_MINUS_EXPRESSION__SUB, null, msgs);
+      if (newSub != null)
+        msgs = ((InternalEObject)newSub).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.UNARY_MINUS_EXPRESSION__SUB, null, msgs);
+      msgs = basicSetSub(newSub, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.UNARY_MINUS_EXPRESSION__VALUE, newValue, newValue));
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.UNARY_MINUS_EXPRESSION__SUB, newSub, newSub));
   }
 
   /**
@@ -122,8 +121,8 @@ public class UnaryMinusExpressionImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case JsonDslPackage.UNARY_MINUS_EXPRESSION__VALUE:
-        return basicSetValue(null, msgs);
+      case JsonDslPackage.UNARY_MINUS_EXPRESSION__SUB:
+        return basicSetSub(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -138,8 +137,8 @@ public class UnaryMinusExpressionImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case JsonDslPackage.UNARY_MINUS_EXPRESSION__VALUE:
-        return getValue();
+      case JsonDslPackage.UNARY_MINUS_EXPRESSION__SUB:
+        return getSub();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -154,8 +153,8 @@ public class UnaryMinusExpressionImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case JsonDslPackage.UNARY_MINUS_EXPRESSION__VALUE:
-        setValue((EObject)newValue);
+      case JsonDslPackage.UNARY_MINUS_EXPRESSION__SUB:
+        setSub((Expression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -171,8 +170,8 @@ public class UnaryMinusExpressionImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case JsonDslPackage.UNARY_MINUS_EXPRESSION__VALUE:
-        setValue((EObject)null);
+      case JsonDslPackage.UNARY_MINUS_EXPRESSION__SUB:
+        setSub((Expression)null);
         return;
     }
     super.eUnset(featureID);
@@ -188,8 +187,8 @@ public class UnaryMinusExpressionImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case JsonDslPackage.UNARY_MINUS_EXPRESSION__VALUE:
-        return value != null;
+      case JsonDslPackage.UNARY_MINUS_EXPRESSION__SUB:
+        return sub != null;
     }
     return super.eIsSet(featureID);
   }

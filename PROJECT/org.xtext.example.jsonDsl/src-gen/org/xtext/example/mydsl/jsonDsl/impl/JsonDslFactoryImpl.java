@@ -11,51 +11,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-import org.xtext.example.mydsl.jsonDsl.Add;
-import org.xtext.example.mydsl.jsonDsl.AddExpression;
-import org.xtext.example.mydsl.jsonDsl.AndExpression;
-import org.xtext.example.mydsl.jsonDsl.ArithmeticAuxiliar;
-import org.xtext.example.mydsl.jsonDsl.Array;
-import org.xtext.example.mydsl.jsonDsl.ArrayCaller;
-import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
-import org.xtext.example.mydsl.jsonDsl.Assignment;
-import org.xtext.example.mydsl.jsonDsl.AuxiliarCaller;
-import org.xtext.example.mydsl.jsonDsl.BinaryExpression;
-import org.xtext.example.mydsl.jsonDsl.CompExpression;
-import org.xtext.example.mydsl.jsonDsl.Concat;
-import org.xtext.example.mydsl.jsonDsl.Constant;
-import org.xtext.example.mydsl.jsonDsl.Delete;
-import org.xtext.example.mydsl.jsonDsl.Depth;
-import org.xtext.example.mydsl.jsonDsl.EqExpression;
-import org.xtext.example.mydsl.jsonDsl.Erase;
-import org.xtext.example.mydsl.jsonDsl.Export;
-import org.xtext.example.mydsl.jsonDsl.Expression;
-import org.xtext.example.mydsl.jsonDsl.Extract;
-import org.xtext.example.mydsl.jsonDsl.Field;
-import org.xtext.example.mydsl.jsonDsl.FieldCaller;
-import org.xtext.example.mydsl.jsonDsl.FieldInfo;
-import org.xtext.example.mydsl.jsonDsl.FieldInvoquer;
-import org.xtext.example.mydsl.jsonDsl.FunctionCall;
-import org.xtext.example.mydsl.jsonDsl.Insert;
-import org.xtext.example.mydsl.jsonDsl.JsonDslFactory;
-import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
-import org.xtext.example.mydsl.jsonDsl.Load;
-import org.xtext.example.mydsl.jsonDsl.Mean;
-import org.xtext.example.mydsl.jsonDsl.Model;
-import org.xtext.example.mydsl.jsonDsl.MultExpression;
-import org.xtext.example.mydsl.jsonDsl.NegationExpression;
-import org.xtext.example.mydsl.jsonDsl.OrExpression;
-import org.xtext.example.mydsl.jsonDsl.PrimaryExpression;
-import org.xtext.example.mydsl.jsonDsl.ProcCall;
-import org.xtext.example.mydsl.jsonDsl.Product;
-import org.xtext.example.mydsl.jsonDsl.Remove;
-import org.xtext.example.mydsl.jsonDsl.Rename;
-import org.xtext.example.mydsl.jsonDsl.Select;
-import org.xtext.example.mydsl.jsonDsl.SimpleStatement;
-import org.xtext.example.mydsl.jsonDsl.Store;
-import org.xtext.example.mydsl.jsonDsl.Sum;
-import org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression;
-import org.xtext.example.mydsl.jsonDsl.VariableCall;
+import org.xtext.example.mydsl.jsonDsl.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -113,46 +69,55 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
       case JsonDslPackage.SIMPLE_STATEMENT: return createSimpleStatement();
       case JsonDslPackage.ASSIGNMENT: return createAssignment();
       case JsonDslPackage.EXPRESSION: return createExpression();
-      case JsonDslPackage.BINARY_EXPRESSION: return createBinaryExpression();
-      case JsonDslPackage.OR_EXPRESSION: return createOrExpression();
-      case JsonDslPackage.AND_EXPRESSION: return createAndExpression();
-      case JsonDslPackage.EQ_EXPRESSION: return createEqExpression();
-      case JsonDslPackage.COMP_EXPRESSION: return createCompExpression();
-      case JsonDslPackage.ADD_EXPRESSION: return createAddExpression();
-      case JsonDslPackage.MULT_EXPRESSION: return createMultExpression();
       case JsonDslPackage.UNARY_MINUS_EXPRESSION: return createUnaryMinusExpression();
-      case JsonDslPackage.NEGATION_EXPRESSION: return createNegationExpression();
-      case JsonDslPackage.PRIMARY_EXPRESSION: return createPrimaryExpression();
-      case JsonDslPackage.FIELD_INVOQUER: return createFieldInvoquer();
+      case JsonDslPackage.UNARY_PLUS_EXPRESSION: return createUnaryPlusExpression();
+      case JsonDslPackage.LOGICAL_NEGATION_EXPRESSION: return createLogicalNegationExpression();
+      case JsonDslPackage.BRACKET_EXPRESSION: return createBracketExpression();
       case JsonDslPackage.VARIABLE_CALL: return createVariableCall();
       case JsonDslPackage.AUXILIAR_CALLER: return createAuxiliarCaller();
       case JsonDslPackage.FIELD_CALLER: return createFieldCaller();
       case JsonDslPackage.ARRAY_CALLER: return createArrayCaller();
-      case JsonDslPackage.FUNCTION_CALL: return createFunctionCall();
+      case JsonDslPackage.IO_FUNCTIONS: return createIOFunctions();
+      case JsonDslPackage.INFO_FUNCTIONS: return createInfoFunctions();
+      case JsonDslPackage.MANIP_FUNCTIONS: return createManipFunctions();
+      case JsonDslPackage.ARITH_FUNCTIONS: return createArithFunctions();
+      case JsonDslPackage.ALTER_FUNCTIONS: return createAlterFunctions();
       case JsonDslPackage.LOAD: return createLoad();
       case JsonDslPackage.STORE: return createStore();
       case JsonDslPackage.EXPORT: return createExport();
       case JsonDslPackage.PROC_CALL: return createProcCall();
       case JsonDslPackage.DEPTH: return createDepth();
       case JsonDslPackage.FIELD_INFO: return createFieldInfo();
-      case JsonDslPackage.EXTRACT: return createExtract();
+      case JsonDslPackage.CONTAINS: return createContains();
       case JsonDslPackage.SELECT: return createSelect();
       case JsonDslPackage.CONCAT: return createConcat();
       case JsonDslPackage.SUM: return createSum();
       case JsonDslPackage.PRODUCT: return createProduct();
       case JsonDslPackage.MEAN: return createMean();
-      case JsonDslPackage.ARITHMETIC_AUXILIAR: return createArithmeticAuxiliar();
       case JsonDslPackage.ADD: return createAdd();
       case JsonDslPackage.INSERT: return createInsert();
       case JsonDslPackage.RENAME: return createRename();
-      case JsonDslPackage.ERASE: return createErase();
       case JsonDslPackage.DELETE: return createDelete();
       case JsonDslPackage.REMOVE: return createRemove();
-      case JsonDslPackage.ARRAY_SPECIFIER: return createArraySpecifier();
       case JsonDslPackage.CONSTANT: return createConstant();
+      case JsonDslPackage.PRIMITIVE: return createPrimitive();
       case JsonDslPackage.ARRAY: return createArray();
-      case JsonDslPackage.OBJECT: return createObject();
+      case JsonDslPackage.JSON_OBJECT: return createJSonObject();
       case JsonDslPackage.FIELD: return createField();
+      case JsonDslPackage.DISJUNCTION_EXPRESSION: return createDisjunctionExpression();
+      case JsonDslPackage.CONJUNCTION_EXPRESSION: return createConjunctionExpression();
+      case JsonDslPackage.EQUALITY_EXPRESSION: return createEqualityExpression();
+      case JsonDslPackage.INEQUALITY_EXPRESSION: return createInequalityExpression();
+      case JsonDslPackage.SUPERI_EXPRESSION: return createSuperiExpression();
+      case JsonDslPackage.SUPERIOR_OR_EQUAL_EXPRESSION: return createSuperiorOrEqualExpression();
+      case JsonDslPackage.INFERI_EXPRESSION: return createInferiExpression();
+      case JsonDslPackage.INFERIOR_OR_EQUAL_EXPRESSION: return createInferiorOrEqualExpression();
+      case JsonDslPackage.ADDITION_EXPRESSION: return createAdditionExpression();
+      case JsonDslPackage.SUBSTRACTION_EXPRESSION: return createSubstractionExpression();
+      case JsonDslPackage.MULTIPLICATION_EXPRESSION: return createMultiplicationExpression();
+      case JsonDslPackage.DIVISION_EXPRESSION: return createDivisionExpression();
+      case JsonDslPackage.MODULO_EXPRESSION: return createModuloExpression();
+      case JsonDslPackage.PRIMARY_EXPRESSION: return createPrimaryExpression();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -212,90 +177,6 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public BinaryExpression createBinaryExpression()
-  {
-    BinaryExpressionImpl binaryExpression = new BinaryExpressionImpl();
-    return binaryExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public OrExpression createOrExpression()
-  {
-    OrExpressionImpl orExpression = new OrExpressionImpl();
-    return orExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public AndExpression createAndExpression()
-  {
-    AndExpressionImpl andExpression = new AndExpressionImpl();
-    return andExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EqExpression createEqExpression()
-  {
-    EqExpressionImpl eqExpression = new EqExpressionImpl();
-    return eqExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public CompExpression createCompExpression()
-  {
-    CompExpressionImpl compExpression = new CompExpressionImpl();
-    return compExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public AddExpression createAddExpression()
-  {
-    AddExpressionImpl addExpression = new AddExpressionImpl();
-    return addExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public MultExpression createMultExpression()
-  {
-    MultExpressionImpl multExpression = new MultExpressionImpl();
-    return multExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public UnaryMinusExpression createUnaryMinusExpression()
   {
     UnaryMinusExpressionImpl unaryMinusExpression = new UnaryMinusExpressionImpl();
@@ -308,10 +189,10 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public NegationExpression createNegationExpression()
+  public UnaryPlusExpression createUnaryPlusExpression()
   {
-    NegationExpressionImpl negationExpression = new NegationExpressionImpl();
-    return negationExpression;
+    UnaryPlusExpressionImpl unaryPlusExpression = new UnaryPlusExpressionImpl();
+    return unaryPlusExpression;
   }
 
   /**
@@ -320,10 +201,10 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public PrimaryExpression createPrimaryExpression()
+  public LogicalNegationExpression createLogicalNegationExpression()
   {
-    PrimaryExpressionImpl primaryExpression = new PrimaryExpressionImpl();
-    return primaryExpression;
+    LogicalNegationExpressionImpl logicalNegationExpression = new LogicalNegationExpressionImpl();
+    return logicalNegationExpression;
   }
 
   /**
@@ -332,10 +213,10 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public FieldInvoquer createFieldInvoquer()
+  public BracketExpression createBracketExpression()
   {
-    FieldInvoquerImpl fieldInvoquer = new FieldInvoquerImpl();
-    return fieldInvoquer;
+    BracketExpressionImpl bracketExpression = new BracketExpressionImpl();
+    return bracketExpression;
   }
 
   /**
@@ -392,10 +273,58 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public FunctionCall createFunctionCall()
+  public IOFunctions createIOFunctions()
   {
-    FunctionCallImpl functionCall = new FunctionCallImpl();
-    return functionCall;
+    IOFunctionsImpl ioFunctions = new IOFunctionsImpl();
+    return ioFunctions;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public InfoFunctions createInfoFunctions()
+  {
+    InfoFunctionsImpl infoFunctions = new InfoFunctionsImpl();
+    return infoFunctions;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ManipFunctions createManipFunctions()
+  {
+    ManipFunctionsImpl manipFunctions = new ManipFunctionsImpl();
+    return manipFunctions;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ArithFunctions createArithFunctions()
+  {
+    ArithFunctionsImpl arithFunctions = new ArithFunctionsImpl();
+    return arithFunctions;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public AlterFunctions createAlterFunctions()
+  {
+    AlterFunctionsImpl alterFunctions = new AlterFunctionsImpl();
+    return alterFunctions;
   }
 
   /**
@@ -476,10 +405,10 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public Extract createExtract()
+  public Contains createContains()
   {
-    ExtractImpl extract = new ExtractImpl();
-    return extract;
+    ContainsImpl contains = new ContainsImpl();
+    return contains;
   }
 
   /**
@@ -548,18 +477,6 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public ArithmeticAuxiliar createArithmeticAuxiliar()
-  {
-    ArithmeticAuxiliarImpl arithmeticAuxiliar = new ArithmeticAuxiliarImpl();
-    return arithmeticAuxiliar;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public Add createAdd()
   {
     AddImpl add = new AddImpl();
@@ -596,18 +513,6 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public Erase createErase()
-  {
-    EraseImpl erase = new EraseImpl();
-    return erase;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public Delete createDelete()
   {
     DeleteImpl delete = new DeleteImpl();
@@ -632,10 +537,10 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public ArraySpecifier createArraySpecifier()
+  public Constant createConstant()
   {
-    ArraySpecifierImpl arraySpecifier = new ArraySpecifierImpl();
-    return arraySpecifier;
+    ConstantImpl constant = new ConstantImpl();
+    return constant;
   }
 
   /**
@@ -644,10 +549,10 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public Constant createConstant()
+  public Primitive createPrimitive()
   {
-    ConstantImpl constant = new ConstantImpl();
-    return constant;
+    PrimitiveImpl primitive = new PrimitiveImpl();
+    return primitive;
   }
 
   /**
@@ -668,10 +573,10 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public org.xtext.example.mydsl.jsonDsl.Object createObject()
+  public JSonObject createJSonObject()
   {
-    ObjectImpl object = new ObjectImpl();
-    return object;
+    JSonObjectImpl jSonObject = new JSonObjectImpl();
+    return jSonObject;
   }
 
   /**
@@ -684,6 +589,174 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
   {
     FieldImpl field = new FieldImpl();
     return field;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public DisjunctionExpression createDisjunctionExpression()
+  {
+    DisjunctionExpressionImpl disjunctionExpression = new DisjunctionExpressionImpl();
+    return disjunctionExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ConjunctionExpression createConjunctionExpression()
+  {
+    ConjunctionExpressionImpl conjunctionExpression = new ConjunctionExpressionImpl();
+    return conjunctionExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EqualityExpression createEqualityExpression()
+  {
+    EqualityExpressionImpl equalityExpression = new EqualityExpressionImpl();
+    return equalityExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public InequalityExpression createInequalityExpression()
+  {
+    InequalityExpressionImpl inequalityExpression = new InequalityExpressionImpl();
+    return inequalityExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SuperiExpression createSuperiExpression()
+  {
+    SuperiExpressionImpl superiExpression = new SuperiExpressionImpl();
+    return superiExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SuperiorOrEqualExpression createSuperiorOrEqualExpression()
+  {
+    SuperiorOrEqualExpressionImpl superiorOrEqualExpression = new SuperiorOrEqualExpressionImpl();
+    return superiorOrEqualExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public InferiExpression createInferiExpression()
+  {
+    InferiExpressionImpl inferiExpression = new InferiExpressionImpl();
+    return inferiExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public InferiorOrEqualExpression createInferiorOrEqualExpression()
+  {
+    InferiorOrEqualExpressionImpl inferiorOrEqualExpression = new InferiorOrEqualExpressionImpl();
+    return inferiorOrEqualExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public AdditionExpression createAdditionExpression()
+  {
+    AdditionExpressionImpl additionExpression = new AdditionExpressionImpl();
+    return additionExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SubstractionExpression createSubstractionExpression()
+  {
+    SubstractionExpressionImpl substractionExpression = new SubstractionExpressionImpl();
+    return substractionExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public MultiplicationExpression createMultiplicationExpression()
+  {
+    MultiplicationExpressionImpl multiplicationExpression = new MultiplicationExpressionImpl();
+    return multiplicationExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public DivisionExpression createDivisionExpression()
+  {
+    DivisionExpressionImpl divisionExpression = new DivisionExpressionImpl();
+    return divisionExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ModuloExpression createModuloExpression()
+  {
+    ModuloExpressionImpl moduloExpression = new ModuloExpressionImpl();
+    return moduloExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public PrimaryExpression createPrimaryExpression()
+  {
+    PrimaryExpressionImpl primaryExpression = new PrimaryExpressionImpl();
+    return primaryExpression;
   }
 
   /**

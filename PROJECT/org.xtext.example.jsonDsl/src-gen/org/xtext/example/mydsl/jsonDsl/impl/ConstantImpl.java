@@ -15,7 +15,7 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
  *
  * @generated
  */
-public class ConstantImpl extends PrimaryExpressionImpl implements Constant
+public class ConstantImpl extends ExpressionImpl implements Constant
 {
   /**
    * <!-- begin-user-doc -->

@@ -25,7 +25,7 @@ public interface ArrayCaller extends AuxiliarCaller
 {
   /**
    * Returns the value of the '<em><b>Index</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * The list contents are of type {@link java.lang.Integer}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Index</em>' attribute list.
@@ -33,6 +33,6 @@ public interface ArrayCaller extends AuxiliarCaller
    * @model unique="false"
    * @generated
    */
-  EList<String> getIndex();
+  EList<Integer> getIndex();
 
 } // ArrayCaller

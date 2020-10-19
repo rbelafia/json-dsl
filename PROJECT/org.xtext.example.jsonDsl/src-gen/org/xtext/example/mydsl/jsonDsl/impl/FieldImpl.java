@@ -33,24 +33,14 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
 public class FieldImpl extends MinimalEObjectImpl.Container implements Field
 {
   /**
-   * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
+   * The cached value of the '{@link #getKey() <em>Key</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getKey()
    * @generated
    * @ordered
    */
-  protected static final String KEY_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getKey() <em>Key</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getKey()
-   * @generated
-   * @ordered
-   */
-  protected String key = KEY_EDEFAULT;
+  protected Expression key;
 
   /**
    * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
@@ -89,7 +79,7 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field
    * @generated
    */
   @Override
-  public String getKey()
+  public Expression getKey()
   {
     return key;
   }
@@ -99,13 +89,38 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setKey(String newKey)
+  public NotificationChain basicSetKey(Expression newKey, NotificationChain msgs)
   {
-    String oldKey = key;
+    Expression oldKey = key;
     key = newKey;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.FIELD__KEY, oldKey, key));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.FIELD__KEY, oldKey, newKey);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setKey(Expression newKey)
+  {
+    if (newKey != key)
+    {
+      NotificationChain msgs = null;
+      if (key != null)
+        msgs = ((InternalEObject)key).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.FIELD__KEY, null, msgs);
+      if (newKey != null)
+        msgs = ((InternalEObject)newKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.FIELD__KEY, null, msgs);
+      msgs = basicSetKey(newKey, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.FIELD__KEY, newKey, newKey));
   }
 
   /**
@@ -168,6 +183,8 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field
   {
     switch (featureID)
     {
+      case JsonDslPackage.FIELD__KEY:
+        return basicSetKey(null, msgs);
       case JsonDslPackage.FIELD__VALUE:
         return basicSetValue(null, msgs);
     }
@@ -203,7 +220,7 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field
     switch (featureID)
     {
       case JsonDslPackage.FIELD__KEY:
-        setKey((String)newValue);
+        setKey((Expression)newValue);
         return;
       case JsonDslPackage.FIELD__VALUE:
         setValue((Expression)newValue);
@@ -223,7 +240,7 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field
     switch (featureID)
     {
       case JsonDslPackage.FIELD__KEY:
-        setKey(KEY_EDEFAULT);
+        setKey((Expression)null);
         return;
       case JsonDslPackage.FIELD__VALUE:
         setValue((Expression)null);
@@ -243,28 +260,11 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field
     switch (featureID)
     {
       case JsonDslPackage.FIELD__KEY:
-        return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
+        return key != null;
       case JsonDslPackage.FIELD__VALUE:
         return value != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (key: ");
-    result.append(key);
-    result.append(')');
-    return result.toString();
   }
 
 } //FieldImpl

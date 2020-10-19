@@ -28,7 +28,7 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
  *
  * @generated
  */
-public class DepthImpl extends FunctionCallImpl implements Depth
+public class DepthImpl extends InfoFunctionsImpl implements Depth
 {
   /**
    * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.

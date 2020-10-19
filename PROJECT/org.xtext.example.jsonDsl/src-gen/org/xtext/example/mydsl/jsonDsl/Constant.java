@@ -14,6 +14,6 @@ package org.xtext.example.mydsl.jsonDsl;
  * @model
  * @generated
  */
-public interface Constant extends PrimaryExpression
+public interface Constant extends Expression
 {
 } // Constant

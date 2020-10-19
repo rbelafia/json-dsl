@@ -11,10 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
+import org.xtext.example.mydsl.jsonDsl.Expression;
 import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
 import org.xtext.example.mydsl.jsonDsl.Remove;
-import org.xtext.example.mydsl.jsonDsl.VariableCall;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,14 +23,25 @@ import org.xtext.example.mydsl.jsonDsl.VariableCall;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.RemoveImpl#getValue <em>Value</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.RemoveImpl#getVariable <em>Variable</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.RemoveImpl#getSpecifier <em>Specifier</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.RemoveImpl#getWhereExpression <em>Where Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RemoveImpl extends FunctionCallImpl implements Remove
+public class RemoveImpl extends AlterFunctionsImpl implements Remove
 {
+  /**
+   * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getValue()
+   * @generated
+   * @ordered
+   */
+  protected Expression value;
+
   /**
    * The cached value of the '{@link #getVariable() <em>Variable</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -40,17 +50,17 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
    * @generated
    * @ordered
    */
-  protected VariableCall variable;
+  protected Expression variable;
 
   /**
-   * The cached value of the '{@link #getSpecifier() <em>Specifier</em>}' containment reference.
+   * The cached value of the '{@link #getWhereExpression() <em>Where Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getSpecifier()
+   * @see #getWhereExpression()
    * @generated
    * @ordered
    */
-  protected ArraySpecifier specifier;
+  protected Expression whereExpression;
 
   /**
    * <!-- begin-user-doc -->
@@ -79,7 +89,57 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
    * @generated
    */
   @Override
-  public VariableCall getVariable()
+  public Expression getValue()
+  {
+    return value;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetValue(Expression newValue, NotificationChain msgs)
+  {
+    Expression oldValue = value;
+    value = newValue;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.REMOVE__VALUE, oldValue, newValue);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setValue(Expression newValue)
+  {
+    if (newValue != value)
+    {
+      NotificationChain msgs = null;
+      if (value != null)
+        msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.REMOVE__VALUE, null, msgs);
+      if (newValue != null)
+        msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.REMOVE__VALUE, null, msgs);
+      msgs = basicSetValue(newValue, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.REMOVE__VALUE, newValue, newValue));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Expression getVariable()
   {
     return variable;
   }
@@ -89,9 +149,9 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetVariable(VariableCall newVariable, NotificationChain msgs)
+  public NotificationChain basicSetVariable(Expression newVariable, NotificationChain msgs)
   {
-    VariableCall oldVariable = variable;
+    Expression oldVariable = variable;
     variable = newVariable;
     if (eNotificationRequired())
     {
@@ -107,7 +167,7 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
    * @generated
    */
   @Override
-  public void setVariable(VariableCall newVariable)
+  public void setVariable(Expression newVariable)
   {
     if (newVariable != variable)
     {
@@ -129,9 +189,9 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
    * @generated
    */
   @Override
-  public ArraySpecifier getSpecifier()
+  public Expression getWhereExpression()
   {
-    return specifier;
+    return whereExpression;
   }
 
   /**
@@ -139,13 +199,13 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetSpecifier(ArraySpecifier newSpecifier, NotificationChain msgs)
+  public NotificationChain basicSetWhereExpression(Expression newWhereExpression, NotificationChain msgs)
   {
-    ArraySpecifier oldSpecifier = specifier;
-    specifier = newSpecifier;
+    Expression oldWhereExpression = whereExpression;
+    whereExpression = newWhereExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.REMOVE__SPECIFIER, oldSpecifier, newSpecifier);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.REMOVE__WHERE_EXPRESSION, oldWhereExpression, newWhereExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -157,20 +217,20 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
    * @generated
    */
   @Override
-  public void setSpecifier(ArraySpecifier newSpecifier)
+  public void setWhereExpression(Expression newWhereExpression)
   {
-    if (newSpecifier != specifier)
+    if (newWhereExpression != whereExpression)
     {
       NotificationChain msgs = null;
-      if (specifier != null)
-        msgs = ((InternalEObject)specifier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.REMOVE__SPECIFIER, null, msgs);
-      if (newSpecifier != null)
-        msgs = ((InternalEObject)newSpecifier).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.REMOVE__SPECIFIER, null, msgs);
-      msgs = basicSetSpecifier(newSpecifier, msgs);
+      if (whereExpression != null)
+        msgs = ((InternalEObject)whereExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.REMOVE__WHERE_EXPRESSION, null, msgs);
+      if (newWhereExpression != null)
+        msgs = ((InternalEObject)newWhereExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.REMOVE__WHERE_EXPRESSION, null, msgs);
+      msgs = basicSetWhereExpression(newWhereExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.REMOVE__SPECIFIER, newSpecifier, newSpecifier));
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.REMOVE__WHERE_EXPRESSION, newWhereExpression, newWhereExpression));
   }
 
   /**
@@ -183,10 +243,12 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
   {
     switch (featureID)
     {
+      case JsonDslPackage.REMOVE__VALUE:
+        return basicSetValue(null, msgs);
       case JsonDslPackage.REMOVE__VARIABLE:
         return basicSetVariable(null, msgs);
-      case JsonDslPackage.REMOVE__SPECIFIER:
-        return basicSetSpecifier(null, msgs);
+      case JsonDslPackage.REMOVE__WHERE_EXPRESSION:
+        return basicSetWhereExpression(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -201,10 +263,12 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
   {
     switch (featureID)
     {
+      case JsonDslPackage.REMOVE__VALUE:
+        return getValue();
       case JsonDslPackage.REMOVE__VARIABLE:
         return getVariable();
-      case JsonDslPackage.REMOVE__SPECIFIER:
-        return getSpecifier();
+      case JsonDslPackage.REMOVE__WHERE_EXPRESSION:
+        return getWhereExpression();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -219,11 +283,14 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
   {
     switch (featureID)
     {
-      case JsonDslPackage.REMOVE__VARIABLE:
-        setVariable((VariableCall)newValue);
+      case JsonDslPackage.REMOVE__VALUE:
+        setValue((Expression)newValue);
         return;
-      case JsonDslPackage.REMOVE__SPECIFIER:
-        setSpecifier((ArraySpecifier)newValue);
+      case JsonDslPackage.REMOVE__VARIABLE:
+        setVariable((Expression)newValue);
+        return;
+      case JsonDslPackage.REMOVE__WHERE_EXPRESSION:
+        setWhereExpression((Expression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -239,11 +306,14 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
   {
     switch (featureID)
     {
-      case JsonDslPackage.REMOVE__VARIABLE:
-        setVariable((VariableCall)null);
+      case JsonDslPackage.REMOVE__VALUE:
+        setValue((Expression)null);
         return;
-      case JsonDslPackage.REMOVE__SPECIFIER:
-        setSpecifier((ArraySpecifier)null);
+      case JsonDslPackage.REMOVE__VARIABLE:
+        setVariable((Expression)null);
+        return;
+      case JsonDslPackage.REMOVE__WHERE_EXPRESSION:
+        setWhereExpression((Expression)null);
         return;
     }
     super.eUnset(featureID);
@@ -259,10 +329,12 @@ public class RemoveImpl extends FunctionCallImpl implements Remove
   {
     switch (featureID)
     {
+      case JsonDslPackage.REMOVE__VALUE:
+        return value != null;
       case JsonDslPackage.REMOVE__VARIABLE:
         return variable != null;
-      case JsonDslPackage.REMOVE__SPECIFIER:
-        return specifier != null;
+      case JsonDslPackage.REMOVE__WHERE_EXPRESSION:
+        return whereExpression != null;
     }
     return super.eIsSet(featureID);
   }

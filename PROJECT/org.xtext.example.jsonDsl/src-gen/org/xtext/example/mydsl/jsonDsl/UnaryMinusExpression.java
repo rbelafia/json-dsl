@@ -3,7 +3,6 @@
  */
 package org.xtext.example.mydsl.jsonDsl;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,35 +13,35 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression#getValue <em>Value</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression#getSub <em>Sub</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getUnaryMinusExpression()
  * @model
  * @generated
  */
-public interface UnaryMinusExpression extends EObject
+public interface UnaryMinusExpression extends Expression
 {
   /**
-   * Returns the value of the '<em><b>Value</b></em>' containment reference.
+   * Returns the value of the '<em><b>Sub</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Value</em>' containment reference.
-   * @see #setValue(EObject)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getUnaryMinusExpression_Value()
+   * @return the value of the '<em>Sub</em>' containment reference.
+   * @see #setSub(Expression)
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getUnaryMinusExpression_Sub()
    * @model containment="true"
    * @generated
    */
-  EObject getValue();
+  Expression getSub();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression#getValue <em>Value</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression#getSub <em>Sub</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Value</em>' containment reference.
-   * @see #getValue()
+   * @param value the new value of the '<em>Sub</em>' containment reference.
+   * @see #getSub()
    * @generated
    */
-  void setValue(EObject value);
+  void setSub(Expression value);
 
 } // UnaryMinusExpression

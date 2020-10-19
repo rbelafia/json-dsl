@@ -5,8 +5,6 @@ package org.xtext.example.mydsl.jsonDsl.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
 import org.xtext.example.mydsl.jsonDsl.PrimaryExpression;
 
@@ -17,7 +15,7 @@ import org.xtext.example.mydsl.jsonDsl.PrimaryExpression;
  *
  * @generated
  */
-public class PrimaryExpressionImpl extends MinimalEObjectImpl.Container implements PrimaryExpression
+public class PrimaryExpressionImpl extends ExpressionImpl implements PrimaryExpression
 {
   /**
    * <!-- begin-user-doc -->

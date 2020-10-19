@@ -15,8 +15,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.xtext.example.mydsl.jsonDsl.Expression;
 import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
 import org.xtext.example.mydsl.jsonDsl.Rename;
 import org.xtext.example.mydsl.jsonDsl.VariableCall;
@@ -36,7 +38,7 @@ import org.xtext.example.mydsl.jsonDsl.VariableCall;
  *
  * @generated
  */
-public class RenameImpl extends FunctionCallImpl implements Rename
+public class RenameImpl extends AlterFunctionsImpl implements Rename
 {
   /**
    * The cached value of the '{@link #getCall() <em>Call</em>}' containment reference.
@@ -49,24 +51,24 @@ public class RenameImpl extends FunctionCallImpl implements Rename
   protected VariableCall call;
 
   /**
-   * The cached value of the '{@link #getFields() <em>Fields</em>}' attribute list.
+   * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getFields()
    * @generated
    * @ordered
    */
-  protected EList<String> fields;
+  protected EList<Expression> fields;
 
   /**
-   * The cached value of the '{@link #getNfields() <em>Nfields</em>}' attribute list.
+   * The cached value of the '{@link #getNfields() <em>Nfields</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getNfields()
    * @generated
    * @ordered
    */
-  protected EList<String> nfields;
+  protected EList<Expression> nfields;
 
   /**
    * <!-- begin-user-doc -->
@@ -145,11 +147,11 @@ public class RenameImpl extends FunctionCallImpl implements Rename
    * @generated
    */
   @Override
-  public EList<String> getFields()
+  public EList<Expression> getFields()
   {
     if (fields == null)
     {
-      fields = new EDataTypeEList<String>(String.class, this, JsonDslPackage.RENAME__FIELDS);
+      fields = new EObjectContainmentEList<Expression>(Expression.class, this, JsonDslPackage.RENAME__FIELDS);
     }
     return fields;
   }
@@ -160,11 +162,11 @@ public class RenameImpl extends FunctionCallImpl implements Rename
    * @generated
    */
   @Override
-  public EList<String> getNfields()
+  public EList<Expression> getNfields()
   {
     if (nfields == null)
     {
-      nfields = new EDataTypeEList<String>(String.class, this, JsonDslPackage.RENAME__NFIELDS);
+      nfields = new EObjectContainmentEList<Expression>(Expression.class, this, JsonDslPackage.RENAME__NFIELDS);
     }
     return nfields;
   }
@@ -181,6 +183,10 @@ public class RenameImpl extends FunctionCallImpl implements Rename
     {
       case JsonDslPackage.RENAME__CALL:
         return basicSetCall(null, msgs);
+      case JsonDslPackage.RENAME__FIELDS:
+        return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
+      case JsonDslPackage.RENAME__NFIELDS:
+        return ((InternalEList<?>)getNfields()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -221,11 +227,11 @@ public class RenameImpl extends FunctionCallImpl implements Rename
         return;
       case JsonDslPackage.RENAME__FIELDS:
         getFields().clear();
-        getFields().addAll((Collection<? extends String>)newValue);
+        getFields().addAll((Collection<? extends Expression>)newValue);
         return;
       case JsonDslPackage.RENAME__NFIELDS:
         getNfields().clear();
-        getNfields().addAll((Collection<? extends String>)newValue);
+        getNfields().addAll((Collection<? extends Expression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -272,25 +278,6 @@ public class RenameImpl extends FunctionCallImpl implements Rename
         return nfields != null && !nfields.isEmpty();
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (fields: ");
-    result.append(fields);
-    result.append(", nfields: ");
-    result.append(nfields);
-    result.append(')');
-    return result.toString();
   }
 
 } //RenameImpl

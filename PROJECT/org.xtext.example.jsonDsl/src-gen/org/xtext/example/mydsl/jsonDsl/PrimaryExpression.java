@@ -3,7 +3,6 @@
  */
 package org.xtext.example.mydsl.jsonDsl;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -15,6 +14,6 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface PrimaryExpression extends EObject
+public interface PrimaryExpression extends Expression
 {
 } // PrimaryExpression

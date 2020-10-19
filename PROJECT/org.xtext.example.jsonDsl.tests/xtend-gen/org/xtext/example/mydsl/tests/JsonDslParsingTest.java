@@ -4,18 +4,22 @@
 package org.xtext.example.mydsl.tests;
 
 import com.google.inject.Inject;
+import java.util.HashMap;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.xtext.example.mydsl.jsonDsl.Model;
+import org.xtext.example.mydsl.jsonDsl.Primitive;
+import org.xtext.example.mydsl.jsonDsl.SimpleStatement;
 import org.xtext.example.mydsl.tests.JsonDslInjectorProvider;
 
 @ExtendWith(InjectionExtension.class)
@@ -29,17 +33,16 @@ public class JsonDslParsingTest {
   public void loadModel() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("Hello Xtext!");
+      _builder.append("2.4e3");
       _builder.newLine();
       final Model result = this.parseHelper.parse(_builder);
+      final EList<SimpleStatement> stmts = result.getStmts();
+      HashMap<String, Object> elementTable = new HashMap<String, Object>();
+      final Procedure2<SimpleStatement, Integer> _function = (SimpleStatement element, Integer index) -> {
+        InputOutput.<String>println(((Primitive) element).getStr());
+      };
+      IterableExtensions.<SimpleStatement>forEach(stmts, _function);
       Assertions.assertNotNull(result);
-      final EList<Resource.Diagnostic> errors = result.eResource().getErrors();
-      boolean _isEmpty = errors.isEmpty();
-      StringConcatenation _builder_1 = new StringConcatenation();
-      _builder_1.append("Unexpected errors: ");
-      String _join = IterableExtensions.join(errors, ", ");
-      _builder_1.append(_join);
-      Assertions.assertTrue(_isEmpty, _builder_1.toString());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
