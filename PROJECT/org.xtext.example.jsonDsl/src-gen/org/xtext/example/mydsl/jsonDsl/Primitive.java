@@ -14,7 +14,8 @@ package org.xtext.example.mydsl.jsonDsl;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.Primitive#getStr <em>Str</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.Primitive#getNum <em>Num</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.Primitive#getIntNum <em>Int Num</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.Primitive#getFloatNum <em>Float Num</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.Primitive#getBool <em>Bool</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.Primitive#getNil <em>Nil</em>}</li>
  * </ul>
@@ -48,26 +49,48 @@ public interface Primitive extends Constant
   void setStr(String value);
 
   /**
-   * Returns the value of the '<em><b>Num</b></em>' attribute.
+   * Returns the value of the '<em><b>Int Num</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Num</em>' attribute.
-   * @see #setNum(String)
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getPrimitive_Num()
+   * @return the value of the '<em>Int Num</em>' attribute.
+   * @see #setIntNum(int)
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getPrimitive_IntNum()
    * @model
    * @generated
    */
-  String getNum();
+  int getIntNum();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Primitive#getNum <em>Num</em>}' attribute.
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Primitive#getIntNum <em>Int Num</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Num</em>' attribute.
-   * @see #getNum()
+   * @param value the new value of the '<em>Int Num</em>' attribute.
+   * @see #getIntNum()
    * @generated
    */
-  void setNum(String value);
+  void setIntNum(int value);
+
+  /**
+   * Returns the value of the '<em><b>Float Num</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Float Num</em>' attribute.
+   * @see #setFloatNum(String)
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getPrimitive_FloatNum()
+   * @model
+   * @generated
+   */
+  String getFloatNum();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.Primitive#getFloatNum <em>Float Num</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Float Num</em>' attribute.
+   * @see #getFloatNum()
+   * @generated
+   */
+  void setFloatNum(String value);
 
   /**
    * Returns the value of the '<em><b>Bool</b></em>' attribute.

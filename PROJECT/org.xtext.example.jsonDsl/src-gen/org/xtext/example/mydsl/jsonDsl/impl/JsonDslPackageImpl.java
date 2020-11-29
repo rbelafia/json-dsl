@@ -10,14 +10,13 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
-import org.xtext.example.mydsl.jsonDsl.Add;
 import org.xtext.example.mydsl.jsonDsl.AdditionExpression;
 import org.xtext.example.mydsl.jsonDsl.AlterFunctions;
 import org.xtext.example.mydsl.jsonDsl.ArithFunctions;
 import org.xtext.example.mydsl.jsonDsl.Array;
-import org.xtext.example.mydsl.jsonDsl.ArrayCaller;
+import org.xtext.example.mydsl.jsonDsl.ArrayCall;
+import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
 import org.xtext.example.mydsl.jsonDsl.Assignment;
-import org.xtext.example.mydsl.jsonDsl.AuxiliarCaller;
 import org.xtext.example.mydsl.jsonDsl.BracketExpression;
 import org.xtext.example.mydsl.jsonDsl.Concat;
 import org.xtext.example.mydsl.jsonDsl.ConjunctionExpression;
@@ -31,39 +30,40 @@ import org.xtext.example.mydsl.jsonDsl.EqualityExpression;
 import org.xtext.example.mydsl.jsonDsl.Export;
 import org.xtext.example.mydsl.jsonDsl.Expression;
 import org.xtext.example.mydsl.jsonDsl.Field;
-import org.xtext.example.mydsl.jsonDsl.FieldCaller;
+import org.xtext.example.mydsl.jsonDsl.FieldCall;
 import org.xtext.example.mydsl.jsonDsl.FieldInfo;
 import org.xtext.example.mydsl.jsonDsl.IOFunctions;
 import org.xtext.example.mydsl.jsonDsl.InequalityExpression;
-import org.xtext.example.mydsl.jsonDsl.InferiExpression;
+import org.xtext.example.mydsl.jsonDsl.InferiorExpression;
 import org.xtext.example.mydsl.jsonDsl.InferiorOrEqualExpression;
 import org.xtext.example.mydsl.jsonDsl.InfoFunctions;
-import org.xtext.example.mydsl.jsonDsl.Insert;
 import org.xtext.example.mydsl.jsonDsl.JSonObject;
 import org.xtext.example.mydsl.jsonDsl.JsonDslFactory;
 import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
+import org.xtext.example.mydsl.jsonDsl.Length;
 import org.xtext.example.mydsl.jsonDsl.Load;
 import org.xtext.example.mydsl.jsonDsl.LogicalNegationExpression;
 import org.xtext.example.mydsl.jsonDsl.ManipFunctions;
-import org.xtext.example.mydsl.jsonDsl.Mean;
 import org.xtext.example.mydsl.jsonDsl.Model;
 import org.xtext.example.mydsl.jsonDsl.ModuloExpression;
 import org.xtext.example.mydsl.jsonDsl.MultiplicationExpression;
-import org.xtext.example.mydsl.jsonDsl.PrimaryExpression;
+import org.xtext.example.mydsl.jsonDsl.PointerCall;
 import org.xtext.example.mydsl.jsonDsl.Primitive;
-import org.xtext.example.mydsl.jsonDsl.ProcCall;
+import org.xtext.example.mydsl.jsonDsl.Print;
 import org.xtext.example.mydsl.jsonDsl.Product;
-import org.xtext.example.mydsl.jsonDsl.Remove;
-import org.xtext.example.mydsl.jsonDsl.Rename;
+import org.xtext.example.mydsl.jsonDsl.RangeSpecifier;
 import org.xtext.example.mydsl.jsonDsl.Select;
 import org.xtext.example.mydsl.jsonDsl.SimpleStatement;
 import org.xtext.example.mydsl.jsonDsl.Store;
+import org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression;
+import org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression;
 import org.xtext.example.mydsl.jsonDsl.SubstractionExpression;
 import org.xtext.example.mydsl.jsonDsl.Sum;
-import org.xtext.example.mydsl.jsonDsl.SuperiExpression;
+import org.xtext.example.mydsl.jsonDsl.SuperiorExpression;
 import org.xtext.example.mydsl.jsonDsl.SuperiorOrEqualExpression;
 import org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression;
 import org.xtext.example.mydsl.jsonDsl.UnaryPlusExpression;
+import org.xtext.example.mydsl.jsonDsl.UnarySpecifier;
 import org.xtext.example.mydsl.jsonDsl.VariableCall;
 
 /**
@@ -135,6 +135,13 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass pointerCallEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass variableCallEClass = null;
 
   /**
@@ -142,21 +149,21 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass auxiliarCallerEClass = null;
+  private EClass arraySpecifierEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass fieldCallerEClass = null;
+  private EClass unarySpecifierEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass arrayCallerEClass = null;
+  private EClass rangeSpecifierEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -219,7 +226,7 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass procCallEClass = null;
+  private EClass printEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -261,6 +268,13 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass lengthEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass sumEClass = null;
 
   /**
@@ -275,42 +289,7 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass meanEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass addEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass insertEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass renameEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass deleteEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass removeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -380,7 +359,21 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass superiExpressionEClass = null;
+  private EClass strictEqualityExpressionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass strictInequalityExpressionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass superiorExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -394,7 +387,7 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass inferiExpressionEClass = null;
+  private EClass inferiorExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -443,7 +436,14 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass primaryExpressionEClass = null;
+  private EClass arrayCallEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass fieldCallEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -679,6 +679,17 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
+  public EClass getPointerCall()
+  {
+    return pointerCallEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getVariableCall()
   {
     return variableCallEClass;
@@ -701,9 +712,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EReference getVariableCall_Caller()
+  public EClass getArraySpecifier()
   {
-    return (EReference)variableCallEClass.getEStructuralFeatures().get(1);
+    return arraySpecifierEClass;
   }
 
   /**
@@ -712,9 +723,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getAuxiliarCaller()
+  public EClass getUnarySpecifier()
   {
-    return auxiliarCallerEClass;
+    return unarySpecifierEClass;
   }
 
   /**
@@ -723,9 +734,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getFieldCaller()
+  public EAttribute getUnarySpecifier_Index()
   {
-    return fieldCallerEClass;
+    return (EAttribute)unarySpecifierEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -734,9 +745,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EAttribute getFieldCaller_Key()
+  public EClass getRangeSpecifier()
   {
-    return (EAttribute)fieldCallerEClass.getEStructuralFeatures().get(0);
+    return rangeSpecifierEClass;
   }
 
   /**
@@ -745,9 +756,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getArrayCaller()
+  public EAttribute getRangeSpecifier_From()
   {
-    return arrayCallerEClass;
+    return (EAttribute)rangeSpecifierEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -756,9 +767,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EAttribute getArrayCaller_Index()
+  public EAttribute getRangeSpecifier_To()
   {
-    return (EAttribute)arrayCallerEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)rangeSpecifierEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -778,9 +789,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EReference getIOFunctions_FileName()
+  public EAttribute getIOFunctions_FileName()
   {
-    return (EReference)ioFunctionsEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)ioFunctionsEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -833,7 +844,7 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EReference getArithFunctions_Fields()
+  public EReference getArithFunctions_Field()
   {
     return (EReference)arithFunctionsEClass.getEStructuralFeatures().get(1);
   }
@@ -921,9 +932,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getProcCall()
+  public EClass getPrint()
   {
-    return procCallEClass;
+    return printEClass;
   }
 
   /**
@@ -932,9 +943,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EReference getProcCall_Expression()
+  public EReference getPrint_Expression()
   {
-    return (EReference)procCallEClass.getEStructuralFeatures().get(0);
+    return (EReference)printEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1086,6 +1097,28 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
+  public EClass getLength()
+  {
+    return lengthEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getLength_Expression()
+  {
+    return (EReference)lengthEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getSum()
   {
     return sumEClass;
@@ -1100,149 +1133,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
   public EClass getProduct()
   {
     return productEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getMean()
-  {
-    return meanEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getAdd()
-  {
-    return addEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getAdd_Expression()
-  {
-    return (EReference)addEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getAdd_Variable()
-  {
-    return (EReference)addEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getAdd_Fields()
-  {
-    return (EReference)addEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getInsert()
-  {
-    return insertEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getInsert_Value()
-  {
-    return (EReference)insertEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getInsert_Variable()
-  {
-    return (EReference)insertEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getInsert_WhereExpression()
-  {
-    return (EReference)insertEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getRename()
-  {
-    return renameEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getRename_Call()
-  {
-    return (EReference)renameEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getRename_Fields()
-  {
-    return (EReference)renameEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getRename_Nfields()
-  {
-    return (EReference)renameEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1295,50 +1185,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getRemove()
-  {
-    return removeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getRemove_Value()
-  {
-    return (EReference)removeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getRemove_Variable()
-  {
-    return (EReference)removeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getRemove_WhereExpression()
-  {
-    return (EReference)removeEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EClass getConstant()
   {
     return constantEClass;
@@ -1372,7 +1218,7 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EAttribute getPrimitive_Num()
+  public EAttribute getPrimitive_IntNum()
   {
     return (EAttribute)primitiveEClass.getEStructuralFeatures().get(1);
   }
@@ -1383,7 +1229,7 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EAttribute getPrimitive_Bool()
+  public EAttribute getPrimitive_FloatNum()
   {
     return (EAttribute)primitiveEClass.getEStructuralFeatures().get(2);
   }
@@ -1394,9 +1240,20 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EAttribute getPrimitive_Nil()
+  public EAttribute getPrimitive_Bool()
   {
     return (EAttribute)primitiveEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getPrimitive_Nil()
+  {
+    return (EAttribute)primitiveEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -1614,9 +1471,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getSuperiExpression()
+  public EClass getStrictEqualityExpression()
   {
-    return superiExpressionEClass;
+    return strictEqualityExpressionEClass;
   }
 
   /**
@@ -1625,9 +1482,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EReference getSuperiExpression_Left()
+  public EReference getStrictEqualityExpression_Left()
   {
-    return (EReference)superiExpressionEClass.getEStructuralFeatures().get(0);
+    return (EReference)strictEqualityExpressionEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1636,9 +1493,75 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EReference getSuperiExpression_Right()
+  public EReference getStrictEqualityExpression_Right()
   {
-    return (EReference)superiExpressionEClass.getEStructuralFeatures().get(1);
+    return (EReference)strictEqualityExpressionEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getStrictInequalityExpression()
+  {
+    return strictInequalityExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getStrictInequalityExpression_Left()
+  {
+    return (EReference)strictInequalityExpressionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getStrictInequalityExpression_Right()
+  {
+    return (EReference)strictInequalityExpressionEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getSuperiorExpression()
+  {
+    return superiorExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSuperiorExpression_Left()
+  {
+    return (EReference)superiorExpressionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSuperiorExpression_Right()
+  {
+    return (EReference)superiorExpressionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1680,9 +1603,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getInferiExpression()
+  public EClass getInferiorExpression()
   {
-    return inferiExpressionEClass;
+    return inferiorExpressionEClass;
   }
 
   /**
@@ -1691,9 +1614,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EReference getInferiExpression_Left()
+  public EReference getInferiorExpression_Left()
   {
-    return (EReference)inferiExpressionEClass.getEStructuralFeatures().get(0);
+    return (EReference)inferiorExpressionEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1702,9 +1625,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EReference getInferiExpression_Right()
+  public EReference getInferiorExpression_Right()
   {
-    return (EReference)inferiExpressionEClass.getEStructuralFeatures().get(1);
+    return (EReference)inferiorExpressionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1911,9 +1834,64 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getPrimaryExpression()
+  public EClass getArrayCall()
   {
-    return primaryExpressionEClass;
+    return arrayCallEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getArrayCall_Callee()
+  {
+    return (EReference)arrayCallEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getArrayCall_Specifier()
+  {
+    return (EReference)arrayCallEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getFieldCall()
+  {
+    return fieldCallEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getFieldCall_Callee()
+  {
+    return (EReference)fieldCallEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getFieldCall_Field()
+  {
+    return (EAttribute)fieldCallEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1970,20 +1948,22 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     bracketExpressionEClass = createEClass(BRACKET_EXPRESSION);
     createEReference(bracketExpressionEClass, BRACKET_EXPRESSION__SUB);
 
+    pointerCallEClass = createEClass(POINTER_CALL);
+
     variableCallEClass = createEClass(VARIABLE_CALL);
     createEAttribute(variableCallEClass, VARIABLE_CALL__NAME);
-    createEReference(variableCallEClass, VARIABLE_CALL__CALLER);
 
-    auxiliarCallerEClass = createEClass(AUXILIAR_CALLER);
+    arraySpecifierEClass = createEClass(ARRAY_SPECIFIER);
 
-    fieldCallerEClass = createEClass(FIELD_CALLER);
-    createEAttribute(fieldCallerEClass, FIELD_CALLER__KEY);
+    unarySpecifierEClass = createEClass(UNARY_SPECIFIER);
+    createEAttribute(unarySpecifierEClass, UNARY_SPECIFIER__INDEX);
 
-    arrayCallerEClass = createEClass(ARRAY_CALLER);
-    createEAttribute(arrayCallerEClass, ARRAY_CALLER__INDEX);
+    rangeSpecifierEClass = createEClass(RANGE_SPECIFIER);
+    createEAttribute(rangeSpecifierEClass, RANGE_SPECIFIER__FROM);
+    createEAttribute(rangeSpecifierEClass, RANGE_SPECIFIER__TO);
 
     ioFunctionsEClass = createEClass(IO_FUNCTIONS);
-    createEReference(ioFunctionsEClass, IO_FUNCTIONS__FILE_NAME);
+    createEAttribute(ioFunctionsEClass, IO_FUNCTIONS__FILE_NAME);
 
     infoFunctionsEClass = createEClass(INFO_FUNCTIONS);
 
@@ -1991,7 +1971,7 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
 
     arithFunctionsEClass = createEClass(ARITH_FUNCTIONS);
     createEReference(arithFunctionsEClass, ARITH_FUNCTIONS__EXPRESSION);
-    createEReference(arithFunctionsEClass, ARITH_FUNCTIONS__FIELDS);
+    createEReference(arithFunctionsEClass, ARITH_FUNCTIONS__FIELD);
     createEReference(arithFunctionsEClass, ARITH_FUNCTIONS__WHERE_EXPRESSION);
 
     alterFunctionsEClass = createEClass(ALTER_FUNCTIONS);
@@ -2004,8 +1984,8 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     exportEClass = createEClass(EXPORT);
     createEReference(exportEClass, EXPORT__EXPRESSION);
 
-    procCallEClass = createEClass(PROC_CALL);
-    createEReference(procCallEClass, PROC_CALL__EXPRESSION);
+    printEClass = createEClass(PRINT);
+    createEReference(printEClass, PRINT__EXPRESSION);
 
     depthEClass = createEClass(DEPTH);
     createEReference(depthEClass, DEPTH__EXPRESSION);
@@ -2025,42 +2005,24 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     concatEClass = createEClass(CONCAT);
     createEReference(concatEClass, CONCAT__EXPRESSIONS);
 
+    lengthEClass = createEClass(LENGTH);
+    createEReference(lengthEClass, LENGTH__EXPRESSION);
+
     sumEClass = createEClass(SUM);
 
     productEClass = createEClass(PRODUCT);
-
-    meanEClass = createEClass(MEAN);
-
-    addEClass = createEClass(ADD);
-    createEReference(addEClass, ADD__EXPRESSION);
-    createEReference(addEClass, ADD__VARIABLE);
-    createEReference(addEClass, ADD__FIELDS);
-
-    insertEClass = createEClass(INSERT);
-    createEReference(insertEClass, INSERT__VALUE);
-    createEReference(insertEClass, INSERT__VARIABLE);
-    createEReference(insertEClass, INSERT__WHERE_EXPRESSION);
-
-    renameEClass = createEClass(RENAME);
-    createEReference(renameEClass, RENAME__CALL);
-    createEReference(renameEClass, RENAME__FIELDS);
-    createEReference(renameEClass, RENAME__NFIELDS);
 
     deleteEClass = createEClass(DELETE);
     createEReference(deleteEClass, DELETE__FIELDS);
     createEReference(deleteEClass, DELETE__FROM_EXPRESSION);
     createEReference(deleteEClass, DELETE__WHERE_EXPRESSION);
 
-    removeEClass = createEClass(REMOVE);
-    createEReference(removeEClass, REMOVE__VALUE);
-    createEReference(removeEClass, REMOVE__VARIABLE);
-    createEReference(removeEClass, REMOVE__WHERE_EXPRESSION);
-
     constantEClass = createEClass(CONSTANT);
 
     primitiveEClass = createEClass(PRIMITIVE);
     createEAttribute(primitiveEClass, PRIMITIVE__STR);
-    createEAttribute(primitiveEClass, PRIMITIVE__NUM);
+    createEAttribute(primitiveEClass, PRIMITIVE__INT_NUM);
+    createEAttribute(primitiveEClass, PRIMITIVE__FLOAT_NUM);
     createEAttribute(primitiveEClass, PRIMITIVE__BOOL);
     createEAttribute(primitiveEClass, PRIMITIVE__NIL);
 
@@ -2090,17 +2052,25 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     createEReference(inequalityExpressionEClass, INEQUALITY_EXPRESSION__LEFT);
     createEReference(inequalityExpressionEClass, INEQUALITY_EXPRESSION__RIGHT);
 
-    superiExpressionEClass = createEClass(SUPERI_EXPRESSION);
-    createEReference(superiExpressionEClass, SUPERI_EXPRESSION__LEFT);
-    createEReference(superiExpressionEClass, SUPERI_EXPRESSION__RIGHT);
+    strictEqualityExpressionEClass = createEClass(STRICT_EQUALITY_EXPRESSION);
+    createEReference(strictEqualityExpressionEClass, STRICT_EQUALITY_EXPRESSION__LEFT);
+    createEReference(strictEqualityExpressionEClass, STRICT_EQUALITY_EXPRESSION__RIGHT);
+
+    strictInequalityExpressionEClass = createEClass(STRICT_INEQUALITY_EXPRESSION);
+    createEReference(strictInequalityExpressionEClass, STRICT_INEQUALITY_EXPRESSION__LEFT);
+    createEReference(strictInequalityExpressionEClass, STRICT_INEQUALITY_EXPRESSION__RIGHT);
+
+    superiorExpressionEClass = createEClass(SUPERIOR_EXPRESSION);
+    createEReference(superiorExpressionEClass, SUPERIOR_EXPRESSION__LEFT);
+    createEReference(superiorExpressionEClass, SUPERIOR_EXPRESSION__RIGHT);
 
     superiorOrEqualExpressionEClass = createEClass(SUPERIOR_OR_EQUAL_EXPRESSION);
     createEReference(superiorOrEqualExpressionEClass, SUPERIOR_OR_EQUAL_EXPRESSION__LEFT);
     createEReference(superiorOrEqualExpressionEClass, SUPERIOR_OR_EQUAL_EXPRESSION__RIGHT);
 
-    inferiExpressionEClass = createEClass(INFERI_EXPRESSION);
-    createEReference(inferiExpressionEClass, INFERI_EXPRESSION__LEFT);
-    createEReference(inferiExpressionEClass, INFERI_EXPRESSION__RIGHT);
+    inferiorExpressionEClass = createEClass(INFERIOR_EXPRESSION);
+    createEReference(inferiorExpressionEClass, INFERIOR_EXPRESSION__LEFT);
+    createEReference(inferiorExpressionEClass, INFERIOR_EXPRESSION__RIGHT);
 
     inferiorOrEqualExpressionEClass = createEClass(INFERIOR_OR_EQUAL_EXPRESSION);
     createEReference(inferiorOrEqualExpressionEClass, INFERIOR_OR_EQUAL_EXPRESSION__LEFT);
@@ -2126,7 +2096,13 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     createEReference(moduloExpressionEClass, MODULO_EXPRESSION__LEFT);
     createEReference(moduloExpressionEClass, MODULO_EXPRESSION__RIGHT);
 
-    primaryExpressionEClass = createEClass(PRIMARY_EXPRESSION);
+    arrayCallEClass = createEClass(ARRAY_CALL);
+    createEReference(arrayCallEClass, ARRAY_CALL__CALLEE);
+    createEReference(arrayCallEClass, ARRAY_CALL__SPECIFIER);
+
+    fieldCallEClass = createEClass(FIELD_CALL);
+    createEReference(fieldCallEClass, FIELD_CALL__CALLEE);
+    createEAttribute(fieldCallEClass, FIELD_CALL__FIELD);
   }
 
   /**
@@ -2164,9 +2140,10 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     unaryPlusExpressionEClass.getESuperTypes().add(this.getExpression());
     logicalNegationExpressionEClass.getESuperTypes().add(this.getExpression());
     bracketExpressionEClass.getESuperTypes().add(this.getExpression());
+    pointerCallEClass.getESuperTypes().add(this.getExpression());
     variableCallEClass.getESuperTypes().add(this.getExpression());
-    fieldCallerEClass.getESuperTypes().add(this.getAuxiliarCaller());
-    arrayCallerEClass.getESuperTypes().add(this.getAuxiliarCaller());
+    unarySpecifierEClass.getESuperTypes().add(this.getArraySpecifier());
+    rangeSpecifierEClass.getESuperTypes().add(this.getArraySpecifier());
     ioFunctionsEClass.getESuperTypes().add(this.getExpression());
     infoFunctionsEClass.getESuperTypes().add(this.getExpression());
     manipFunctionsEClass.getESuperTypes().add(this.getExpression());
@@ -2175,20 +2152,16 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     loadEClass.getESuperTypes().add(this.getIOFunctions());
     storeEClass.getESuperTypes().add(this.getIOFunctions());
     exportEClass.getESuperTypes().add(this.getIOFunctions());
-    procCallEClass.getESuperTypes().add(this.getSimpleStatement());
+    printEClass.getESuperTypes().add(this.getSimpleStatement());
     depthEClass.getESuperTypes().add(this.getInfoFunctions());
     fieldInfoEClass.getESuperTypes().add(this.getInfoFunctions());
     containsEClass.getESuperTypes().add(this.getInfoFunctions());
     selectEClass.getESuperTypes().add(this.getManipFunctions());
     concatEClass.getESuperTypes().add(this.getManipFunctions());
+    lengthEClass.getESuperTypes().add(this.getInfoFunctions());
     sumEClass.getESuperTypes().add(this.getArithFunctions());
     productEClass.getESuperTypes().add(this.getArithFunctions());
-    meanEClass.getESuperTypes().add(this.getArithFunctions());
-    addEClass.getESuperTypes().add(this.getAlterFunctions());
-    insertEClass.getESuperTypes().add(this.getAlterFunctions());
-    renameEClass.getESuperTypes().add(this.getAlterFunctions());
     deleteEClass.getESuperTypes().add(this.getAlterFunctions());
-    removeEClass.getESuperTypes().add(this.getAlterFunctions());
     constantEClass.getESuperTypes().add(this.getExpression());
     primitiveEClass.getESuperTypes().add(this.getConstant());
     arrayEClass.getESuperTypes().add(this.getConstant());
@@ -2197,16 +2170,19 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     conjunctionExpressionEClass.getESuperTypes().add(this.getExpression());
     equalityExpressionEClass.getESuperTypes().add(this.getExpression());
     inequalityExpressionEClass.getESuperTypes().add(this.getExpression());
-    superiExpressionEClass.getESuperTypes().add(this.getExpression());
+    strictEqualityExpressionEClass.getESuperTypes().add(this.getExpression());
+    strictInequalityExpressionEClass.getESuperTypes().add(this.getExpression());
+    superiorExpressionEClass.getESuperTypes().add(this.getExpression());
     superiorOrEqualExpressionEClass.getESuperTypes().add(this.getExpression());
-    inferiExpressionEClass.getESuperTypes().add(this.getExpression());
+    inferiorExpressionEClass.getESuperTypes().add(this.getExpression());
     inferiorOrEqualExpressionEClass.getESuperTypes().add(this.getExpression());
     additionExpressionEClass.getESuperTypes().add(this.getExpression());
     substractionExpressionEClass.getESuperTypes().add(this.getExpression());
     multiplicationExpressionEClass.getESuperTypes().add(this.getExpression());
     divisionExpressionEClass.getESuperTypes().add(this.getExpression());
     moduloExpressionEClass.getESuperTypes().add(this.getExpression());
-    primaryExpressionEClass.getESuperTypes().add(this.getExpression());
+    arrayCallEClass.getESuperTypes().add(this.getExpression());
+    fieldCallEClass.getESuperTypes().add(this.getExpression());
 
     // Initialize classes and features; add operations and parameters
     initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2232,20 +2208,22 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     initEClass(bracketExpressionEClass, BracketExpression.class, "BracketExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getBracketExpression_Sub(), this.getExpression(), null, "sub", null, 0, 1, BracketExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(pointerCallEClass, PointerCall.class, "PointerCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
     initEClass(variableCallEClass, VariableCall.class, "VariableCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getVariableCall_Name(), ecorePackage.getEString(), "name", null, 0, 1, VariableCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getVariableCall_Caller(), this.getAuxiliarCaller(), null, "caller", null, 0, -1, VariableCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(auxiliarCallerEClass, AuxiliarCaller.class, "AuxiliarCaller", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(arraySpecifierEClass, ArraySpecifier.class, "ArraySpecifier", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(fieldCallerEClass, FieldCaller.class, "FieldCaller", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getFieldCaller_Key(), ecorePackage.getEString(), "key", null, 0, 1, FieldCaller.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(unarySpecifierEClass, UnarySpecifier.class, "UnarySpecifier", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getUnarySpecifier_Index(), ecorePackage.getEInt(), "index", null, 0, 1, UnarySpecifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(arrayCallerEClass, ArrayCaller.class, "ArrayCaller", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getArrayCaller_Index(), ecorePackage.getEInt(), "index", null, 0, -1, ArrayCaller.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(rangeSpecifierEClass, RangeSpecifier.class, "RangeSpecifier", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getRangeSpecifier_From(), ecorePackage.getEInt(), "from", null, 0, 1, RangeSpecifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRangeSpecifier_To(), ecorePackage.getEInt(), "to", null, 0, 1, RangeSpecifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(ioFunctionsEClass, IOFunctions.class, "IOFunctions", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getIOFunctions_FileName(), this.getExpression(), null, "fileName", null, 0, 1, IOFunctions.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getIOFunctions_FileName(), ecorePackage.getEString(), "fileName", null, 0, 1, IOFunctions.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(infoFunctionsEClass, InfoFunctions.class, "InfoFunctions", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2253,7 +2231,7 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
 
     initEClass(arithFunctionsEClass, ArithFunctions.class, "ArithFunctions", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getArithFunctions_Expression(), this.getExpression(), null, "expression", null, 0, 1, ArithFunctions.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getArithFunctions_Fields(), this.getExpression(), null, "fields", null, 0, -1, ArithFunctions.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getArithFunctions_Field(), this.getExpression(), null, "field", null, 0, 1, ArithFunctions.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getArithFunctions_WhereExpression(), this.getExpression(), null, "whereExpression", null, 0, 1, ArithFunctions.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(alterFunctionsEClass, AlterFunctions.class, "AlterFunctions", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2266,8 +2244,8 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     initEClass(exportEClass, Export.class, "Export", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getExport_Expression(), this.getExpression(), null, "expression", null, 0, 1, Export.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(procCallEClass, ProcCall.class, "ProcCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getProcCall_Expression(), this.getExpression(), null, "expression", null, 0, 1, ProcCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(printEClass, Print.class, "Print", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getPrint_Expression(), this.getExpression(), null, "expression", null, 0, 1, Print.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(depthEClass, Depth.class, "Depth", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getDepth_Expression(), this.getExpression(), null, "expression", null, 0, 1, Depth.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2287,42 +2265,24 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     initEClass(concatEClass, Concat.class, "Concat", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getConcat_Expressions(), this.getExpression(), null, "expressions", null, 0, -1, Concat.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(lengthEClass, Length.class, "Length", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getLength_Expression(), this.getExpression(), null, "expression", null, 0, 1, Length.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(sumEClass, Sum.class, "Sum", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(productEClass, Product.class, "Product", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(meanEClass, Mean.class, "Mean", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(addEClass, Add.class, "Add", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAdd_Expression(), this.getExpression(), null, "expression", null, 0, 1, Add.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAdd_Variable(), this.getExpression(), null, "variable", null, 0, 1, Add.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAdd_Fields(), this.getExpression(), null, "fields", null, 0, -1, Add.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(insertEClass, Insert.class, "Insert", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getInsert_Value(), this.getExpression(), null, "value", null, 0, 1, Insert.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getInsert_Variable(), this.getExpression(), null, "variable", null, 0, 1, Insert.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getInsert_WhereExpression(), this.getExpression(), null, "whereExpression", null, 0, 1, Insert.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(renameEClass, Rename.class, "Rename", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRename_Call(), this.getVariableCall(), null, "call", null, 0, 1, Rename.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRename_Fields(), this.getExpression(), null, "fields", null, 0, -1, Rename.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRename_Nfields(), this.getExpression(), null, "nfields", null, 0, -1, Rename.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(deleteEClass, Delete.class, "Delete", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getDelete_Fields(), this.getExpression(), null, "fields", null, 0, -1, Delete.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getDelete_FromExpression(), this.getExpression(), null, "fromExpression", null, 0, 1, Delete.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getDelete_WhereExpression(), this.getExpression(), null, "whereExpression", null, 0, 1, Delete.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(removeEClass, Remove.class, "Remove", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRemove_Value(), this.getExpression(), null, "value", null, 0, 1, Remove.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRemove_Variable(), this.getExpression(), null, "variable", null, 0, 1, Remove.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRemove_WhereExpression(), this.getExpression(), null, "whereExpression", null, 0, 1, Remove.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
     initEClass(constantEClass, Constant.class, "Constant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(primitiveEClass, Primitive.class, "Primitive", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getPrimitive_Str(), ecorePackage.getEString(), "str", null, 0, 1, Primitive.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getPrimitive_Num(), ecorePackage.getEString(), "num", null, 0, 1, Primitive.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getPrimitive_IntNum(), ecorePackage.getEInt(), "intNum", null, 0, 1, Primitive.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getPrimitive_FloatNum(), ecorePackage.getEString(), "floatNum", null, 0, 1, Primitive.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getPrimitive_Bool(), ecorePackage.getEString(), "bool", null, 0, 1, Primitive.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getPrimitive_Nil(), ecorePackage.getEString(), "nil", null, 0, 1, Primitive.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2352,17 +2312,25 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     initEReference(getInequalityExpression_Left(), this.getExpression(), null, "left", null, 0, 1, InequalityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getInequalityExpression_Right(), this.getExpression(), null, "right", null, 0, 1, InequalityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(superiExpressionEClass, SuperiExpression.class, "SuperiExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getSuperiExpression_Left(), this.getExpression(), null, "left", null, 0, 1, SuperiExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSuperiExpression_Right(), this.getExpression(), null, "right", null, 0, 1, SuperiExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(strictEqualityExpressionEClass, StrictEqualityExpression.class, "StrictEqualityExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getStrictEqualityExpression_Left(), this.getExpression(), null, "left", null, 0, 1, StrictEqualityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getStrictEqualityExpression_Right(), this.getExpression(), null, "right", null, 0, 1, StrictEqualityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(strictInequalityExpressionEClass, StrictInequalityExpression.class, "StrictInequalityExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getStrictInequalityExpression_Left(), this.getExpression(), null, "left", null, 0, 1, StrictInequalityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getStrictInequalityExpression_Right(), this.getExpression(), null, "right", null, 0, 1, StrictInequalityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(superiorExpressionEClass, SuperiorExpression.class, "SuperiorExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSuperiorExpression_Left(), this.getExpression(), null, "left", null, 0, 1, SuperiorExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSuperiorExpression_Right(), this.getExpression(), null, "right", null, 0, 1, SuperiorExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(superiorOrEqualExpressionEClass, SuperiorOrEqualExpression.class, "SuperiorOrEqualExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSuperiorOrEqualExpression_Left(), this.getExpression(), null, "left", null, 0, 1, SuperiorOrEqualExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSuperiorOrEqualExpression_Right(), this.getExpression(), null, "right", null, 0, 1, SuperiorOrEqualExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(inferiExpressionEClass, InferiExpression.class, "InferiExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getInferiExpression_Left(), this.getExpression(), null, "left", null, 0, 1, InferiExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getInferiExpression_Right(), this.getExpression(), null, "right", null, 0, 1, InferiExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(inferiorExpressionEClass, InferiorExpression.class, "InferiorExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getInferiorExpression_Left(), this.getExpression(), null, "left", null, 0, 1, InferiorExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getInferiorExpression_Right(), this.getExpression(), null, "right", null, 0, 1, InferiorExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(inferiorOrEqualExpressionEClass, InferiorOrEqualExpression.class, "InferiorOrEqualExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getInferiorOrEqualExpression_Left(), this.getExpression(), null, "left", null, 0, 1, InferiorOrEqualExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2388,7 +2356,13 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     initEReference(getModuloExpression_Left(), this.getExpression(), null, "left", null, 0, 1, ModuloExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getModuloExpression_Right(), this.getExpression(), null, "right", null, 0, 1, ModuloExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(primaryExpressionEClass, PrimaryExpression.class, "PrimaryExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(arrayCallEClass, ArrayCall.class, "ArrayCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getArrayCall_Callee(), this.getExpression(), null, "callee", null, 0, 1, ArrayCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getArrayCall_Specifier(), this.getArraySpecifier(), null, "specifier", null, 0, 1, ArrayCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(fieldCallEClass, FieldCall.class, "FieldCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFieldCall_Callee(), this.getExpression(), null, "callee", null, 0, 1, FieldCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFieldCall_Field(), ecorePackage.getEString(), "field", null, 0, 1, FieldCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

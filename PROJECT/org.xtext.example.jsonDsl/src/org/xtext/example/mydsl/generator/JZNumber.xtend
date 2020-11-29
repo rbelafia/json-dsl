@@ -1,7 +1,7 @@
 package org.xtext.example.mydsl.generator
 
 class JZNumber implements JZObject {
-	double content
+	public double content
 	
 	new (int content) {
 		this.content = content

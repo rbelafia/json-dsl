@@ -14,43 +14,39 @@ import java.util.ArrayList
 import java.util.List
 import java.util.regex.Pattern
 import java.util.regex.Matcher
-
+import java.util.LinkedHashMap
+import java.io.*
 /**
  * Generates code from your model files on save.
  * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
+ 
+ class FieldPossessor {
+		
+		public String possess;
+		public FieldPossessor previousPossessor;
+		
+		new(String possess, FieldPossessor previousPossessor) {
+			
+		}
+		
+	}
+	
+
+
 class JsonDslGenerator extends AbstractGenerator {
 	
+	public var mustPrint = false
+	
+	public var filesToLoad = new LinkedHashMap<String, String>()
+	
+	public var fileToExport = null
+	
+	/* 
 	def dispatch JZObject visit(SimpleStatement statement) {
 		println("SimpleStatement")
 		return null
-	}
-	
-	def dispatch JZObject visit(Assignment assignment) {
-		println(assignment.leftHandSide.name + "<-" + visit(assignment.rightHandSide))
-		return null
-	}
-	
-	def dispatch JZObject visit(ProcCall procCall) {
-		println(visit(procCall.expression))
-		return null
-	}
-	
-	def dispatch JZObject visit(Expression expression) {
-		return new JZNull()
-	}
-	
-	def dispatch JZObject visit(DisjunctionExpression disjunctionExpression) {
-		return visit(disjunctionExpression.left) || visit(disjunctionExpression.right); 
-	}
-	
-	def dispatch JZObject visit(ConjunctionExpression conjunctionExpression) {
-		return visit(conjunctionExpression.left) && visit(conjunctionExpression.right);
-	}
-	
-	def dispatch JZObject visit(AdditionExpression additionExpression) {
-		return visit(additionExpression.left) + visit(additionExpression.right);
 	}
 	
 	def dispatch JZObject visit(SubstractionExpression substractionExpression) {
@@ -85,6 +81,52 @@ class JsonDslGenerator extends AbstractGenerator {
 		return visit(bracketExpression.sub);
 	}
 	
+	def dispatch JZObject visit(Assignment assignment) {
+		println(assignment.leftHandSide.name + "<-" + visit(assignment.rightHandSide))
+		return null
+	}
+	
+	def dispatch JZObject visit(Print procCall) {
+		println(visit(procCall.expression))
+		return null
+	}
+	
+	def dispatch JZObject visit(Expression expression) {
+		return new JZNull()
+	}
+	
+	def dispatch JZObject visit(DisjunctionExpression disjunctionExpression) {
+		return visit(disjunctionExpression.left) || visit(disjunctionExpression.right); 
+	}
+	
+	def dispatch JZObject visit(ConjunctionExpression conjunctionExpression) {
+		return visit(conjunctionExpression.left) && visit(conjunctionExpression.right);
+	}
+	
+	def dispatch JZObject visit(AdditionExpression additionExpression) {
+		return visit(additionExpression.left) + visit(additionExpression.right);
+	}
+	
+	def dispatch JZObject visit(InfoFunctions call) {
+		println("call")
+		return null
+	}
+	
+	def dispatch JZObject visit(Depth depth) {
+		val dep = new GetDepthFunction(visit(depth.expression) as JZJsonObject)
+		return dep.evaluate
+	}
+	
+	def dispatch JZObject visit(FieldInfo fieldInfo) {
+		val infos = new GetInfosFunction(visit(fieldInfo.expression) as JZJsonObject)
+		return infos.evaluate
+	}
+	
+	def dispatch JZObject visit(Contains contains) {
+		val cont = new ContainsFunction(contains.keys.map[e | e.visit.toString].toList as List<String>, contains.right.visit as JZJsonObject)
+		return cont.evaluate
+	}
+	
 	def dispatch JZObject visit(Array array) {
 		val res = new JZArray
 		res.addAll(array.values.map[e | visit(e)].toList)
@@ -92,30 +134,775 @@ class JsonDslGenerator extends AbstractGenerator {
 	}
 	
 	def dispatch JZObject visit(JSonObject jSonObject) {
-		var JZJsonObject res = new JZJsonObject;
-		for(field : jSonObject.fields) {
+		var JZJsonObject res = new JZJsonObject
+		for(field : jSonObject.fields)
 			res.addField((visit(field.key) as JZString).content, visit(field.value))
-		}
 		return res
-	}
-	
-	def dispatch JZObject visit(String string) {
-		return new JZString(string)
 	}
 	
 	def dispatch JZObject visit(Primitive const) {
 		if(const.str !== null) return new JZString(const.str)
-		else if (const.num !== null) return new JZNumber(Double.valueOf(const.num))
 		else if (const.bool !== null) return new JZBoolean(Boolean.parseBoolean(const.bool))
 		else return new JZNull()
 	}
+ def dispatch JZObject visit(String string) {
+		return new JZString(string)
+	}
+	*/
 	
+	
+	// COMPILE PYTHON
+	
+	def dispatch String compilePython(Assignment assignment) '''«compilePython(assignment.leftHandSide)» = «compilePython(assignment.rightHandSide)»'''
+	
+	def dispatch String compilePython(Print procCall) '''json_print(«compilePython(procCall.expression)»)'''
+	
+	def dispatch String compilePython(Expression expression)''''''
+	
+	def dispatch String compilePython(DisjunctionExpression disjunctionExpression) '''disjunction(«compilePython(disjunctionExpression.left)», «compilePython(disjunctionExpression.right)»)'''
+	
+	def dispatch String compilePython(ArrayCall call) '''«compilePython(call.callee)»[«compilePython(call.specifier)»]'''
+	
+	def dispatch String compilePython(ArraySpecifier specifier) ''''''
+	
+	def dispatch String compilePython(UnarySpecifier specifier) '''«specifier.index»'''
+	
+	def dispatch String compilePython(RangeSpecifier specifier) '''«specifier.from»:«specifier.to»'''
+	
+	def dispatch String compilePython(FieldCall call) '''«compilePython(call.callee)»["«call.field»"]'''
+	
+	def dispatch String compilePython(ConjunctionExpression conjunctionExpression) '''conjunction(«compilePython(conjunctionExpression.left)», «compilePython(conjunctionExpression.right)»)'''
+	
+	def dispatch String compilePython(EqualityExpression equalityExpression) '''equal(«compilePython(equalityExpression.left)», «compilePython(equalityExpression.right)»)'''
+	
+	def dispatch String compilePython(InequalityExpression inequalityExpression) '''not_equal(«compilePython(inequalityExpression.left)», «compilePython(inequalityExpression.right)»)'''
+	
+	def dispatch String compilePython(StrictEqualityExpression strictEqualityExpression) '''strict_equal(«compilePython(strictEqualityExpression.left)»)'''
+	
+	def dispatch String compilePython(StrictInequalityExpression strictInequalityExpression) '''strict_not_equal(«compilePython(strictInequalityExpression.left)»)'''
+	
+	def dispatch String compilePython(SuperiorExpression superiorExpression) '''superior(«compilePython(superiorExpression.left)», «compilePython(superiorExpression.right)»)'''
+	
+	def dispatch String compilePython(SuperiorOrEqualExpression superiorOrEqualExpression) '''superior_or_equal(«compilePython(superiorOrEqualExpression.left)», «compilePython(superiorOrEqualExpression.right)»)'''
+	
+	def dispatch String compilePython(InferiorExpression inferiorExpression) '''inferior(«compilePython(inferiorExpression.left)», «compilePython(inferiorExpression.right)»)'''
+	
+	def dispatch String compilePython(InferiorOrEqualExpression inferiorOrEqualExpression) '''inferior_or_equal(«compilePython(inferiorOrEqualExpression.left)», «compilePython(inferiorOrEqualExpression.right)»)'''
+	
+	def dispatch String compilePython(AdditionExpression additionExpression) '''addition(«compilePython(additionExpression.left)», «compilePython(additionExpression.right)»)'''
+	
+	def dispatch String compilePython(SubstractionExpression substractionExpression) '''substraction(«compilePython(substractionExpression.left)», «compilePython(substractionExpression.right)»)'''
+	
+	def dispatch String compilePython(MultiplicationExpression multiplicationExpression) '''multiplication(«compilePython(multiplicationExpression.left)», «compilePython(multiplicationExpression.right)»)'''
+	
+	def dispatch String compilePython(DivisionExpression divisionExpression) '''division(«compilePython(divisionExpression.left)», «compilePython(divisionExpression.right)»)'''
+	
+	def dispatch String compilePython(ModuloExpression moduloExpression) '''modulo(«compilePython(moduloExpression.left)», «compilePython(moduloExpression.right)»)'''
+	
+	def dispatch String compilePython(LogicalNegationExpression logicalNegationExpression) '''logical_negation(«compilePython(logicalNegationExpression.sub)»)'''
+	
+	def dispatch String compilePython(UnaryMinusExpression unaryMinusExpression) '''unary_minus(«compilePython(unaryMinusExpression.sub)»)'''
+	
+	def dispatch String compilePython(UnaryPlusExpression unaryPlusExpression) '''unary_plus(«compilePython(unaryPlusExpression.sub)»)'''
+	
+	def dispatch String compilePython(BracketExpression bracketExpression) '''(«compilePython(bracketExpression.sub)»)'''
+	
+	def dispatch String compilePython(Load load) {return "load_json('" + load.fileName + "')"}
+	
+	def dispatch String compilePython(Store store){return "store(" + compilePython(store.expression) + ", '" + store.fileName + "')"}
+	
+	def dispatch String compilePython(Export export){return "export_csv(" + compilePython(export.expression) + ", '" + export.fileName + "')"}
+	
+	def dispatch String compilePython(Depth depth)'''depth_json(«compilePython(depth.expression)»)'''
+	
+	def dispatch String compilePython(FieldInfo field)'''infos_json(«compilePython(field.expression)»'''
+	
+	def dispatch String compilePython(Contains contains)'''contains(«contains.right», «FOR key : contains.keys SEPARATOR ", "» compilePython(«key») «ENDFOR»)'''
+	
+	def dispatch String compilePython(Select select)'''[{key: obj[key] for key in («FOR field: select.fields SEPARATOR ", "»«select.fromExpression»«ENDFOR») if «compilePython(select.whereExpression)»)} for obj in «compilePython(select.fromExpression)»]'''
+	
+	def dispatch String compilePython(Concat concat)'''concat(«FOR exp : concat.expressions»«compilePython(exp)»«ENDFOR»)'''
+	
+	def dispatch String compilePython(Length length)'''len(«compilePython(length.expression)»'''
+	
+	/*def dispatch String compilePython(Sum sum)'''[obj for obj in sum(«compilePython(sum.expression)», «FOR field : sum.fields SEPARATOR ", "»«compilePython(field)»«ENDFOR») if «compilePython(sum.whereExpression)»] '''
+	
+	def dispatch String compilePython(Product product)'''[obj for obj in sum(«compilePython(product.expression)», «FOR field : product.fields SEPARATOR ", "»«compilePython(field)»«ENDFOR») if «compilePython(product.whereExpression)»] '''*/
+	
+	//def dispatch String compilePython(Remove remove)'''remove(data := «compilePython((remove.value as ArrayCall).callee)», [index for index, value in enumerate(data[«compilePython((remove.value as ArrayCall).specifier)»], start=«((remove.value as ArrayCall).specifier as RangeSpecifier).from») if data[index] == 2])'''
+	
+	def dispatch String compilePython(Delete delete)'''[delete(obj«FOR key : delete.fields BEFORE ", " SEPARATOR ", "»«compilePython(key)»«ENDFOR») for obj in «compilePython(delete.fromExpression)»«IF delete.whereExpression !== null »if «compilePython(delete.whereExpression)»«ENDIF»]'''
+	
+	def dispatch String compilePython(Array array) '''[«FOR value : array.values SEPARATOR ", "»«compilePython(value)»«ENDFOR»]'''
+
+	def dispatch String compilePython(JSonObject jSonObject) '''{«FOR field : jSonObject.fields SEPARATOR ", "»«compilePython(field.key)»: «compilePython(field.value)»«ENDFOR»}'''
+	
+	def dispatch String compilePython(Primitive primitive) {
+		if(primitive.str !== null) return "'" + primitive.str + "'"
+		else if (primitive.floatNum !== null) return '''«primitive.floatNum»'''
+		else if (primitive.bool !== null) return Boolean.parseBoolean(primitive.bool) ? '''True''' : '''False'''
+		else if (primitive.nil !== null) return '''None'''
+		else return '''«primitive.intNum»''' 
+	}
+	
+	def dispatch String compilePython(VariableCall call) '''«call.name»'''
+	
+	
+	// COMPILE JQ
+	
+	def dispatch String compileJQ(Expression expression)''''''
+	
+	def dispatch String compileJQ(Print print) {
+		mustPrint = true
+		return '''«compileJQ(print.expression)» as $printer'''
+	}
+	
+	def dispatch String compileJQ(Primitive primitive) {
+		if(primitive.str !== null) return '"' + primitive.str + '"'
+		else if (primitive.floatNum !== null) return '''«primitive.floatNum»'''
+		else if (primitive.bool !== null) return Boolean.parseBoolean(primitive.bool) ? '''true''' : '''false'''
+		else if (primitive.nil !== null) return '''null'''
+		else return '''«primitive.intNum»''' 
+	}
+	
+	def dispatch String compileJQ(PointerCall pointer)'''.'''
+	
+	def dispatch String compileJQ(Array array) '''[«FOR value : array.values SEPARATOR ", "»«compileJQ(value)»«ENDFOR»]'''
+	
+	def dispatch String compileJQ(JSonObject jSonObject) '''{«FOR field : jSonObject.fields SEPARATOR ", "»«compileJQ(field.key)»: «compileJQ(field.value)»«ENDFOR»}'''
+	
+	def dispatch String compileJQ(VariableCall call) '''$«call.name»'''
+	
+	def dispatch String compileJQ(Assignment assignment) '''(«compileJQ(assignment.rightHandSide)») as «compileJQ(assignment.leftHandSide)»'''
+	
+	def dispatch String compileJQ(DisjunctionExpression disjunctionExpression) '''«compileJQ(disjunctionExpression.left)» or «compileJQ(disjunctionExpression.right)»'''
+	
+	def dispatch String compileJQ(ConjunctionExpression conjunctionExpression) '''«compileJQ(conjunctionExpression.left)» and «compileJQ(conjunctionExpression.right)»'''
+	
+	def dispatch String compileJQ(EqualityExpression equalityExpression) '''«compileJQ(equalityExpression.left)» == «compileJQ(equalityExpression.right)»'''
+	
+	def dispatch String compileJQ(InequalityExpression inequalityExpression) '''«compileJQ(inequalityExpression.left)» != «compileJQ(inequalityExpression.right)»'''	
+	
+	def dispatch String compileJQ(SuperiorExpression superiorExpression) '''«compileJQ(superiorExpression.left)» > «compileJQ(superiorExpression.right)»'''
+	
+	def dispatch String compileJQ(SuperiorOrEqualExpression superiorOrEqualExpression) '''«compileJQ(superiorOrEqualExpression.left)» >= «compileJQ(superiorOrEqualExpression.right)»'''
+	
+	def dispatch String compileJQ(InferiorExpression inferiorExpression) '''«compileJQ(inferiorExpression.left)» < «compileJQ(inferiorExpression.right)»'''
+	
+	def dispatch String compileJQ(InferiorOrEqualExpression inferiorOrEqualExpression) '''«compileJQ(inferiorOrEqualExpression.left)» <= «compileJQ(inferiorOrEqualExpression.right)»'''
+	
+	def dispatch String compileJQ(AdditionExpression additionExpression) '''«compileJQ(additionExpression.left)» + «compileJQ(additionExpression.right)»'''
+	
+	def dispatch String compileJQ(SubstractionExpression substractionExpression) '''«compileJQ(substractionExpression.left)» - «compileJQ(substractionExpression.right)»'''
+	
+	def dispatch String compileJQ(MultiplicationExpression multiplicationExpression) '''«compileJQ(multiplicationExpression.left)» * «compileJQ(multiplicationExpression.right)»'''
+	
+	def dispatch String compileJQ(DivisionExpression divisionExpression) '''«compileJQ(divisionExpression.left)» / «compileJQ(divisionExpression.right)»'''
+	
+	def dispatch String compileJQ(ModuloExpression moduloExpression) '''«compileJQ(moduloExpression.left)» % «compileJQ(moduloExpression.right)»'''
+	
+	def dispatch String compileJQ(LogicalNegationExpression logicalNegationExpression) '''! «compileJQ(logicalNegationExpression.sub)»'''
+	
+	def dispatch String compileJQ(UnaryMinusExpression unaryMinusExpression) '''- «compileJQ(unaryMinusExpression.sub)»'''
+	
+	def dispatch String compileJQ(UnaryPlusExpression unaryPlusExpression) '''+ «compileJQ(unaryPlusExpression.sub)»'''
+	
+	def dispatch String compileJQ(BracketExpression bracketExpression) '''(«compileJQ(bracketExpression.sub)»)'''
+	
+	def dispatch String compileJQ(ArrayCall call) '''«compileJQ(call.callee)»[«compileJQ(call.specifier)»]'''
+	
+	def dispatch String compileJQ(ArraySpecifier specifier) ''''''
+	
+	def dispatch String compileJQ(UnarySpecifier specifier) '''«specifier.index»'''
+	
+	def dispatch String compileJQ(RangeSpecifier specifier) '''«specifier.from»:«specifier.to»'''
+	
+	def dispatch String compileJQ(FieldCall call) '''«compileJQ(call.callee)»["«call.field»"]'''
+	
+	def dispatch String compileJQ(Load load) {
+		if (!filesToLoad.containsKey(load.fileName)) 
+			filesToLoad.put(load.fileName, "f" + filesToLoad.size)
+		
+		return '''$«filesToLoad.get(load.fileName)»[0]'''
+	}
+	
+	def dispatch String compileJQ(Store store) {
+		fileToExport = store.fileName
+		return '''«compileJQ(store.expression)» | . as $store '''
+	}
+	
+	def dispatch String compileJQ(Export export) {
+		fileToExport = export.fileName
+		return '''«compileJQ(export.expression)» | csv as $store '''
+	}
+	
+	def dispatch String compileJQ(Depth depth)'''depth(«compileJQ(depth.expression)»)'''
+	
+	def dispatch String compileJQ(FieldInfo field)'''«compileJQ(field.expression)» | map_values(type)'''
+	
+	def dispatch String compileJQ(Contains contains)'''«compileJQ(contains.right)» | «FOR key : contains.keys SEPARATOR " and "»has(«compileJQ(key)»)«ENDFOR»'''
+	
+	//TODO : deal with *
+	def dispatch String compileJQ(Select select)'''«compileJQ(select.fromExpression)»«IF select.whereExpression !== null» | map(select(«compileJQ(select.whereExpression)»))«ENDIF»«IF !select.fields.empty» | map(with_entries(select(«FOR field : select.fields SEPARATOR " or "».key == «compileJQ(field)»«ENDFOR»)))«ENDIF»'''
+	
+	def dispatch String compileJQ(Sum sum)'''«compileJQ(sum.expression)» | «IF sum.whereExpression !== null»map(select(«compileJQ(sum.whereExpression)»)) | «ENDIF»«IF sum.field !== null»map(.[«compileJQ(sum.field)»]) | «ENDIF»add'''
+	
+	def dispatch String compileJQ(Product prod)'''«compileJQ(prod.expression)» | «IF prod.whereExpression !== null»map(select(«compileJQ(prod.whereExpression)»)) | «ENDIF»«IF prod.field !== null»map(.[«compileJQ(prod.field)»]) | «ENDIF»product'''
+	
+	def dispatch String compileJQ(Length length)'''«compileJQ(length.expression)» | length'''
+	
+	// MAIN
+	
+	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		
+		val root = resource.allContents.head as Model
+		
+		var compiled_stms = newArrayList()
+		for (stmt: root.stmts) compiled_stms.add(compileJQ(stmt))
+		
+		println(root.stmts.length)
+		
+		var processBuilder = new ProcessBuilder()
+		var command = '''jq -n -r «IF !filesToLoad.empty»--slurpfile «FOR file: filesToLoad.keySet»«filesToLoad.get(file)» «file» «ENDFOR»«ENDIF»'''
+		command += ''' 'def depth (obj): obj | if type == "object" then (map(1 + depth(.)) as $rec | if ($rec | length) == 0 then 1 else ($rec | max) end) else 0 end;'''
+		command += '''def csv : (map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv;'''
+		command += '''def product: . as $array | reduce $array[] as $item ( ($array[0] | type | if . == "number" then 1 elif . == "string" then 1 elif . == "object" then {} else null end); . * $item);'''
+		command += '''«FOR stmt : compiled_stms SEPARATOR "|"»«stmt»«ENDFOR» '''
+		if(mustPrint) command += ''' | $printer' '''
+		else if(fileToExport !== null) command += ''' | $store' '''
+		
+		println(command)
+		processBuilder.command("bash", "-c", command);
+		
+		try {
+            var process = processBuilder.start()
+            var output = new StringBuilder();
+            var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            var String line
+            while ((line = reader.readLine()) !== null)
+                output.append(line).append("\n");
+
+            var exitVal = process.waitFor();
+
+            if (exitVal == 0) println("Success exec!")
+            else println("A problem occured")
+           
+            println(output)
+            if(fileToExport !== null) fsa.generateFile(fileToExport.toString, output)
+
+        }
+        catch (IOException | InterruptedException e) { e.printStackTrace(); }
+    	
+	}
+	
+	/*
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val root = resource.allContents.head as Model
 		
-		root.stmts.forEach[ element, index |
-			visit(element)
-		]
+		val lib = '''
+		import json
+		import csv
+		from itertools import zip_longest
+		
+		
+		class JsonOperationException(Exception):
+		    def __init__(self, left, right, operation):
+		        self.left = left
+		        self.right = right
+		        self.operation = operation
+		        self.message = str(type(left)) + " and " + str(type(right)) + " are not compatible for operation" + operation
+		        super().__init__(self.message)
+		
+		
+		def sum(array, *fields):
+		
+		    if len(fields) == 0:
+		        res = None
+		        for elem in array:
+		            res = addition(res, elem)
+		        return res
+		
+		    else:
+		        res = {}
+		        for field in fields:
+		            x = None
+		            for obj in array:
+		                x = addition(x, obj[field])
+		            res[field] = x
+		        raise TypeError
+		
+		
+		def disjunction(left, right):
+		
+		    if left is None:
+		        return right
+		    elif right is None:
+		        return left
+		
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [disjunction(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [disjunction(x, right) for x in left]
+		
+		    else:
+		        if type(left) is bool and type(right) is bool:
+		            return left or right
+		        elif type(right) is list:
+		            return [disjunction(left, x) for x in right]
+		        else:
+		            raise JsonOperationException(left, right, "disjunction")
+		
+		
+		def conjunction(left, right):
+		
+		    if left is None:
+		        return right
+		    elif right is None:
+		        return left
+		
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [conjunction(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [conjunction(x, right) for x in left]
+		
+		    else:
+		        if type(left) is bool and type(right) is bool:
+		            return left and right
+		        elif type(right) is list:
+		            return [conjunction(left, x) for x in right]
+		        else:
+		            raise JsonOperationException(left, right, "conjunction")
+		
+		
+		def addition(left, right):
+		
+		    if left is None:
+		        return right
+		    elif right is None:
+		        return left
+		
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [addition(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [addition(x, right) for x in left]
+		
+		    else:
+		        if type(right) is list:
+		            return [addition(left, x) for x in right]
+		
+		        elif type(left) is int or type(left) is float:
+		            assert type(right) is int or type(right) is float, 'can only add numbers with numbers'
+		            return left + right
+		
+		        elif type(left) is str:
+		            assert type(right) is str, 'can only concat strings with strings (try using TO_STRING)'
+		            return left + right
+		
+		        elif type(left) is dict:
+		            assert type(right) is str, 'can only concat object with object (try using INSERT)'
+		            return left.update(right)
+		
+		        else:
+		            raise JsonOperationException(left, right, "addition")
+		
+		
+		def substraction(left, right):
+		    if left is None:
+		        return right
+		    elif right is None:
+		        return left
+		
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [substraction(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [substraction(x, right) for x in left]
+		
+		    else:
+		        if type(right) is list:
+		            return [substraction(left, x) for x in right]
+		
+		        elif type(left) is int or type(left) is float:
+		            assert type(right) is int or type(right) is float, 'can only substract numbers with numbers'
+		            return left - right
+		
+		        else:
+		            raise JsonOperationException(left, right, "substraction")
+		
+		
+		def multiplication(left, right):
+		    if left is None:
+		        return right
+		    elif right is None:
+		        return left
+		
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [multiplication(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [multiplication(x, right) for x in left]
+		
+		    else:
+		        if type(right) is list:
+		            return [multiplication(left, x) for x in right]
+		
+		        elif type(left) is int or type(left) is float:
+		            assert type(right) is int or type(right) is float or str, ''
+		            return int(left) * right
+		
+		        elif type(left) is str:
+		            assert type(right) is int or type(right) is float, ''
+		            return left * int(right)
+		
+		        elif type(left) is dict:
+		            assert type(right) is dict, ''
+		            res = left
+		            for key, value in right.items:
+		                if key in res and type(res[key]) is dict and type(value) is dict:
+		                    res[key] = multiplication(res[key], value)
+		                else:
+		                    res[key] = value
+		
+		        else:
+		            raise JsonOperationException(left, right, "multiplication")
+		
+		
+		def division(left, right):
+		    if left is None:
+		        return right
+		    elif right is None:
+		        return left
+		
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [division(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [division(x, right) for x in left]
+		
+		    else:
+		        if type(right) is list:
+		            return [division(left, x) for x in right]
+		
+		        elif type(left) is int or type(left) is float:
+		            assert type(right) is int or type(right) is float, 'can only substract numbers with numbers'
+		            return left / right
+		
+		        elif type(left) is str:
+		            assert type(right) is str, ''
+		            return left.split(right)
+		
+		        else:
+		            raise JsonOperationException(left, right, "division")
+		
+		
+		def modulo(left, right):
+		    if left is None:
+		        return right
+		    elif right is None:
+		        return left
+		
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [modulo(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [modulo(x, right) for x in left]
+		
+		    else:
+		        if type(right) is list:
+		            return [modulo(left, x) for x in right]
+		
+		        elif type(left) is int or type(left) is float:
+		            assert type(right) is int or type(right) is float, 'can only substract numbers with numbers'
+		            return left % right
+		
+		        else:
+		            raise JsonOperationException(left, right, "modulate")
+		
+		
+		def strict_equal(left, right):
+		    return left == right
+		
+		
+		def equal(left, right):
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [equal(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [equal(x, right) for x in left]
+		
+		    else:
+		        if type(right) is list:
+		            return [equal(left, x) for x in right]
+		
+		        elif type(left) is int or type(left) is float:
+		            if type(right) is int or type(right) is float:
+		                return left == right
+		            elif type(right) is str:
+		                return str(left) == str(right)
+		            elif type(right) is bool:
+		                return left == 1 and right or left == 0 and not right
+		            else:
+		                return False
+		
+		        elif type(left) is str:
+		            if type(right) is int or type(right) is float:
+		                return left == str(right) or left == "" and right == 0
+		            elif type(right) is str:
+		                return left == right
+		            elif type(right) is bool:
+		                return left == str(right).lower() or left == "" and not right
+		            else:
+		                return False
+		
+		        elif type(left) is bool:
+		            if type(right) is int or type(right) is float:
+		                return left and right == 1 or not left and right == 0
+		            elif type(right) is str:
+		                return str(left).lower() == right \
+		                       or not left and right == "" \
+		                       or not left and right == "0" \
+		                       or left and right == "1"
+		            elif type(right) is bool:
+		                return left == right
+		            else:
+		                return False
+		
+		        elif left is None:
+		            return right is None
+		
+		        else:
+		            return left == right
+		
+		
+		def strict_not_equal(left, right):
+		    return left != right
+		
+		
+		def not_equal(left, right):
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [not_equal(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [not_equal(x, right) for x in left]
+		
+		    else:
+		        if type(right) is list:
+		            return [not_equal(left, x) for x in right]
+		        else:
+		            return not equal(left, right)
+		
+		
+		def superior(left, right):
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [superior(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [superior(x, right) for x in left]
+		
+		    else:
+		        if type(left) is list:
+		            if type(right) is list:
+		                return [superior(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		            else:
+		                return [superior(x, right) for x in left]
+		
+		        else:
+		            return left > right
+		
+		
+		def superior_or_equal(left, right):
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [superior_or_equal(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [superior_or_equal(x, right) for x in left]
+		
+		    else:
+		        if type(left) is list:
+		            if type(right) is list:
+		                return [superior_or_equal(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		            else:
+		                return [superior_or_equal(x, right) for x in left]
+		
+		        else:
+		            return left >= right
+		
+		
+		def inferior(left, right):
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [inferior(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [inferior(x, right) for x in left]
+		
+		    else:
+		        if type(left) is list:
+		            if type(right) is list:
+		                return [inferior(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		            else:
+		                return [inferior(x, right) for x in left]
+		
+		        else:
+		            return left < right
+		
+		
+		def inferior_or_equal(left, right):
+		    if type(left) is list:
+		        if type(right) is list:
+		            return [inferior_or_equal(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		        else:
+		            return [inferior_or_equal(x, right) for x in left]
+		
+		    else:
+		        if type(left) is list:
+		            if type(right) is list:
+		                return [inferior_or_equal(a, b) for (a, b) in zip_longest(left, right, fillvalue=False)]
+		            else:
+		                return [inferior_or_equal(x, right) for x in left]
+		
+		        else:
+		            return left < right
+		
+		
+		def logical_negation(elem):
+		    if type(elem) is list:
+		        return [logical_negation(x) for x in elem]
+		
+		    else:
+		        assert type(elem) is bool, 'can only negate boolean'
+		        return not elem
+		
+		
+		def unary_minus(elem):
+		    if type(elem) is list:
+		        return [unary_minus(x) for x in elem]
+		
+		    else:
+		        assert type(elem) is int or float, ''
+		        return - elem
+		
+		
+		def unary_plus(elem):
+		    if type(elem) is list:
+		        return [unary_plus(x) for x in elem]
+		
+		    else:
+		        assert type(elem) is int or float, ''
+		        return + elem
+		
+		
+		def load_json(path):
+		    with open(path) as file:
+		        return json.load(file)
+		
+		
+		def store_json(obj, path):
+		    with open(path, 'w') as file:
+		        json.dump(obj, file)
+		
+		
+		def export_csv(obj: list, path):
+		    with open(path, 'w') as output_file:
+		        output = csv.writer(output_file)
+		        output.writerow(obj[0].keys())
+		        for row in obj:
+		            output.writerow(row.values())
+		
+		
+		def depth_json(obj: dict):
+		    rec = []
+		    for v in obj.values():
+		        if isinstance(v, dict):
+		            rec.append(1 + depth_json(v))
+		
+		    if len(rec) == 0:
+		        return 1
+		    else:
+		        return max(rec)
+		
+		
+		def infos_json(obj: dict):
+		    res = {}
+		    for key, value in obj.items():
+		        if isinstance(value, int) or isinstance(value, float):
+		            res[key] = "Number"
+		        elif isinstance(value, str):
+		            res[key] = "String"
+		        elif isinstance(value, bool):
+		            res[key] = "Boolean"
+		        elif value is None:
+		            res[key] = "Null"
+		        elif isinstance(value, list):
+		            res[key] = "Array"
+		        else:
+		            res[key] = infos_json(value)
+		    return res
+		
+		
+		def contains(obj, *keys):
+		    for k in keys:
+		        if k not in obj:
+		            return False
+		    return True
+		
+		
+		def concat(*obj):
+		    res = 0
+		    if isinstance(obj[0], dict):
+		        res = {}
+		        for e in obj:
+		            assert isinstance(e, dict), "Cannot concat object with " + str(type(e))
+		            res.update(e)
+		
+		    elif isinstance(obj[0], list):
+		        res = []
+		        for e in obj:
+		            if isinstance(e, list):
+		                res += e
+		            else:
+		                res.append(e)
+		
+		    return res        res += e
+		    		            else:
+		    		                res.append(e)
+		    		
+		    		    return res        res += e
+		    		            else:
+		    		                res.append(e)
+		    		
+		    		    return res
+		'''
+		
+		var res = '''
+		from jz_library import *
+		
+		
+		'''
+		
+		fsa.generateFile("jz_library.py", lib)
+		
+		
+		val stmts = root.stmts.map[ e | compilePython(e) ].toList
+		
+		for (e : stmts) {
+			res += e + '\n'
+		}
+		
+		fsa.generateFile("prog.py", res) 
+		
+
+		var Process pr = Runtime.runtime.exec("python prog.py")
+		
+		//root.stmts.forEach[ element, index |
+		//	visit(element)
+		//]
 		
 	}
+	* */
+
 }
+

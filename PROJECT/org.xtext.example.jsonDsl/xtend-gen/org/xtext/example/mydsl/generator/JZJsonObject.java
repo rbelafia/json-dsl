@@ -12,13 +12,13 @@ import org.xtext.example.mydsl.generator.JZString;
 
 @SuppressWarnings("all")
 public class JZJsonObject implements JZObject {
-  private Map<String, Object> fields;
+  private Map<String, JZObject> fields;
   
   public JZJsonObject() {
-    this.fields = CollectionLiterals.<String, Object>newLinkedHashMap();
+    this.fields = CollectionLiterals.<String, JZObject>newLinkedHashMap();
   }
   
-  public Object addField(final String key, final Object value) {
+  public JZObject addField(final String key, final JZObject value) {
     return this.fields.putIfAbsent(key, value);
   }
   
@@ -27,7 +27,7 @@ public class JZJsonObject implements JZObject {
     return this;
   }
   
-  public Map<String, Object> fields() {
+  public Map<String, JZObject> fields() {
     return this.fields;
   }
   
@@ -35,7 +35,7 @@ public class JZJsonObject implements JZObject {
     return this.fields.keySet();
   }
   
-  public Collection<Object> values() {
+  public Collection<JZObject> values() {
     return this.fields.values();
   }
   
@@ -55,8 +55,8 @@ public class JZJsonObject implements JZObject {
     if (object instanceof JZJsonObject) {
       _matched=true;
       JZJsonObject res = this;
-      Set<Map.Entry<String, Object>> _entrySet = ((JZJsonObject)object).fields().entrySet();
-      for (final Map.Entry<String, Object> entry : _entrySet) {
+      Set<Map.Entry<String, JZObject>> _entrySet = ((JZJsonObject)object).fields().entrySet();
+      for (final Map.Entry<String, JZObject> entry : _entrySet) {
         res.addField(entry.getKey(), entry.getValue());
       }
       return res;
@@ -156,8 +156,8 @@ public class JZJsonObject implements JZObject {
   
   public String auxiliarToString(final int nbTab, final JZJsonObject object) {
     String res = "{\n";
-    Set<Map.Entry<String, Object>> _entrySet = object.fields().entrySet();
-    for (final Map.Entry<String, Object> entry : _entrySet) {
+    Set<Map.Entry<String, JZObject>> _entrySet = object.fields().entrySet();
+    for (final Map.Entry<String, JZObject> entry : _entrySet) {
       {
         for (int i = 0; (i < (nbTab + 1)); i++) {
           String _res = res;
@@ -167,12 +167,12 @@ public class JZJsonObject implements JZObject {
         String _key = entry.getKey();
         String _plus = (_key + ": ");
         res = (_res + _plus);
-        Object _value = entry.getValue();
+        JZObject _value = entry.getValue();
         boolean _matched = false;
         if (_value instanceof JZJsonObject) {
           _matched=true;
           String _res_1 = res;
-          Object _value_1 = entry.getValue();
+          JZObject _value_1 = entry.getValue();
           Object _auxiliarToString = this.auxiliarToString((nbTab + 1), ((JZJsonObject) _value_1));
           res = (_res_1 + _auxiliarToString);
         }

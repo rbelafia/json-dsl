@@ -3,7 +3,6 @@
  */
 package org.xtext.example.mydsl.jsonDsl;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -15,7 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.ArithFunctions#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.ArithFunctions#getFields <em>Fields</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.ArithFunctions#getField <em>Field</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.ArithFunctions#getWhereExpression <em>Where Expression</em>}</li>
  * </ul>
  *
@@ -48,16 +47,26 @@ public interface ArithFunctions extends Expression
   void setExpression(Expression value);
 
   /**
-   * Returns the value of the '<em><b>Fields</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.example.mydsl.jsonDsl.Expression}.
+   * Returns the value of the '<em><b>Field</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Fields</em>' containment reference list.
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getArithFunctions_Fields()
+   * @return the value of the '<em>Field</em>' containment reference.
+   * @see #setField(Expression)
+   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getArithFunctions_Field()
    * @model containment="true"
    * @generated
    */
-  EList<Expression> getFields();
+  Expression getField();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.ArithFunctions#getField <em>Field</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Field</em>' containment reference.
+   * @see #getField()
+   * @generated
+   */
+  void setField(Expression value);
 
   /**
    * Returns the value of the '<em><b>Where Expression</b></em>' containment reference.

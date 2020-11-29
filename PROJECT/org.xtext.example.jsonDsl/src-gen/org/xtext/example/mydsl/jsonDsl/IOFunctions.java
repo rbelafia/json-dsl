@@ -23,25 +23,25 @@ package org.xtext.example.mydsl.jsonDsl;
 public interface IOFunctions extends Expression
 {
   /**
-   * Returns the value of the '<em><b>File Name</b></em>' containment reference.
+   * Returns the value of the '<em><b>File Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>File Name</em>' containment reference.
-   * @see #setFileName(Expression)
+   * @return the value of the '<em>File Name</em>' attribute.
+   * @see #setFileName(String)
    * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getIOFunctions_FileName()
-   * @model containment="true"
+   * @model
    * @generated
    */
-  Expression getFileName();
+  String getFileName();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.IOFunctions#getFileName <em>File Name</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.example.mydsl.jsonDsl.IOFunctions#getFileName <em>File Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>File Name</em>' containment reference.
+   * @param value the new value of the '<em>File Name</em>' attribute.
    * @see #getFileName()
    * @generated
    */
-  void setFileName(Expression value);
+  void setFileName(String value);
 
 } // IOFunctions

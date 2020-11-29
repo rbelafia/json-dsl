@@ -21,7 +21,8 @@ import org.xtext.example.mydsl.jsonDsl.Primitive;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.PrimitiveImpl#getStr <em>Str</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.PrimitiveImpl#getNum <em>Num</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.PrimitiveImpl#getIntNum <em>Int Num</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.PrimitiveImpl#getFloatNum <em>Float Num</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.PrimitiveImpl#getBool <em>Bool</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.PrimitiveImpl#getNil <em>Nil</em>}</li>
  * </ul>
@@ -51,24 +52,44 @@ public class PrimitiveImpl extends ConstantImpl implements Primitive
   protected String str = STR_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getNum() <em>Num</em>}' attribute.
+   * The default value of the '{@link #getIntNum() <em>Int Num</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNum()
+   * @see #getIntNum()
    * @generated
    * @ordered
    */
-  protected static final String NUM_EDEFAULT = null;
+  protected static final int INT_NUM_EDEFAULT = 0;
 
   /**
-   * The cached value of the '{@link #getNum() <em>Num</em>}' attribute.
+   * The cached value of the '{@link #getIntNum() <em>Int Num</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNum()
+   * @see #getIntNum()
    * @generated
    * @ordered
    */
-  protected String num = NUM_EDEFAULT;
+  protected int intNum = INT_NUM_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getFloatNum() <em>Float Num</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFloatNum()
+   * @generated
+   * @ordered
+   */
+  protected static final String FLOAT_NUM_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getFloatNum() <em>Float Num</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFloatNum()
+   * @generated
+   * @ordered
+   */
+  protected String floatNum = FLOAT_NUM_EDEFAULT;
 
   /**
    * The default value of the '{@link #getBool() <em>Bool</em>}' attribute.
@@ -162,9 +183,9 @@ public class PrimitiveImpl extends ConstantImpl implements Primitive
    * @generated
    */
   @Override
-  public String getNum()
+  public int getIntNum()
   {
-    return num;
+    return intNum;
   }
 
   /**
@@ -173,12 +194,37 @@ public class PrimitiveImpl extends ConstantImpl implements Primitive
    * @generated
    */
   @Override
-  public void setNum(String newNum)
+  public void setIntNum(int newIntNum)
   {
-    String oldNum = num;
-    num = newNum;
+    int oldIntNum = intNum;
+    intNum = newIntNum;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.PRIMITIVE__NUM, oldNum, num));
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.PRIMITIVE__INT_NUM, oldIntNum, intNum));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String getFloatNum()
+  {
+    return floatNum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setFloatNum(String newFloatNum)
+  {
+    String oldFloatNum = floatNum;
+    floatNum = newFloatNum;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.PRIMITIVE__FLOAT_NUM, oldFloatNum, floatNum));
   }
 
   /**
@@ -243,8 +289,10 @@ public class PrimitiveImpl extends ConstantImpl implements Primitive
     {
       case JsonDslPackage.PRIMITIVE__STR:
         return getStr();
-      case JsonDslPackage.PRIMITIVE__NUM:
-        return getNum();
+      case JsonDslPackage.PRIMITIVE__INT_NUM:
+        return getIntNum();
+      case JsonDslPackage.PRIMITIVE__FLOAT_NUM:
+        return getFloatNum();
       case JsonDslPackage.PRIMITIVE__BOOL:
         return getBool();
       case JsonDslPackage.PRIMITIVE__NIL:
@@ -266,8 +314,11 @@ public class PrimitiveImpl extends ConstantImpl implements Primitive
       case JsonDslPackage.PRIMITIVE__STR:
         setStr((String)newValue);
         return;
-      case JsonDslPackage.PRIMITIVE__NUM:
-        setNum((String)newValue);
+      case JsonDslPackage.PRIMITIVE__INT_NUM:
+        setIntNum((Integer)newValue);
+        return;
+      case JsonDslPackage.PRIMITIVE__FLOAT_NUM:
+        setFloatNum((String)newValue);
         return;
       case JsonDslPackage.PRIMITIVE__BOOL:
         setBool((String)newValue);
@@ -292,8 +343,11 @@ public class PrimitiveImpl extends ConstantImpl implements Primitive
       case JsonDslPackage.PRIMITIVE__STR:
         setStr(STR_EDEFAULT);
         return;
-      case JsonDslPackage.PRIMITIVE__NUM:
-        setNum(NUM_EDEFAULT);
+      case JsonDslPackage.PRIMITIVE__INT_NUM:
+        setIntNum(INT_NUM_EDEFAULT);
+        return;
+      case JsonDslPackage.PRIMITIVE__FLOAT_NUM:
+        setFloatNum(FLOAT_NUM_EDEFAULT);
         return;
       case JsonDslPackage.PRIMITIVE__BOOL:
         setBool(BOOL_EDEFAULT);
@@ -317,8 +371,10 @@ public class PrimitiveImpl extends ConstantImpl implements Primitive
     {
       case JsonDslPackage.PRIMITIVE__STR:
         return STR_EDEFAULT == null ? str != null : !STR_EDEFAULT.equals(str);
-      case JsonDslPackage.PRIMITIVE__NUM:
-        return NUM_EDEFAULT == null ? num != null : !NUM_EDEFAULT.equals(num);
+      case JsonDslPackage.PRIMITIVE__INT_NUM:
+        return intNum != INT_NUM_EDEFAULT;
+      case JsonDslPackage.PRIMITIVE__FLOAT_NUM:
+        return FLOAT_NUM_EDEFAULT == null ? floatNum != null : !FLOAT_NUM_EDEFAULT.equals(floatNum);
       case JsonDslPackage.PRIMITIVE__BOOL:
         return BOOL_EDEFAULT == null ? bool != null : !BOOL_EDEFAULT.equals(bool);
       case JsonDslPackage.PRIMITIVE__NIL:
@@ -340,8 +396,10 @@ public class PrimitiveImpl extends ConstantImpl implements Primitive
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (str: ");
     result.append(str);
-    result.append(", num: ");
-    result.append(num);
+    result.append(", intNum: ");
+    result.append(intNum);
+    result.append(", floatNum: ");
+    result.append(floatNum);
     result.append(", bool: ");
     result.append(bool);
     result.append(", nil: ");

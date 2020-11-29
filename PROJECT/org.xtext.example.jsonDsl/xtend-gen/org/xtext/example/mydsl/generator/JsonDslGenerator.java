@@ -3,235 +3,1510 @@
  */
 package org.xtext.example.mydsl.generator;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.InputOutput;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
-import org.eclipse.xtext.xbase.lib.ListExtensions;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
-import org.xtext.example.mydsl.generator.JZArray;
-import org.xtext.example.mydsl.generator.JZBoolean;
-import org.xtext.example.mydsl.generator.JZJsonObject;
-import org.xtext.example.mydsl.generator.JZNull;
-import org.xtext.example.mydsl.generator.JZNumber;
-import org.xtext.example.mydsl.generator.JZObject;
-import org.xtext.example.mydsl.generator.JZString;
 import org.xtext.example.mydsl.jsonDsl.AdditionExpression;
 import org.xtext.example.mydsl.jsonDsl.Array;
+import org.xtext.example.mydsl.jsonDsl.ArrayCall;
+import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
 import org.xtext.example.mydsl.jsonDsl.Assignment;
 import org.xtext.example.mydsl.jsonDsl.BracketExpression;
+import org.xtext.example.mydsl.jsonDsl.Concat;
 import org.xtext.example.mydsl.jsonDsl.ConjunctionExpression;
+import org.xtext.example.mydsl.jsonDsl.Contains;
+import org.xtext.example.mydsl.jsonDsl.Delete;
+import org.xtext.example.mydsl.jsonDsl.Depth;
 import org.xtext.example.mydsl.jsonDsl.DisjunctionExpression;
 import org.xtext.example.mydsl.jsonDsl.DivisionExpression;
+import org.xtext.example.mydsl.jsonDsl.EqualityExpression;
+import org.xtext.example.mydsl.jsonDsl.Export;
 import org.xtext.example.mydsl.jsonDsl.Expression;
 import org.xtext.example.mydsl.jsonDsl.Field;
+import org.xtext.example.mydsl.jsonDsl.FieldCall;
+import org.xtext.example.mydsl.jsonDsl.FieldInfo;
+import org.xtext.example.mydsl.jsonDsl.InequalityExpression;
+import org.xtext.example.mydsl.jsonDsl.InferiorExpression;
+import org.xtext.example.mydsl.jsonDsl.InferiorOrEqualExpression;
 import org.xtext.example.mydsl.jsonDsl.JSonObject;
+import org.xtext.example.mydsl.jsonDsl.Length;
+import org.xtext.example.mydsl.jsonDsl.Load;
 import org.xtext.example.mydsl.jsonDsl.LogicalNegationExpression;
 import org.xtext.example.mydsl.jsonDsl.Model;
 import org.xtext.example.mydsl.jsonDsl.ModuloExpression;
 import org.xtext.example.mydsl.jsonDsl.MultiplicationExpression;
+import org.xtext.example.mydsl.jsonDsl.PointerCall;
 import org.xtext.example.mydsl.jsonDsl.Primitive;
-import org.xtext.example.mydsl.jsonDsl.ProcCall;
+import org.xtext.example.mydsl.jsonDsl.Print;
+import org.xtext.example.mydsl.jsonDsl.Product;
+import org.xtext.example.mydsl.jsonDsl.RangeSpecifier;
+import org.xtext.example.mydsl.jsonDsl.Select;
 import org.xtext.example.mydsl.jsonDsl.SimpleStatement;
+import org.xtext.example.mydsl.jsonDsl.Store;
+import org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression;
+import org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression;
 import org.xtext.example.mydsl.jsonDsl.SubstractionExpression;
+import org.xtext.example.mydsl.jsonDsl.Sum;
+import org.xtext.example.mydsl.jsonDsl.SuperiorExpression;
+import org.xtext.example.mydsl.jsonDsl.SuperiorOrEqualExpression;
 import org.xtext.example.mydsl.jsonDsl.UnaryMinusExpression;
 import org.xtext.example.mydsl.jsonDsl.UnaryPlusExpression;
+import org.xtext.example.mydsl.jsonDsl.UnarySpecifier;
+import org.xtext.example.mydsl.jsonDsl.VariableCall;
 
-/**
- * Generates code from your model files on save.
- * 
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
- */
 @SuppressWarnings("all")
 public class JsonDslGenerator extends AbstractGenerator {
-  protected JZObject _visit(final SimpleStatement statement) {
-    InputOutput.<String>println("SimpleStatement");
-    return null;
+  public boolean mustPrint = false;
+  
+  public LinkedHashMap<String, String> filesToLoad = new LinkedHashMap<String, String>();
+  
+  public Object fileToExport = null;
+  
+  /**
+   * def dispatch JZObject visit(SimpleStatement statement) {
+   * println("SimpleStatement")
+   * return null
+   * }
+   * 
+   * def dispatch JZObject visit(SubstractionExpression substractionExpression) {
+   * return visit(substractionExpression.left) - visit(substractionExpression.right);
+   * }
+   * 
+   * def dispatch JZObject visit(MultiplicationExpression multiplicationExpression) {
+   * return visit(multiplicationExpression.left) * visit(multiplicationExpression.right);
+   * }
+   * 
+   * def dispatch JZObject visit(DivisionExpression divisionExpression) {
+   * return visit(divisionExpression.left) / visit(divisionExpression.right);
+   * }
+   * 
+   * def dispatch JZObject visit(ModuloExpression moduloExpression) {
+   * return visit(moduloExpression.left) % visit(moduloExpression.right);
+   * }
+   * 
+   * def dispatch JZObject visit(UnaryMinusExpression unaryMinusExpression) {
+   * return - visit(unaryMinusExpression.sub);
+   * }
+   * 
+   * def dispatch JZObject visit(UnaryPlusExpression unaryPlusExpression) {
+   * return + visit(unaryPlusExpression.sub);
+   * }
+   * 
+   * def dispatch JZObject visit(LogicalNegationExpression logicalNegationExpression) {
+   * return !visit(logicalNegationExpression.sub);
+   * }
+   * 
+   * def dispatch JZObject visit(BracketExpression bracketExpression) {
+   * return visit(bracketExpression.sub);
+   * }
+   * 
+   * def dispatch JZObject visit(Assignment assignment) {
+   * println(assignment.leftHandSide.name + "<-" + visit(assignment.rightHandSide))
+   * return null
+   * }
+   * 
+   * def dispatch JZObject visit(Print procCall) {
+   * println(visit(procCall.expression))
+   * return null
+   * }
+   * 
+   * def dispatch JZObject visit(Expression expression) {
+   * return new JZNull()
+   * }
+   * 
+   * def dispatch JZObject visit(DisjunctionExpression disjunctionExpression) {
+   * return visit(disjunctionExpression.left) || visit(disjunctionExpression.right);
+   * }
+   * 
+   * def dispatch JZObject visit(ConjunctionExpression conjunctionExpression) {
+   * return visit(conjunctionExpression.left) && visit(conjunctionExpression.right);
+   * }
+   * 
+   * def dispatch JZObject visit(AdditionExpression additionExpression) {
+   * return visit(additionExpression.left) + visit(additionExpression.right);
+   * }
+   * 
+   * def dispatch JZObject visit(InfoFunctions call) {
+   * println("call")
+   * return null
+   * }
+   * 
+   * def dispatch JZObject visit(Depth depth) {
+   * val dep = new GetDepthFunction(visit(depth.expression) as JZJsonObject)
+   * return dep.evaluate
+   * }
+   * 
+   * def dispatch JZObject visit(FieldInfo fieldInfo) {
+   * val infos = new GetInfosFunction(visit(fieldInfo.expression) as JZJsonObject)
+   * return infos.evaluate
+   * }
+   * 
+   * def dispatch JZObject visit(Contains contains) {
+   * val cont = new ContainsFunction(contains.keys.map[e | e.visit.toString].toList as List<String>, contains.right.visit as JZJsonObject)
+   * return cont.evaluate
+   * }
+   * 
+   * def dispatch JZObject visit(Array array) {
+   * val res = new JZArray
+   * res.addAll(array.values.map[e | visit(e)].toList)
+   * return res
+   * }
+   * 
+   * def dispatch JZObject visit(JSonObject jSonObject) {
+   * var JZJsonObject res = new JZJsonObject
+   * for(field : jSonObject.fields)
+   * res.addField((visit(field.key) as JZString).content, visit(field.value))
+   * return res
+   * }
+   * 
+   * def dispatch JZObject visit(Primitive const) {
+   * if(const.str !== null) return new JZString(const.str)
+   * else if (const.bool !== null) return new JZBoolean(Boolean.parseBoolean(const.bool))
+   * else return new JZNull()
+   * }
+   * def dispatch JZObject visit(String string) {
+   * return new JZString(string)
+   * }
+   */
+  protected String _compilePython(final Assignment assignment) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compilePython = this.compilePython(assignment.getLeftHandSide());
+    _builder.append(_compilePython);
+    _builder.append(" = ");
+    String _compilePython_1 = this.compilePython(assignment.getRightHandSide());
+    _builder.append(_compilePython_1);
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final Assignment assignment) {
-    String _name = assignment.getLeftHandSide().getName();
-    String _plus = (_name + "<-");
-    JZObject _visit = this.visit(assignment.getRightHandSide());
-    String _plus_1 = (_plus + _visit);
-    InputOutput.<String>println(_plus_1);
-    return null;
+  protected String _compilePython(final Print procCall) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("json_print(");
+    String _compilePython = this.compilePython(procCall.getExpression());
+    _builder.append(_compilePython);
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final ProcCall procCall) {
-    InputOutput.<JZObject>println(this.visit(procCall.getExpression()));
-    return null;
+  protected String _compilePython(final Expression expression) {
+    StringConcatenation _builder = new StringConcatenation();
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final Expression expression) {
-    return new JZNull();
+  protected String _compilePython(final DisjunctionExpression disjunctionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("disjunction(");
+    String _compilePython = this.compilePython(disjunctionExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(disjunctionExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final DisjunctionExpression disjunctionExpression) {
-    JZObject _visit = this.visit(disjunctionExpression.getLeft());
-    JZObject _visit_1 = this.visit(disjunctionExpression.getRight());
-    return _visit.operator_or(_visit_1);
+  protected String _compilePython(final ArrayCall call) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compilePython = this.compilePython(call.getCallee());
+    _builder.append(_compilePython);
+    _builder.append("[");
+    String _compilePython_1 = this.compilePython(call.getSpecifier());
+    _builder.append(_compilePython_1);
+    _builder.append("]");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final ConjunctionExpression conjunctionExpression) {
-    JZObject _visit = this.visit(conjunctionExpression.getLeft());
-    JZObject _visit_1 = this.visit(conjunctionExpression.getRight());
-    return _visit.operator_and(_visit_1);
+  protected String _compilePython(final ArraySpecifier specifier) {
+    StringConcatenation _builder = new StringConcatenation();
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final AdditionExpression additionExpression) {
-    JZObject _visit = this.visit(additionExpression.getLeft());
-    JZObject _visit_1 = this.visit(additionExpression.getRight());
-    return _visit.operator_plus(_visit_1);
+  protected String _compilePython(final UnarySpecifier specifier) {
+    StringConcatenation _builder = new StringConcatenation();
+    int _index = specifier.getIndex();
+    _builder.append(_index);
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final SubstractionExpression substractionExpression) {
-    JZObject _visit = this.visit(substractionExpression.getLeft());
-    JZObject _visit_1 = this.visit(substractionExpression.getRight());
-    return _visit.operator_minus(_visit_1);
+  protected String _compilePython(final RangeSpecifier specifier) {
+    StringConcatenation _builder = new StringConcatenation();
+    int _from = specifier.getFrom();
+    _builder.append(_from);
+    _builder.append(":");
+    int _to = specifier.getTo();
+    _builder.append(_to);
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final MultiplicationExpression multiplicationExpression) {
-    JZObject _visit = this.visit(multiplicationExpression.getLeft());
-    JZObject _visit_1 = this.visit(multiplicationExpression.getRight());
-    return _visit.operator_multiply(_visit_1);
+  protected String _compilePython(final FieldCall call) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compilePython = this.compilePython(call.getCallee());
+    _builder.append(_compilePython);
+    _builder.append("[\"");
+    String _field = call.getField();
+    _builder.append(_field);
+    _builder.append("\"]");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final DivisionExpression divisionExpression) {
-    JZObject _visit = this.visit(divisionExpression.getLeft());
-    JZObject _visit_1 = this.visit(divisionExpression.getRight());
-    return _visit.operator_divide(_visit_1);
+  protected String _compilePython(final ConjunctionExpression conjunctionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("conjunction(");
+    String _compilePython = this.compilePython(conjunctionExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(conjunctionExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final ModuloExpression moduloExpression) {
-    JZObject _visit = this.visit(moduloExpression.getLeft());
-    JZObject _visit_1 = this.visit(moduloExpression.getRight());
-    return _visit.operator_modulo(_visit_1);
+  protected String _compilePython(final EqualityExpression equalityExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("equal(");
+    String _compilePython = this.compilePython(equalityExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(equalityExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final UnaryMinusExpression unaryMinusExpression) {
-    JZObject _visit = this.visit(unaryMinusExpression.getSub());
-    return _visit.operator_minus();
+  protected String _compilePython(final InequalityExpression inequalityExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("not_equal(");
+    String _compilePython = this.compilePython(inequalityExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(inequalityExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final UnaryPlusExpression unaryPlusExpression) {
-    JZObject _visit = this.visit(unaryPlusExpression.getSub());
-    return _visit.operator_plus();
+  protected String _compilePython(final StrictEqualityExpression strictEqualityExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("strict_equal(");
+    String _compilePython = this.compilePython(strictEqualityExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final LogicalNegationExpression logicalNegationExpression) {
-    JZObject _visit = this.visit(logicalNegationExpression.getSub());
-    return _visit.operator_not();
+  protected String _compilePython(final StrictInequalityExpression strictInequalityExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("strict_not_equal(");
+    String _compilePython = this.compilePython(strictInequalityExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final BracketExpression bracketExpression) {
-    return this.visit(bracketExpression.getSub());
+  protected String _compilePython(final SuperiorExpression superiorExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("superior(");
+    String _compilePython = this.compilePython(superiorExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(superiorExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final Array array) {
-    final JZArray res = new JZArray();
-    final Function1<Expression, JZObject> _function = (Expression e) -> {
-      return this.visit(e);
-    };
-    res.addAll(IterableExtensions.<JZObject>toList(ListExtensions.<Expression, JZObject>map(array.getValues(), _function)));
-    return res;
+  protected String _compilePython(final SuperiorOrEqualExpression superiorOrEqualExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("superior_or_equal(");
+    String _compilePython = this.compilePython(superiorOrEqualExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(superiorOrEqualExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final JSonObject jSonObject) {
-    JZJsonObject res = new JZJsonObject();
-    EList<Field> _fields = jSonObject.getFields();
-    for (final Field field : _fields) {
-      JZObject _visit = this.visit(field.getKey());
-      res.addField(((JZString) _visit).content, this.visit(field.getValue()));
+  protected String _compilePython(final InferiorExpression inferiorExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("inferior(");
+    String _compilePython = this.compilePython(inferiorExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(inferiorExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final InferiorOrEqualExpression inferiorOrEqualExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("inferior_or_equal(");
+    String _compilePython = this.compilePython(inferiorOrEqualExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(inferiorOrEqualExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final AdditionExpression additionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("addition(");
+    String _compilePython = this.compilePython(additionExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(additionExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final SubstractionExpression substractionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("substraction(");
+    String _compilePython = this.compilePython(substractionExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(substractionExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final MultiplicationExpression multiplicationExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("multiplication(");
+    String _compilePython = this.compilePython(multiplicationExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(multiplicationExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final DivisionExpression divisionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("division(");
+    String _compilePython = this.compilePython(divisionExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(divisionExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final ModuloExpression moduloExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("modulo(");
+    String _compilePython = this.compilePython(moduloExpression.getLeft());
+    _builder.append(_compilePython);
+    _builder.append(", ");
+    String _compilePython_1 = this.compilePython(moduloExpression.getRight());
+    _builder.append(_compilePython_1);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final LogicalNegationExpression logicalNegationExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("logical_negation(");
+    String _compilePython = this.compilePython(logicalNegationExpression.getSub());
+    _builder.append(_compilePython);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final UnaryMinusExpression unaryMinusExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("unary_minus(");
+    String _compilePython = this.compilePython(unaryMinusExpression.getSub());
+    _builder.append(_compilePython);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final UnaryPlusExpression unaryPlusExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("unary_plus(");
+    String _compilePython = this.compilePython(unaryPlusExpression.getSub());
+    _builder.append(_compilePython);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final BracketExpression bracketExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("(");
+    String _compilePython = this.compilePython(bracketExpression.getSub());
+    _builder.append(_compilePython);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final Load load) {
+    String _fileName = load.getFileName();
+    String _plus = ("load_json(\'" + _fileName);
+    return (_plus + "\')");
+  }
+  
+  protected String _compilePython(final Store store) {
+    String _compilePython = this.compilePython(store.getExpression());
+    String _plus = ("store(" + _compilePython);
+    String _plus_1 = (_plus + ", \'");
+    String _fileName = store.getFileName();
+    String _plus_2 = (_plus_1 + _fileName);
+    return (_plus_2 + "\')");
+  }
+  
+  protected String _compilePython(final Export export) {
+    String _compilePython = this.compilePython(export.getExpression());
+    String _plus = ("export_csv(" + _compilePython);
+    String _plus_1 = (_plus + ", \'");
+    String _fileName = export.getFileName();
+    String _plus_2 = (_plus_1 + _fileName);
+    return (_plus_2 + "\')");
+  }
+  
+  protected String _compilePython(final Depth depth) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("depth_json(");
+    String _compilePython = this.compilePython(depth.getExpression());
+    _builder.append(_compilePython);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final FieldInfo field) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("infos_json(");
+    String _compilePython = this.compilePython(field.getExpression());
+    _builder.append(_compilePython);
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final Contains contains) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("contains(");
+    Expression _right = contains.getRight();
+    _builder.append(_right);
+    _builder.append(", ");
+    {
+      EList<Expression> _keys = contains.getKeys();
+      boolean _hasElements = false;
+      for(final Expression key : _keys) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(", ", "");
+        }
+        _builder.append(" compilePython(");
+        _builder.append(key);
+        _builder.append(") ");
+      }
     }
-    return res;
+    _builder.append(")");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final String string) {
-    return new JZString(string);
+  protected String _compilePython(final Select select) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("[{key: obj[key] for key in (");
+    {
+      EList<Expression> _fields = select.getFields();
+      boolean _hasElements = false;
+      for(final Expression field : _fields) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(", ", "");
+        }
+        Expression _fromExpression = select.getFromExpression();
+        _builder.append(_fromExpression);
+      }
+    }
+    _builder.append(") if ");
+    String _compilePython = this.compilePython(select.getWhereExpression());
+    _builder.append(_compilePython);
+    _builder.append(")} for obj in ");
+    String _compilePython_1 = this.compilePython(select.getFromExpression());
+    _builder.append(_compilePython_1);
+    _builder.append("]");
+    return _builder.toString();
   }
   
-  protected JZObject _visit(final Primitive const_) {
-    String _str = const_.getStr();
+  protected String _compilePython(final Concat concat) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("concat(");
+    {
+      EList<Expression> _expressions = concat.getExpressions();
+      for(final Expression exp : _expressions) {
+        String _compilePython = this.compilePython(exp);
+        _builder.append(_compilePython);
+      }
+    }
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final Length length) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("len(");
+    String _compilePython = this.compilePython(length.getExpression());
+    _builder.append(_compilePython);
+    return _builder.toString();
+  }
+  
+  /**
+   * def dispatch String compilePython(Sum sum)'''[obj for obj in sum(«compilePython(sum.expression)», «FOR field : sum.fields SEPARATOR ", "»«compilePython(field)»«ENDFOR») if «compilePython(sum.whereExpression)»] '''
+   * 
+   * def dispatch String compilePython(Product product)'''[obj for obj in sum(«compilePython(product.expression)», «FOR field : product.fields SEPARATOR ", "»«compilePython(field)»«ENDFOR») if «compilePython(product.whereExpression)»] '''
+   */
+  protected String _compilePython(final Delete delete) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("[delete(obj");
+    {
+      EList<Expression> _fields = delete.getFields();
+      boolean _hasElements = false;
+      for(final Expression key : _fields) {
+        if (!_hasElements) {
+          _hasElements = true;
+          _builder.append(", ");
+        } else {
+          _builder.appendImmediate(", ", "");
+        }
+        String _compilePython = this.compilePython(key);
+        _builder.append(_compilePython);
+      }
+    }
+    _builder.append(") for obj in ");
+    String _compilePython_1 = this.compilePython(delete.getFromExpression());
+    _builder.append(_compilePython_1);
+    {
+      Expression _whereExpression = delete.getWhereExpression();
+      boolean _tripleNotEquals = (_whereExpression != null);
+      if (_tripleNotEquals) {
+        _builder.append("if ");
+        String _compilePython_2 = this.compilePython(delete.getWhereExpression());
+        _builder.append(_compilePython_2);
+      }
+    }
+    _builder.append("]");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final Array array) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("[");
+    {
+      EList<Expression> _values = array.getValues();
+      boolean _hasElements = false;
+      for(final Expression value : _values) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(", ", "");
+        }
+        String _compilePython = this.compilePython(value);
+        _builder.append(_compilePython);
+      }
+    }
+    _builder.append("]");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final JSonObject jSonObject) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    {
+      EList<Field> _fields = jSonObject.getFields();
+      boolean _hasElements = false;
+      for(final Field field : _fields) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(", ", "");
+        }
+        String _compilePython = this.compilePython(field.getKey());
+        _builder.append(_compilePython);
+        _builder.append(": ");
+        String _compilePython_1 = this.compilePython(field.getValue());
+        _builder.append(_compilePython_1);
+      }
+    }
+    _builder.append("}");
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final Primitive primitive) {
+    String _str = primitive.getStr();
     boolean _tripleNotEquals = (_str != null);
     if (_tripleNotEquals) {
-      String _str_1 = const_.getStr();
-      return new JZString(_str_1);
+      String _str_1 = primitive.getStr();
+      String _plus = ("\'" + _str_1);
+      return (_plus + "\'");
     } else {
-      String _num = const_.getNum();
-      boolean _tripleNotEquals_1 = (_num != null);
+      String _floatNum = primitive.getFloatNum();
+      boolean _tripleNotEquals_1 = (_floatNum != null);
       if (_tripleNotEquals_1) {
-        Double _valueOf = Double.valueOf(const_.getNum());
-        return new JZNumber((_valueOf).doubleValue());
+        StringConcatenation _builder = new StringConcatenation();
+        String _floatNum_1 = primitive.getFloatNum();
+        _builder.append(_floatNum_1);
+        return _builder.toString();
       } else {
-        String _bool = const_.getBool();
+        String _bool = primitive.getBool();
         boolean _tripleNotEquals_2 = (_bool != null);
         if (_tripleNotEquals_2) {
-          boolean _parseBoolean = Boolean.parseBoolean(const_.getBool());
-          return new JZBoolean(_parseBoolean);
+          String _xifexpression = null;
+          boolean _parseBoolean = Boolean.parseBoolean(primitive.getBool());
+          if (_parseBoolean) {
+            StringConcatenation _builder_1 = new StringConcatenation();
+            _builder_1.append("True");
+            _xifexpression = _builder_1.toString();
+          } else {
+            StringConcatenation _builder_2 = new StringConcatenation();
+            _builder_2.append("False");
+            _xifexpression = _builder_2.toString();
+          }
+          return _xifexpression;
         } else {
-          return new JZNull();
+          String _nil = primitive.getNil();
+          boolean _tripleNotEquals_3 = (_nil != null);
+          if (_tripleNotEquals_3) {
+            StringConcatenation _builder_3 = new StringConcatenation();
+            _builder_3.append("None");
+            return _builder_3.toString();
+          } else {
+            StringConcatenation _builder_4 = new StringConcatenation();
+            int _intNum = primitive.getIntNum();
+            _builder_4.append(_intNum);
+            return _builder_4.toString();
+          }
         }
       }
     }
+  }
+  
+  protected String _compilePython(final VariableCall call) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _name = call.getName();
+    _builder.append(_name);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Expression expression) {
+    StringConcatenation _builder = new StringConcatenation();
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Print print) {
+    this.mustPrint = true;
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(print.getExpression());
+    _builder.append(_compileJQ);
+    _builder.append(" as $printer");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Primitive primitive) {
+    String _str = primitive.getStr();
+    boolean _tripleNotEquals = (_str != null);
+    if (_tripleNotEquals) {
+      String _str_1 = primitive.getStr();
+      String _plus = ("\"" + _str_1);
+      return (_plus + "\"");
+    } else {
+      String _floatNum = primitive.getFloatNum();
+      boolean _tripleNotEquals_1 = (_floatNum != null);
+      if (_tripleNotEquals_1) {
+        StringConcatenation _builder = new StringConcatenation();
+        String _floatNum_1 = primitive.getFloatNum();
+        _builder.append(_floatNum_1);
+        return _builder.toString();
+      } else {
+        String _bool = primitive.getBool();
+        boolean _tripleNotEquals_2 = (_bool != null);
+        if (_tripleNotEquals_2) {
+          String _xifexpression = null;
+          boolean _parseBoolean = Boolean.parseBoolean(primitive.getBool());
+          if (_parseBoolean) {
+            StringConcatenation _builder_1 = new StringConcatenation();
+            _builder_1.append("true");
+            _xifexpression = _builder_1.toString();
+          } else {
+            StringConcatenation _builder_2 = new StringConcatenation();
+            _builder_2.append("false");
+            _xifexpression = _builder_2.toString();
+          }
+          return _xifexpression;
+        } else {
+          String _nil = primitive.getNil();
+          boolean _tripleNotEquals_3 = (_nil != null);
+          if (_tripleNotEquals_3) {
+            StringConcatenation _builder_3 = new StringConcatenation();
+            _builder_3.append("null");
+            return _builder_3.toString();
+          } else {
+            StringConcatenation _builder_4 = new StringConcatenation();
+            int _intNum = primitive.getIntNum();
+            _builder_4.append(_intNum);
+            return _builder_4.toString();
+          }
+        }
+      }
+    }
+  }
+  
+  protected String _compileJQ(final PointerCall pointer) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append(".");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Array array) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("[");
+    {
+      EList<Expression> _values = array.getValues();
+      boolean _hasElements = false;
+      for(final Expression value : _values) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(", ", "");
+        }
+        String _compileJQ = this.compileJQ(value);
+        _builder.append(_compileJQ);
+      }
+    }
+    _builder.append("]");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final JSonObject jSonObject) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    {
+      EList<Field> _fields = jSonObject.getFields();
+      boolean _hasElements = false;
+      for(final Field field : _fields) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(", ", "");
+        }
+        String _compileJQ = this.compileJQ(field.getKey());
+        _builder.append(_compileJQ);
+        _builder.append(": ");
+        String _compileJQ_1 = this.compileJQ(field.getValue());
+        _builder.append(_compileJQ_1);
+      }
+    }
+    _builder.append("}");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final VariableCall call) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("$");
+    String _name = call.getName();
+    _builder.append(_name);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Assignment assignment) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("(");
+    String _compileJQ = this.compileJQ(assignment.getRightHandSide());
+    _builder.append(_compileJQ);
+    _builder.append(") as ");
+    String _compileJQ_1 = this.compileJQ(assignment.getLeftHandSide());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final DisjunctionExpression disjunctionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(disjunctionExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" or ");
+    String _compileJQ_1 = this.compileJQ(disjunctionExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final ConjunctionExpression conjunctionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(conjunctionExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" and ");
+    String _compileJQ_1 = this.compileJQ(conjunctionExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final EqualityExpression equalityExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(equalityExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" == ");
+    String _compileJQ_1 = this.compileJQ(equalityExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final InequalityExpression inequalityExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(inequalityExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" != ");
+    String _compileJQ_1 = this.compileJQ(inequalityExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final SuperiorExpression superiorExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(superiorExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" > ");
+    String _compileJQ_1 = this.compileJQ(superiorExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final SuperiorOrEqualExpression superiorOrEqualExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(superiorOrEqualExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" >= ");
+    String _compileJQ_1 = this.compileJQ(superiorOrEqualExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final InferiorExpression inferiorExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(inferiorExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" < ");
+    String _compileJQ_1 = this.compileJQ(inferiorExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final InferiorOrEqualExpression inferiorOrEqualExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(inferiorOrEqualExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" <= ");
+    String _compileJQ_1 = this.compileJQ(inferiorOrEqualExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final AdditionExpression additionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(additionExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" + ");
+    String _compileJQ_1 = this.compileJQ(additionExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final SubstractionExpression substractionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(substractionExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" - ");
+    String _compileJQ_1 = this.compileJQ(substractionExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final MultiplicationExpression multiplicationExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(multiplicationExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" * ");
+    String _compileJQ_1 = this.compileJQ(multiplicationExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final DivisionExpression divisionExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(divisionExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" / ");
+    String _compileJQ_1 = this.compileJQ(divisionExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final ModuloExpression moduloExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(moduloExpression.getLeft());
+    _builder.append(_compileJQ);
+    _builder.append(" % ");
+    String _compileJQ_1 = this.compileJQ(moduloExpression.getRight());
+    _builder.append(_compileJQ_1);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final LogicalNegationExpression logicalNegationExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("! ");
+    String _compileJQ = this.compileJQ(logicalNegationExpression.getSub());
+    _builder.append(_compileJQ);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final UnaryMinusExpression unaryMinusExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("- ");
+    String _compileJQ = this.compileJQ(unaryMinusExpression.getSub());
+    _builder.append(_compileJQ);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final UnaryPlusExpression unaryPlusExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("+ ");
+    String _compileJQ = this.compileJQ(unaryPlusExpression.getSub());
+    _builder.append(_compileJQ);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final BracketExpression bracketExpression) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("(");
+    String _compileJQ = this.compileJQ(bracketExpression.getSub());
+    _builder.append(_compileJQ);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final ArrayCall call) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(call.getCallee());
+    _builder.append(_compileJQ);
+    _builder.append("[");
+    String _compileJQ_1 = this.compileJQ(call.getSpecifier());
+    _builder.append(_compileJQ_1);
+    _builder.append("]");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final ArraySpecifier specifier) {
+    StringConcatenation _builder = new StringConcatenation();
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final UnarySpecifier specifier) {
+    StringConcatenation _builder = new StringConcatenation();
+    int _index = specifier.getIndex();
+    _builder.append(_index);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final RangeSpecifier specifier) {
+    StringConcatenation _builder = new StringConcatenation();
+    int _from = specifier.getFrom();
+    _builder.append(_from);
+    _builder.append(":");
+    int _to = specifier.getTo();
+    _builder.append(_to);
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final FieldCall call) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(call.getCallee());
+    _builder.append(_compileJQ);
+    _builder.append("[\"");
+    String _field = call.getField();
+    _builder.append(_field);
+    _builder.append("\"]");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Load load) {
+    boolean _containsKey = this.filesToLoad.containsKey(load.getFileName());
+    boolean _not = (!_containsKey);
+    if (_not) {
+      String _fileName = load.getFileName();
+      int _size = this.filesToLoad.size();
+      String _plus = ("f" + Integer.valueOf(_size));
+      this.filesToLoad.put(_fileName, _plus);
+    }
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("$");
+    String _get = this.filesToLoad.get(load.getFileName());
+    _builder.append(_get);
+    _builder.append("[0]");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Store store) {
+    this.fileToExport = store.getFileName();
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(store.getExpression());
+    _builder.append(_compileJQ);
+    _builder.append(" | . as $store ");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Export export) {
+    this.fileToExport = export.getFileName();
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(export.getExpression());
+    _builder.append(_compileJQ);
+    _builder.append(" | csv as $store ");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Depth depth) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("depth(");
+    String _compileJQ = this.compileJQ(depth.getExpression());
+    _builder.append(_compileJQ);
+    _builder.append(")");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final FieldInfo field) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(field.getExpression());
+    _builder.append(_compileJQ);
+    _builder.append(" | map_values(type)");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Contains contains) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(contains.getRight());
+    _builder.append(_compileJQ);
+    _builder.append(" | ");
+    {
+      EList<Expression> _keys = contains.getKeys();
+      boolean _hasElements = false;
+      for(final Expression key : _keys) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(" and ", "");
+        }
+        _builder.append("has(");
+        String _compileJQ_1 = this.compileJQ(key);
+        _builder.append(_compileJQ_1);
+        _builder.append(")");
+      }
+    }
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Select select) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(select.getFromExpression());
+    _builder.append(_compileJQ);
+    {
+      Expression _whereExpression = select.getWhereExpression();
+      boolean _tripleNotEquals = (_whereExpression != null);
+      if (_tripleNotEquals) {
+        _builder.append(" | map(select(");
+        String _compileJQ_1 = this.compileJQ(select.getWhereExpression());
+        _builder.append(_compileJQ_1);
+        _builder.append("))");
+      }
+    }
+    {
+      boolean _isEmpty = select.getFields().isEmpty();
+      boolean _not = (!_isEmpty);
+      if (_not) {
+        _builder.append(" | map(with_entries(select(");
+        {
+          EList<Expression> _fields = select.getFields();
+          boolean _hasElements = false;
+          for(final Expression field : _fields) {
+            if (!_hasElements) {
+              _hasElements = true;
+            } else {
+              _builder.appendImmediate(" or ", "");
+            }
+            _builder.append(".key == ");
+            String _compileJQ_2 = this.compileJQ(field);
+            _builder.append(_compileJQ_2);
+          }
+        }
+        _builder.append(")))");
+      }
+    }
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Sum sum) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(sum.getExpression());
+    _builder.append(_compileJQ);
+    _builder.append(" | ");
+    {
+      Expression _whereExpression = sum.getWhereExpression();
+      boolean _tripleNotEquals = (_whereExpression != null);
+      if (_tripleNotEquals) {
+        _builder.append("map(select(");
+        String _compileJQ_1 = this.compileJQ(sum.getWhereExpression());
+        _builder.append(_compileJQ_1);
+        _builder.append(")) | ");
+      }
+    }
+    {
+      Expression _field = sum.getField();
+      boolean _tripleNotEquals_1 = (_field != null);
+      if (_tripleNotEquals_1) {
+        _builder.append("map(.[");
+        String _compileJQ_2 = this.compileJQ(sum.getField());
+        _builder.append(_compileJQ_2);
+        _builder.append("]) | ");
+      }
+    }
+    _builder.append("add");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Product prod) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(prod.getExpression());
+    _builder.append(_compileJQ);
+    _builder.append(" | ");
+    {
+      Expression _whereExpression = prod.getWhereExpression();
+      boolean _tripleNotEquals = (_whereExpression != null);
+      if (_tripleNotEquals) {
+        _builder.append("map(select(");
+        String _compileJQ_1 = this.compileJQ(prod.getWhereExpression());
+        _builder.append(_compileJQ_1);
+        _builder.append(")) | ");
+      }
+    }
+    {
+      Expression _field = prod.getField();
+      boolean _tripleNotEquals_1 = (_field != null);
+      if (_tripleNotEquals_1) {
+        _builder.append("map(.[");
+        String _compileJQ_2 = this.compileJQ(prod.getField());
+        _builder.append(_compileJQ_2);
+        _builder.append("]) | ");
+      }
+    }
+    _builder.append("product");
+    return _builder.toString();
+  }
+  
+  protected String _compileJQ(final Length length) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileJQ = this.compileJQ(length.getExpression());
+    _builder.append(_compileJQ);
+    _builder.append(" | length");
+    return _builder.toString();
   }
   
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     EObject _head = IteratorExtensions.<EObject>head(resource.getAllContents());
     final Model root = ((Model) _head);
-    final Procedure2<SimpleStatement, Integer> _function = (SimpleStatement element, Integer index) -> {
-      this.visit(element);
-    };
-    IterableExtensions.<SimpleStatement>forEach(root.getStmts(), _function);
+    ArrayList<String> compiled_stms = CollectionLiterals.<String>newArrayList();
+    EList<SimpleStatement> _stmts = root.getStmts();
+    for (final SimpleStatement stmt : _stmts) {
+      compiled_stms.add(this.compileJQ(stmt));
+    }
+    InputOutput.<Integer>println(Integer.valueOf(((Object[])Conversions.unwrapArray(root.getStmts(), Object.class)).length));
+    ProcessBuilder processBuilder = new ProcessBuilder();
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("jq -n -r ");
+    {
+      boolean _isEmpty = this.filesToLoad.isEmpty();
+      boolean _not = (!_isEmpty);
+      if (_not) {
+        _builder.append("--slurpfile ");
+        {
+          Set<String> _keySet = this.filesToLoad.keySet();
+          for(final String file : _keySet) {
+            String _get = this.filesToLoad.get(file);
+            _builder.append(_get);
+            _builder.append(" ");
+            _builder.append(file);
+            _builder.append(" ");
+          }
+        }
+      }
+    }
+    String command = _builder.toString();
+    String _command = command;
+    StringConcatenation _builder_1 = new StringConcatenation();
+    _builder_1.append(" ");
+    _builder_1.append("\'def depth (obj): obj | if type == \"object\" then (map(1 + depth(.)) as $rec | if ($rec | length) == 0 then 1 else ($rec | max) end) else 0 end;");
+    command = (_command + _builder_1);
+    String _command_1 = command;
+    StringConcatenation _builder_2 = new StringConcatenation();
+    _builder_2.append("def csv : (map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv;");
+    command = (_command_1 + _builder_2);
+    String _command_2 = command;
+    StringConcatenation _builder_3 = new StringConcatenation();
+    _builder_3.append("def product: . as $array | reduce $array[] as $item ( ($array[0] | type | if . == \"number\" then 1 elif . == \"string\" then 1 elif . == \"object\" then {} else null end); . * $item);");
+    command = (_command_2 + _builder_3);
+    String _command_3 = command;
+    StringConcatenation _builder_4 = new StringConcatenation();
+    {
+      boolean _hasElements = false;
+      for(final String stmt_1 : compiled_stms) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder_4.appendImmediate("|", "");
+        }
+        _builder_4.append(stmt_1);
+      }
+    }
+    _builder_4.append(" ");
+    command = (_command_3 + _builder_4);
+    if (this.mustPrint) {
+      String _command_4 = command;
+      StringConcatenation _builder_5 = new StringConcatenation();
+      _builder_5.append(" ");
+      _builder_5.append("| $printer\' ");
+      command = (_command_4 + _builder_5);
+    } else {
+      if ((this.fileToExport != null)) {
+        String _command_5 = command;
+        StringConcatenation _builder_6 = new StringConcatenation();
+        _builder_6.append(" ");
+        _builder_6.append("| $store\' ");
+        command = (_command_5 + _builder_6);
+      }
+    }
+    InputOutput.<String>println(command);
+    processBuilder.command("bash", "-c", command);
+    try {
+      Process process = processBuilder.start();
+      StringBuilder output = new StringBuilder();
+      InputStream _inputStream = process.getInputStream();
+      InputStreamReader _inputStreamReader = new InputStreamReader(_inputStream);
+      BufferedReader reader = new BufferedReader(_inputStreamReader);
+      String line = null;
+      while (((line = reader.readLine()) != null)) {
+        output.append(line).append("\n");
+      }
+      int exitVal = process.waitFor();
+      if ((exitVal == 0)) {
+        InputOutput.<String>println("Success exec!");
+      } else {
+        InputOutput.<String>println("A problem occured");
+      }
+      InputOutput.<StringBuilder>println(output);
+      if ((this.fileToExport != null)) {
+        fsa.generateFile(this.fileToExport.toString(), output);
+      }
+    } catch (final Throwable _t) {
+      if (_t instanceof IOException || _t instanceof InterruptedException) {
+        final Exception e = (Exception)_t;
+        e.printStackTrace();
+      } else {
+        throw Exceptions.sneakyThrow(_t);
+      }
+    }
   }
   
-  public JZObject visit(final Object array) {
+  public String compilePython(final EObject array) {
     if (array instanceof Array) {
-      return _visit((Array)array);
+      return _compilePython((Array)array);
+    } else if (array instanceof Concat) {
+      return _compilePython((Concat)array);
+    } else if (array instanceof Contains) {
+      return _compilePython((Contains)array);
+    } else if (array instanceof Delete) {
+      return _compilePython((Delete)array);
+    } else if (array instanceof Depth) {
+      return _compilePython((Depth)array);
+    } else if (array instanceof Export) {
+      return _compilePython((Export)array);
+    } else if (array instanceof FieldInfo) {
+      return _compilePython((FieldInfo)array);
     } else if (array instanceof JSonObject) {
-      return _visit((JSonObject)array);
+      return _compilePython((JSonObject)array);
+    } else if (array instanceof Length) {
+      return _compilePython((Length)array);
+    } else if (array instanceof Load) {
+      return _compilePython((Load)array);
     } else if (array instanceof Primitive) {
-      return _visit((Primitive)array);
+      return _compilePython((Primitive)array);
+    } else if (array instanceof Select) {
+      return _compilePython((Select)array);
+    } else if (array instanceof Store) {
+      return _compilePython((Store)array);
     } else if (array instanceof AdditionExpression) {
-      return _visit((AdditionExpression)array);
+      return _compilePython((AdditionExpression)array);
+    } else if (array instanceof ArrayCall) {
+      return _compilePython((ArrayCall)array);
     } else if (array instanceof BracketExpression) {
-      return _visit((BracketExpression)array);
+      return _compilePython((BracketExpression)array);
     } else if (array instanceof ConjunctionExpression) {
-      return _visit((ConjunctionExpression)array);
+      return _compilePython((ConjunctionExpression)array);
     } else if (array instanceof DisjunctionExpression) {
-      return _visit((DisjunctionExpression)array);
+      return _compilePython((DisjunctionExpression)array);
     } else if (array instanceof DivisionExpression) {
-      return _visit((DivisionExpression)array);
+      return _compilePython((DivisionExpression)array);
+    } else if (array instanceof EqualityExpression) {
+      return _compilePython((EqualityExpression)array);
+    } else if (array instanceof FieldCall) {
+      return _compilePython((FieldCall)array);
+    } else if (array instanceof InequalityExpression) {
+      return _compilePython((InequalityExpression)array);
+    } else if (array instanceof InferiorExpression) {
+      return _compilePython((InferiorExpression)array);
+    } else if (array instanceof InferiorOrEqualExpression) {
+      return _compilePython((InferiorOrEqualExpression)array);
     } else if (array instanceof LogicalNegationExpression) {
-      return _visit((LogicalNegationExpression)array);
+      return _compilePython((LogicalNegationExpression)array);
     } else if (array instanceof ModuloExpression) {
-      return _visit((ModuloExpression)array);
+      return _compilePython((ModuloExpression)array);
     } else if (array instanceof MultiplicationExpression) {
-      return _visit((MultiplicationExpression)array);
+      return _compilePython((MultiplicationExpression)array);
+    } else if (array instanceof StrictEqualityExpression) {
+      return _compilePython((StrictEqualityExpression)array);
+    } else if (array instanceof StrictInequalityExpression) {
+      return _compilePython((StrictInequalityExpression)array);
     } else if (array instanceof SubstractionExpression) {
-      return _visit((SubstractionExpression)array);
+      return _compilePython((SubstractionExpression)array);
+    } else if (array instanceof SuperiorExpression) {
+      return _compilePython((SuperiorExpression)array);
+    } else if (array instanceof SuperiorOrEqualExpression) {
+      return _compilePython((SuperiorOrEqualExpression)array);
     } else if (array instanceof UnaryMinusExpression) {
-      return _visit((UnaryMinusExpression)array);
+      return _compilePython((UnaryMinusExpression)array);
     } else if (array instanceof UnaryPlusExpression) {
-      return _visit((UnaryPlusExpression)array);
+      return _compilePython((UnaryPlusExpression)array);
+    } else if (array instanceof VariableCall) {
+      return _compilePython((VariableCall)array);
     } else if (array instanceof Assignment) {
-      return _visit((Assignment)array);
+      return _compilePython((Assignment)array);
     } else if (array instanceof Expression) {
-      return _visit((Expression)array);
-    } else if (array instanceof ProcCall) {
-      return _visit((ProcCall)array);
-    } else if (array instanceof SimpleStatement) {
-      return _visit((SimpleStatement)array);
-    } else if (array instanceof String) {
-      return _visit((String)array);
+      return _compilePython((Expression)array);
+    } else if (array instanceof Print) {
+      return _compilePython((Print)array);
+    } else if (array instanceof RangeSpecifier) {
+      return _compilePython((RangeSpecifier)array);
+    } else if (array instanceof UnarySpecifier) {
+      return _compilePython((UnarySpecifier)array);
+    } else if (array instanceof ArraySpecifier) {
+      return _compilePython((ArraySpecifier)array);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(array).toString());
+    }
+  }
+  
+  public String compileJQ(final EObject array) {
+    if (array instanceof Array) {
+      return _compileJQ((Array)array);
+    } else if (array instanceof Contains) {
+      return _compileJQ((Contains)array);
+    } else if (array instanceof Depth) {
+      return _compileJQ((Depth)array);
+    } else if (array instanceof Export) {
+      return _compileJQ((Export)array);
+    } else if (array instanceof FieldInfo) {
+      return _compileJQ((FieldInfo)array);
+    } else if (array instanceof JSonObject) {
+      return _compileJQ((JSonObject)array);
+    } else if (array instanceof Length) {
+      return _compileJQ((Length)array);
+    } else if (array instanceof Load) {
+      return _compileJQ((Load)array);
+    } else if (array instanceof Primitive) {
+      return _compileJQ((Primitive)array);
+    } else if (array instanceof Product) {
+      return _compileJQ((Product)array);
+    } else if (array instanceof Select) {
+      return _compileJQ((Select)array);
+    } else if (array instanceof Store) {
+      return _compileJQ((Store)array);
+    } else if (array instanceof Sum) {
+      return _compileJQ((Sum)array);
+    } else if (array instanceof AdditionExpression) {
+      return _compileJQ((AdditionExpression)array);
+    } else if (array instanceof ArrayCall) {
+      return _compileJQ((ArrayCall)array);
+    } else if (array instanceof BracketExpression) {
+      return _compileJQ((BracketExpression)array);
+    } else if (array instanceof ConjunctionExpression) {
+      return _compileJQ((ConjunctionExpression)array);
+    } else if (array instanceof DisjunctionExpression) {
+      return _compileJQ((DisjunctionExpression)array);
+    } else if (array instanceof DivisionExpression) {
+      return _compileJQ((DivisionExpression)array);
+    } else if (array instanceof EqualityExpression) {
+      return _compileJQ((EqualityExpression)array);
+    } else if (array instanceof FieldCall) {
+      return _compileJQ((FieldCall)array);
+    } else if (array instanceof InequalityExpression) {
+      return _compileJQ((InequalityExpression)array);
+    } else if (array instanceof InferiorExpression) {
+      return _compileJQ((InferiorExpression)array);
+    } else if (array instanceof InferiorOrEqualExpression) {
+      return _compileJQ((InferiorOrEqualExpression)array);
+    } else if (array instanceof LogicalNegationExpression) {
+      return _compileJQ((LogicalNegationExpression)array);
+    } else if (array instanceof ModuloExpression) {
+      return _compileJQ((ModuloExpression)array);
+    } else if (array instanceof MultiplicationExpression) {
+      return _compileJQ((MultiplicationExpression)array);
+    } else if (array instanceof PointerCall) {
+      return _compileJQ((PointerCall)array);
+    } else if (array instanceof SubstractionExpression) {
+      return _compileJQ((SubstractionExpression)array);
+    } else if (array instanceof SuperiorExpression) {
+      return _compileJQ((SuperiorExpression)array);
+    } else if (array instanceof SuperiorOrEqualExpression) {
+      return _compileJQ((SuperiorOrEqualExpression)array);
+    } else if (array instanceof UnaryMinusExpression) {
+      return _compileJQ((UnaryMinusExpression)array);
+    } else if (array instanceof UnaryPlusExpression) {
+      return _compileJQ((UnaryPlusExpression)array);
+    } else if (array instanceof VariableCall) {
+      return _compileJQ((VariableCall)array);
+    } else if (array instanceof Assignment) {
+      return _compileJQ((Assignment)array);
+    } else if (array instanceof Expression) {
+      return _compileJQ((Expression)array);
+    } else if (array instanceof Print) {
+      return _compileJQ((Print)array);
+    } else if (array instanceof RangeSpecifier) {
+      return _compileJQ((RangeSpecifier)array);
+    } else if (array instanceof UnarySpecifier) {
+      return _compileJQ((UnarySpecifier)array);
+    } else if (array instanceof ArraySpecifier) {
+      return _compileJQ((ArraySpecifier)array);
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
         Arrays.<Object>asList(array).toString());

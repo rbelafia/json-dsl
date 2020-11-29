@@ -3,20 +3,13 @@
  */
 package org.xtext.example.mydsl.jsonDsl.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.example.mydsl.jsonDsl.ArithFunctions;
 import org.xtext.example.mydsl.jsonDsl.Expression;
@@ -31,7 +24,7 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.ArithFunctionsImpl#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.ArithFunctionsImpl#getFields <em>Fields</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.ArithFunctionsImpl#getField <em>Field</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.impl.ArithFunctionsImpl#getWhereExpression <em>Where Expression</em>}</li>
  * </ul>
  *
@@ -50,14 +43,14 @@ public class ArithFunctionsImpl extends ExpressionImpl implements ArithFunctions
   protected Expression expression;
 
   /**
-   * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
+   * The cached value of the '{@link #getField() <em>Field</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFields()
+   * @see #getField()
    * @generated
    * @ordered
    */
-  protected EList<Expression> fields;
+  protected Expression field;
 
   /**
    * The cached value of the '{@link #getWhereExpression() <em>Where Expression</em>}' containment reference.
@@ -146,13 +139,48 @@ public class ArithFunctionsImpl extends ExpressionImpl implements ArithFunctions
    * @generated
    */
   @Override
-  public EList<Expression> getFields()
+  public Expression getField()
   {
-    if (fields == null)
+    return field;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetField(Expression newField, NotificationChain msgs)
+  {
+    Expression oldField = field;
+    field = newField;
+    if (eNotificationRequired())
     {
-      fields = new EObjectContainmentEList<Expression>(Expression.class, this, JsonDslPackage.ARITH_FUNCTIONS__FIELDS);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.ARITH_FUNCTIONS__FIELD, oldField, newField);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return fields;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setField(Expression newField)
+  {
+    if (newField != field)
+    {
+      NotificationChain msgs = null;
+      if (field != null)
+        msgs = ((InternalEObject)field).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.ARITH_FUNCTIONS__FIELD, null, msgs);
+      if (newField != null)
+        msgs = ((InternalEObject)newField).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.ARITH_FUNCTIONS__FIELD, null, msgs);
+      msgs = basicSetField(newField, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.ARITH_FUNCTIONS__FIELD, newField, newField));
   }
 
   /**
@@ -217,8 +245,8 @@ public class ArithFunctionsImpl extends ExpressionImpl implements ArithFunctions
     {
       case JsonDslPackage.ARITH_FUNCTIONS__EXPRESSION:
         return basicSetExpression(null, msgs);
-      case JsonDslPackage.ARITH_FUNCTIONS__FIELDS:
-        return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
+      case JsonDslPackage.ARITH_FUNCTIONS__FIELD:
+        return basicSetField(null, msgs);
       case JsonDslPackage.ARITH_FUNCTIONS__WHERE_EXPRESSION:
         return basicSetWhereExpression(null, msgs);
     }
@@ -237,8 +265,8 @@ public class ArithFunctionsImpl extends ExpressionImpl implements ArithFunctions
     {
       case JsonDslPackage.ARITH_FUNCTIONS__EXPRESSION:
         return getExpression();
-      case JsonDslPackage.ARITH_FUNCTIONS__FIELDS:
-        return getFields();
+      case JsonDslPackage.ARITH_FUNCTIONS__FIELD:
+        return getField();
       case JsonDslPackage.ARITH_FUNCTIONS__WHERE_EXPRESSION:
         return getWhereExpression();
     }
@@ -250,7 +278,6 @@ public class ArithFunctionsImpl extends ExpressionImpl implements ArithFunctions
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -259,9 +286,8 @@ public class ArithFunctionsImpl extends ExpressionImpl implements ArithFunctions
       case JsonDslPackage.ARITH_FUNCTIONS__EXPRESSION:
         setExpression((Expression)newValue);
         return;
-      case JsonDslPackage.ARITH_FUNCTIONS__FIELDS:
-        getFields().clear();
-        getFields().addAll((Collection<? extends Expression>)newValue);
+      case JsonDslPackage.ARITH_FUNCTIONS__FIELD:
+        setField((Expression)newValue);
         return;
       case JsonDslPackage.ARITH_FUNCTIONS__WHERE_EXPRESSION:
         setWhereExpression((Expression)newValue);
@@ -283,8 +309,8 @@ public class ArithFunctionsImpl extends ExpressionImpl implements ArithFunctions
       case JsonDslPackage.ARITH_FUNCTIONS__EXPRESSION:
         setExpression((Expression)null);
         return;
-      case JsonDslPackage.ARITH_FUNCTIONS__FIELDS:
-        getFields().clear();
+      case JsonDslPackage.ARITH_FUNCTIONS__FIELD:
+        setField((Expression)null);
         return;
       case JsonDslPackage.ARITH_FUNCTIONS__WHERE_EXPRESSION:
         setWhereExpression((Expression)null);
@@ -305,8 +331,8 @@ public class ArithFunctionsImpl extends ExpressionImpl implements ArithFunctions
     {
       case JsonDslPackage.ARITH_FUNCTIONS__EXPRESSION:
         return expression != null;
-      case JsonDslPackage.ARITH_FUNCTIONS__FIELDS:
-        return fields != null && !fields.isEmpty();
+      case JsonDslPackage.ARITH_FUNCTIONS__FIELD:
+        return field != null;
       case JsonDslPackage.ARITH_FUNCTIONS__WHERE_EXPRESSION:
         return whereExpression != null;
     }

@@ -3,13 +3,13 @@ package org.xtext.example.mydsl.generator
 import java.util.Map
 
 class JZJsonObject implements JZObject {
-	Map<String, Object> fields;
+	Map<String, JZObject> fields;
 	
 	new() {
 		fields = newLinkedHashMap()
 	}
 	
-	def addField(String key, Object value) {
+	def addField(String key, JZObject value) {
 		fields.putIfAbsent(key, value)
 	}
 	
@@ -42,7 +42,7 @@ class JZJsonObject implements JZObject {
 		switch object {
 			JZJsonObject: {
 				var res = this
-				for(Map.Entry<String, Object> entry : object.fields().entrySet()) 
+				for(Map.Entry<String, JZObject> entry : object.fields().entrySet()) 
 					res.addField(entry.key, entry.value)
 				return res
 			}
@@ -103,7 +103,7 @@ class JZJsonObject implements JZObject {
 	
 	def auxiliarToString(int nbTab, JZJsonObject object) {
 		var res = "{\n"
-		for(Map.Entry<String, Object> entry : object.fields().entrySet()) {
+		for(Map.Entry<String, JZObject> entry : object.fields().entrySet()) {
 			for(var i = 0; i<nbTab+1; i++) res +="  "
 			res += entry.key + ": ";
 			switch entry.value {

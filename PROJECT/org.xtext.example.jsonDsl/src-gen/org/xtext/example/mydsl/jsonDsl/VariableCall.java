@@ -3,7 +3,6 @@
  */
 package org.xtext.example.mydsl.jsonDsl;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -15,7 +14,6 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.jsonDsl.VariableCall#getName <em>Name</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.jsonDsl.VariableCall#getCaller <em>Caller</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getVariableCall()
@@ -45,17 +43,5 @@ public interface VariableCall extends Expression
    * @generated
    */
   void setName(String value);
-
-  /**
-   * Returns the value of the '<em><b>Caller</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.example.mydsl.jsonDsl.AuxiliarCaller}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Caller</em>' containment reference list.
-   * @see org.xtext.example.mydsl.jsonDsl.JsonDslPackage#getVariableCall_Caller()
-   * @model containment="true"
-   * @generated
-   */
-  EList<AuxiliarCaller> getCaller();
 
 } // VariableCall

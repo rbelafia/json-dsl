@@ -27,25 +27,26 @@
     <genClasses ecoreClass="JsonDsl.ecore#//BracketExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//BracketExpression/sub"/>
     </genClasses>
+    <genClasses ecoreClass="JsonDsl.ecore#//PointerCall"/>
     <genClasses ecoreClass="JsonDsl.ecore#//VariableCall">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//VariableCall/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//VariableCall/caller"/>
     </genClasses>
-    <genClasses ecoreClass="JsonDsl.ecore#//AuxiliarCaller"/>
-    <genClasses ecoreClass="JsonDsl.ecore#//FieldCaller">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//FieldCaller/key"/>
+    <genClasses ecoreClass="JsonDsl.ecore#//ArraySpecifier"/>
+    <genClasses ecoreClass="JsonDsl.ecore#//UnarySpecifier">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//UnarySpecifier/index"/>
     </genClasses>
-    <genClasses ecoreClass="JsonDsl.ecore#//ArrayCaller">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//ArrayCaller/index"/>
+    <genClasses ecoreClass="JsonDsl.ecore#//RangeSpecifier">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//RangeSpecifier/from"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//RangeSpecifier/to"/>
     </genClasses>
     <genClasses ecoreClass="JsonDsl.ecore#//IOFunctions">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//IOFunctions/fileName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//IOFunctions/fileName"/>
     </genClasses>
     <genClasses ecoreClass="JsonDsl.ecore#//InfoFunctions"/>
     <genClasses ecoreClass="JsonDsl.ecore#//ManipFunctions"/>
     <genClasses ecoreClass="JsonDsl.ecore#//ArithFunctions">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//ArithFunctions/expression"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//ArithFunctions/fields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//ArithFunctions/field"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//ArithFunctions/whereExpression"/>
     </genClasses>
     <genClasses ecoreClass="JsonDsl.ecore#//AlterFunctions"/>
@@ -56,8 +57,8 @@
     <genClasses ecoreClass="JsonDsl.ecore#//Export">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Export/expression"/>
     </genClasses>
-    <genClasses ecoreClass="JsonDsl.ecore#//ProcCall">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//ProcCall/expression"/>
+    <genClasses ecoreClass="JsonDsl.ecore#//Print">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Print/expression"/>
     </genClasses>
     <genClasses ecoreClass="JsonDsl.ecore#//Depth">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Depth/expression"/>
@@ -77,38 +78,21 @@
     <genClasses ecoreClass="JsonDsl.ecore#//Concat">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Concat/expressions"/>
     </genClasses>
+    <genClasses ecoreClass="JsonDsl.ecore#//Length">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Length/expression"/>
+    </genClasses>
     <genClasses ecoreClass="JsonDsl.ecore#//Sum"/>
     <genClasses ecoreClass="JsonDsl.ecore#//Product"/>
-    <genClasses ecoreClass="JsonDsl.ecore#//Mean"/>
-    <genClasses ecoreClass="JsonDsl.ecore#//Add">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Add/expression"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Add/variable"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Add/fields"/>
-    </genClasses>
-    <genClasses ecoreClass="JsonDsl.ecore#//Insert">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Insert/value"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Insert/variable"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Insert/whereExpression"/>
-    </genClasses>
-    <genClasses ecoreClass="JsonDsl.ecore#//Rename">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Rename/call"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Rename/fields"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Rename/nfields"/>
-    </genClasses>
     <genClasses ecoreClass="JsonDsl.ecore#//Delete">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Delete/fields"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Delete/fromExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Delete/whereExpression"/>
     </genClasses>
-    <genClasses ecoreClass="JsonDsl.ecore#//Remove">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Remove/value"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Remove/variable"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//Remove/whereExpression"/>
-    </genClasses>
     <genClasses ecoreClass="JsonDsl.ecore#//Constant"/>
     <genClasses ecoreClass="JsonDsl.ecore#//Primitive">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//Primitive/str"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//Primitive/num"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//Primitive/intNum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//Primitive/floatNum"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//Primitive/bool"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//Primitive/nil"/>
     </genClasses>
@@ -138,17 +122,25 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//InequalityExpression/left"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//InequalityExpression/right"/>
     </genClasses>
-    <genClasses ecoreClass="JsonDsl.ecore#//SuperiExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//SuperiExpression/left"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//SuperiExpression/right"/>
+    <genClasses ecoreClass="JsonDsl.ecore#//StrictEqualityExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//StrictEqualityExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//StrictEqualityExpression/right"/>
+    </genClasses>
+    <genClasses ecoreClass="JsonDsl.ecore#//StrictInequalityExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//StrictInequalityExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//StrictInequalityExpression/right"/>
+    </genClasses>
+    <genClasses ecoreClass="JsonDsl.ecore#//SuperiorExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//SuperiorExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//SuperiorExpression/right"/>
     </genClasses>
     <genClasses ecoreClass="JsonDsl.ecore#//SuperiorOrEqualExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//SuperiorOrEqualExpression/left"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//SuperiorOrEqualExpression/right"/>
     </genClasses>
-    <genClasses ecoreClass="JsonDsl.ecore#//InferiExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//InferiExpression/left"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//InferiExpression/right"/>
+    <genClasses ecoreClass="JsonDsl.ecore#//InferiorExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//InferiorExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//InferiorExpression/right"/>
     </genClasses>
     <genClasses ecoreClass="JsonDsl.ecore#//InferiorOrEqualExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//InferiorOrEqualExpression/left"/>
@@ -174,6 +166,13 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//ModuloExpression/left"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//ModuloExpression/right"/>
     </genClasses>
-    <genClasses ecoreClass="JsonDsl.ecore#//PrimaryExpression"/>
+    <genClasses ecoreClass="JsonDsl.ecore#//ArrayCall">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//ArrayCall/callee"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//ArrayCall/specifier"/>
+    </genClasses>
+    <genClasses ecoreClass="JsonDsl.ecore#//FieldCall">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JsonDsl.ecore#//FieldCall/callee"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute JsonDsl.ecore#//FieldCall/field"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

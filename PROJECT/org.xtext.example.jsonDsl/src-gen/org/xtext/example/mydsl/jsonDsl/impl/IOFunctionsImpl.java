@@ -4,14 +4,11 @@
 package org.xtext.example.mydsl.jsonDsl.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.xtext.example.mydsl.jsonDsl.Expression;
 import org.xtext.example.mydsl.jsonDsl.IOFunctions;
 import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
 
@@ -31,14 +28,24 @@ import org.xtext.example.mydsl.jsonDsl.JsonDslPackage;
 public class IOFunctionsImpl extends ExpressionImpl implements IOFunctions
 {
   /**
-   * The cached value of the '{@link #getFileName() <em>File Name</em>}' containment reference.
+   * The default value of the '{@link #getFileName() <em>File Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getFileName()
    * @generated
    * @ordered
    */
-  protected Expression fileName;
+  protected static final String FILE_NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getFileName() <em>File Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFileName()
+   * @generated
+   * @ordered
+   */
+  protected String fileName = FILE_NAME_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -67,7 +74,7 @@ public class IOFunctionsImpl extends ExpressionImpl implements IOFunctions
    * @generated
    */
   @Override
-  public Expression getFileName()
+  public String getFileName()
   {
     return fileName;
   }
@@ -77,54 +84,13 @@ public class IOFunctionsImpl extends ExpressionImpl implements IOFunctions
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetFileName(Expression newFileName, NotificationChain msgs)
+  @Override
+  public void setFileName(String newFileName)
   {
-    Expression oldFileName = fileName;
+    String oldFileName = fileName;
     fileName = newFileName;
     if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsonDslPackage.IO_FUNCTIONS__FILE_NAME, oldFileName, newFileName);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setFileName(Expression newFileName)
-  {
-    if (newFileName != fileName)
-    {
-      NotificationChain msgs = null;
-      if (fileName != null)
-        msgs = ((InternalEObject)fileName).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.IO_FUNCTIONS__FILE_NAME, null, msgs);
-      if (newFileName != null)
-        msgs = ((InternalEObject)newFileName).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JsonDslPackage.IO_FUNCTIONS__FILE_NAME, null, msgs);
-      msgs = basicSetFileName(newFileName, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.IO_FUNCTIONS__FILE_NAME, newFileName, newFileName));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
-  {
-    switch (featureID)
-    {
-      case JsonDslPackage.IO_FUNCTIONS__FILE_NAME:
-        return basicSetFileName(null, msgs);
-    }
-    return super.eInverseRemove(otherEnd, featureID, msgs);
+      eNotify(new ENotificationImpl(this, Notification.SET, JsonDslPackage.IO_FUNCTIONS__FILE_NAME, oldFileName, fileName));
   }
 
   /**
@@ -154,7 +120,7 @@ public class IOFunctionsImpl extends ExpressionImpl implements IOFunctions
     switch (featureID)
     {
       case JsonDslPackage.IO_FUNCTIONS__FILE_NAME:
-        setFileName((Expression)newValue);
+        setFileName((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -171,7 +137,7 @@ public class IOFunctionsImpl extends ExpressionImpl implements IOFunctions
     switch (featureID)
     {
       case JsonDslPackage.IO_FUNCTIONS__FILE_NAME:
-        setFileName((Expression)null);
+        setFileName(FILE_NAME_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -188,9 +154,26 @@ public class IOFunctionsImpl extends ExpressionImpl implements IOFunctions
     switch (featureID)
     {
       case JsonDslPackage.IO_FUNCTIONS__FILE_NAME:
-        return fileName != null;
+        return FILE_NAME_EDEFAULT == null ? fileName != null : !FILE_NAME_EDEFAULT.equals(fileName);
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (fileName: ");
+    result.append(fileName);
+    result.append(')');
+    return result.toString();
   }
 
 } //IOFunctionsImpl

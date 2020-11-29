@@ -8,7 +8,7 @@ Model:
 
 
 SimpleStatement:
-	(Assignment | Expression | ProcCall) ';'
+	(Assignment | Expression | Print) ';'
 ;
 
 
@@ -31,15 +31,17 @@ ExpressionLvl3 returns Expression:
 	ExpressionLvl4 (
 		({EqualityExpression.left = current} '==' right = ExpressionLvl4)
 		|({InequalityExpression.left = current} '!=' right = ExpressionLvl4)
+		|({StrictEqualityExpression.left = current} '===' right = ExpressionLvl4)
+		|({StrictInequalityExpression.left = current} '!==' right = ExpressionLvl4)
 	)*
 ;
 
 
 ExpressionLvl4 returns Expression:
 	ExpressionLvl5 (
-		({SuperiExpression.left = current} '>' right = ExpressionLvl5)
+		({SuperiorExpression.left = current} '>' right = ExpressionLvl5)
 		|({SuperiorOrEqualExpression.left = current} '>=' right = ExpressionLvl5)
-		|({InferiExpression.left = current} '<' right = ExpressionLvl5)
+		|({InferiorExpression.left = current} '<' right = ExpressionLvl5)
 		|({InferiorOrEqualExpression.left = current} '<=' right = ExpressionLvl5)
 	)*
 ;
@@ -73,45 +75,62 @@ UnaryPlusExpression:
 ;
 
 ExpressionLvl8 returns Expression:
-	LogicalNegationExpression | PrimaryExpression
+	LogicalNegationExpression | ExpressionLvl9
 ;
 
 LogicalNegationExpression:
 	'!' sub=ExpressionLvl8
 ;
 
+ExpressionLvl9 returns Expression:
+	PrimaryExpression (
+		({ArrayCall.callee = current} '[' specifier = ArraySpecifier ']')
+		|({FieldCall.callee = current} '~' field = STRING)
+	)*
+;
 
 PrimaryExpression returns Expression:
 	VariableCall | 
 	Constant | 
 	FunctionCall | 
 	BracketExpression |
-	{PrimaryExpression} Pointer
+	PointerCall
 ;
 
 BracketExpression:
 	'(' sub=Expression ')'  
 ;
 
-Pointer:
-	'?'
+PointerCall:
+	{PointerCall} '.'
 ;
 
 VariableCall:
-	name=ID (caller+=AuxiliarCaller)*
+	name=ID
 ;
 
-AuxiliarCaller:
-	(FieldCaller | ArrayCaller) /*(caller=AuxiliarCaller)?*/
-;
-
+/* 
 FieldCaller:
-	'~' key=STRING
+	callee = PrimaryExpression '~' key=STRING
 ;
 
 ArrayCaller:
-	'[' index+=INT (',' index+=INT)* ']'
+	callee = PrimaryExpression '[' specifier = ArraySpecifier ']'
+;*/
+
+ArraySpecifier:
+	UnarySpecifier | RangeSpecifier
 ;
+
+UnarySpecifier:
+	index = INT
+;
+
+RangeSpecifier:
+	from = INT ':' to = INT 
+;
+
+
 
 FunctionCall returns Expression:
 	IOFunctions |
@@ -126,7 +145,7 @@ IOFunctions:
 ;
 
 InfoFunctions :
-	Depth | FieldInfo | Contains
+	Depth | FieldInfo | Contains | Length
 ;
 
 ManipFunctions :
@@ -134,29 +153,29 @@ ManipFunctions :
 	Concat
 ;
 
-ArithFunctions : Sum | Product | Mean ;
+ArithFunctions : Sum | Product ;
 
 AlterFunctions :
-	Add | Insert | Rename | Remove | Delete
+	Delete
 ;
 
 
 // IO FUNCTIONS
 
 Load:
-	'LOAD' '(' fileName=Expression ')' 
+	'LOAD' fileName=STRING | 'LOAD' '(' fileName=STRING ')'
 ;
 
 
 Store:
-	'STORE' '(' expression=Expression ')' 'IN' '(' fileName=Expression ')' 
+	'STORE' '(' expression=Expression ')' 'IN' '(' fileName=STRING ')' 
 ;
 
 Export:
-	'EXPORT_CSV' '(' expression=Expression ')' 'IN' '(' fileName=Expression ')'
+	'EXPORT_CSV' '(' expression=Expression ')' 'IN' '(' fileName=STRING ')'
 ;
 
-ProcCall:
+Print:
 	'PRINT' '(' expression=Expression ')'
 ;
 
@@ -186,36 +205,20 @@ Concat:
 	'CONCAT' '(' expressions+=Expression (',' expressions+=Expression) ')'
 ;
 
+Length:
+	'LENGTH' '(' expression=Expression ')'
+;
+
 Sum: 
-	'SUM' '(' expression=Expression ')' ('ON' '(' fields+= Expression (',' fields+=Expression)* ')')? (=> 'WHERE' '(' whereExpression=Expression ')')?  
+	'SUM' '(' expression=Expression ')' ('ON' '(' field= Expression ')')? (=> 'WHERE' '(' whereExpression=Expression ')')?  
 ;
 
 Product:
-	'PRODUCT' '(' expression=Expression ')' ('ON' '(' fields+= Expression (',' fields+=Expression)* ')')? (=> 'WHERE' '(' whereExpression=Expression ')')? 
-;
-
-Mean:
-	'MEAN' '(' expression=Expression ')' ('ON' '(' fields+= Expression (',' fields+=Expression)* ')')? (=> 'WHERE' '(' whereExpression=Expression ')')? 
-;
-
-Add:
-	'ADD' '(' expression=Expression ')' 'IN' '(' variable=Expression ')' ('ON' '(' fields+= Expression (',' fields+=Expression)* ')')?
-;
-
-Insert:
-	'INSERT' '(' value=Expression ')' 'IN' '(' variable=Expression ')' ('(' 'WHERE' whereExpression=Expression ')')? 
-;
-
-Rename:
-	'RENAME' '(' call=VariableCall ')' 'ON' '(' fields+= Expression (',' fields+=Expression)* ')' 'TO' '(' nfields+=Expression (',' nfields+=Expression)* ')'
+	'PRODUCT' '(' expression=Expression ')' ('ON' '(' field= Expression ')')? (=> 'WHERE' '(' whereExpression=Expression ')')?  
 ;
 
 Delete:
 	'DELETE' '(' ('*' | (fields+=Expression (',' fields+=Expression)*)?) ')' 'FROM' '(' fromExpression=Expression ')' (=> 'WHERE' '(' whereExpression=Expression ')')? 
-;
-
-Remove:
-	'REMOVE' '(' value=Expression ')' 'IN' '(' variable=Expression ')' ('(' 'WHERE' whereExpression=Expression ')')? 
 ;
 
 
@@ -224,7 +227,7 @@ Constant:
 ;
 
 Primitive:
-	str=STRING | num=NUMBER | bool=BOOL | nil=NULL
+	str=STRING | intNum=INT | floatNum=DOUBLE | bool=BOOL | nil=NULL
 ;
 
 Array:
@@ -239,11 +242,9 @@ Field:
 	key=Expression ':' value=Expression
 ;
 
-NUMBER : INT | DOUBLE;
-
 terminal NULL : 'null';
 
 terminal BOOL : 'true' | 'false';
 
-terminal DOUBLE : ('0'..'9')+'.'('0'..'9')*('e'('0'..'9')+);
+terminal DOUBLE : ('0'..'9')+'.'('0'..'9')*('e'('0'..'9')+)?;
 

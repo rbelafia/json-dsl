@@ -96,6 +96,15 @@ public interface JsonDslFactory extends EFactory
   BracketExpression createBracketExpression();
 
   /**
+   * Returns a new object of class '<em>Pointer Call</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Pointer Call</em>'.
+   * @generated
+   */
+  PointerCall createPointerCall();
+
+  /**
    * Returns a new object of class '<em>Variable Call</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -105,31 +114,31 @@ public interface JsonDslFactory extends EFactory
   VariableCall createVariableCall();
 
   /**
-   * Returns a new object of class '<em>Auxiliar Caller</em>'.
+   * Returns a new object of class '<em>Array Specifier</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Auxiliar Caller</em>'.
+   * @return a new object of class '<em>Array Specifier</em>'.
    * @generated
    */
-  AuxiliarCaller createAuxiliarCaller();
+  ArraySpecifier createArraySpecifier();
 
   /**
-   * Returns a new object of class '<em>Field Caller</em>'.
+   * Returns a new object of class '<em>Unary Specifier</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Field Caller</em>'.
+   * @return a new object of class '<em>Unary Specifier</em>'.
    * @generated
    */
-  FieldCaller createFieldCaller();
+  UnarySpecifier createUnarySpecifier();
 
   /**
-   * Returns a new object of class '<em>Array Caller</em>'.
+   * Returns a new object of class '<em>Range Specifier</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Array Caller</em>'.
+   * @return a new object of class '<em>Range Specifier</em>'.
    * @generated
    */
-  ArrayCaller createArrayCaller();
+  RangeSpecifier createRangeSpecifier();
 
   /**
    * Returns a new object of class '<em>IO Functions</em>'.
@@ -204,13 +213,13 @@ public interface JsonDslFactory extends EFactory
   Export createExport();
 
   /**
-   * Returns a new object of class '<em>Proc Call</em>'.
+   * Returns a new object of class '<em>Print</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Proc Call</em>'.
+   * @return a new object of class '<em>Print</em>'.
    * @generated
    */
-  ProcCall createProcCall();
+  Print createPrint();
 
   /**
    * Returns a new object of class '<em>Depth</em>'.
@@ -258,6 +267,15 @@ public interface JsonDslFactory extends EFactory
   Concat createConcat();
 
   /**
+   * Returns a new object of class '<em>Length</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Length</em>'.
+   * @generated
+   */
+  Length createLength();
+
+  /**
    * Returns a new object of class '<em>Sum</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -276,42 +294,6 @@ public interface JsonDslFactory extends EFactory
   Product createProduct();
 
   /**
-   * Returns a new object of class '<em>Mean</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Mean</em>'.
-   * @generated
-   */
-  Mean createMean();
-
-  /**
-   * Returns a new object of class '<em>Add</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Add</em>'.
-   * @generated
-   */
-  Add createAdd();
-
-  /**
-   * Returns a new object of class '<em>Insert</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Insert</em>'.
-   * @generated
-   */
-  Insert createInsert();
-
-  /**
-   * Returns a new object of class '<em>Rename</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Rename</em>'.
-   * @generated
-   */
-  Rename createRename();
-
-  /**
    * Returns a new object of class '<em>Delete</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -319,15 +301,6 @@ public interface JsonDslFactory extends EFactory
    * @generated
    */
   Delete createDelete();
-
-  /**
-   * Returns a new object of class '<em>Remove</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Remove</em>'.
-   * @generated
-   */
-  Remove createRemove();
 
   /**
    * Returns a new object of class '<em>Constant</em>'.
@@ -411,13 +384,31 @@ public interface JsonDslFactory extends EFactory
   InequalityExpression createInequalityExpression();
 
   /**
-   * Returns a new object of class '<em>Superi Expression</em>'.
+   * Returns a new object of class '<em>Strict Equality Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Superi Expression</em>'.
+   * @return a new object of class '<em>Strict Equality Expression</em>'.
    * @generated
    */
-  SuperiExpression createSuperiExpression();
+  StrictEqualityExpression createStrictEqualityExpression();
+
+  /**
+   * Returns a new object of class '<em>Strict Inequality Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Strict Inequality Expression</em>'.
+   * @generated
+   */
+  StrictInequalityExpression createStrictInequalityExpression();
+
+  /**
+   * Returns a new object of class '<em>Superior Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Superior Expression</em>'.
+   * @generated
+   */
+  SuperiorExpression createSuperiorExpression();
 
   /**
    * Returns a new object of class '<em>Superior Or Equal Expression</em>'.
@@ -429,13 +420,13 @@ public interface JsonDslFactory extends EFactory
   SuperiorOrEqualExpression createSuperiorOrEqualExpression();
 
   /**
-   * Returns a new object of class '<em>Inferi Expression</em>'.
+   * Returns a new object of class '<em>Inferior Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Inferi Expression</em>'.
+   * @return a new object of class '<em>Inferior Expression</em>'.
    * @generated
    */
-  InferiExpression createInferiExpression();
+  InferiorExpression createInferiorExpression();
 
   /**
    * Returns a new object of class '<em>Inferior Or Equal Expression</em>'.
@@ -492,13 +483,22 @@ public interface JsonDslFactory extends EFactory
   ModuloExpression createModuloExpression();
 
   /**
-   * Returns a new object of class '<em>Primary Expression</em>'.
+   * Returns a new object of class '<em>Array Call</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Primary Expression</em>'.
+   * @return a new object of class '<em>Array Call</em>'.
    * @generated
    */
-  PrimaryExpression createPrimaryExpression();
+  ArrayCall createArrayCall();
+
+  /**
+   * Returns a new object of class '<em>Field Call</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Field Call</em>'.
+   * @generated
+   */
+  FieldCall createFieldCall();
 
   /**
    * Returns the package supported by this factory.

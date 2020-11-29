@@ -32,21 +32,9 @@ public class JsonDslSyntacticSequencer extends AbstractSyntacticSequencer {
 	
 	@Override
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (ruleCall.getRule() == grammarAccess.getPointerRule())
-			return getPointerToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
-	/**
-	 * Pointer:
-	 * 	'?'
-	 * ;
-	 */
-	protected String getPointerToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "?";
-	}
 	
 	@Override
 	protected void emitUnassignedTokens(EObject semanticObject, ISynTransition transition, INode fromNode, INode toNode) {

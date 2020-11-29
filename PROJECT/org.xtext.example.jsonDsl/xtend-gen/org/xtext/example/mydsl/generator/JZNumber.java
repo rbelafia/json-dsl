@@ -8,7 +8,7 @@ import org.xtext.example.mydsl.generator.JZString;
 
 @SuppressWarnings("all")
 public class JZNumber implements JZObject {
-  private double content;
+  public double content;
   
   public JZNumber(final int content) {
     this.content = content;
