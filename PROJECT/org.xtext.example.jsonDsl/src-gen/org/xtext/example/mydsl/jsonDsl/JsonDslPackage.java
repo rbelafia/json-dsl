@@ -516,25 +516,6 @@ public interface JsonDslPackage extends EPackage
   int ARITH_FUNCTIONS_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
 
   /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.jsonDsl.impl.AlterFunctionsImpl <em>Alter Functions</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.jsonDsl.impl.AlterFunctionsImpl
-   * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getAlterFunctions()
-   * @generated
-   */
-  int ALTER_FUNCTIONS = 17;
-
-  /**
-   * The number of structural features of the '<em>Alter Functions</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ALTER_FUNCTIONS_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
    * The meta object id for the '{@link org.xtext.example.mydsl.jsonDsl.impl.LoadImpl <em>Load</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -542,7 +523,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getLoad()
    * @generated
    */
-  int LOAD = 18;
+  int LOAD = 17;
 
   /**
    * The feature id for the '<em><b>File Name</b></em>' attribute.
@@ -570,7 +551,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getStore()
    * @generated
    */
-  int STORE = 19;
+  int STORE = 18;
 
   /**
    * The feature id for the '<em><b>File Name</b></em>' attribute.
@@ -607,7 +588,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getExport()
    * @generated
    */
-  int EXPORT = 20;
+  int EXPORT = 19;
 
   /**
    * The feature id for the '<em><b>File Name</b></em>' attribute.
@@ -644,7 +625,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getPrint()
    * @generated
    */
-  int PRINT = 21;
+  int PRINT = 20;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -672,7 +653,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getDepth()
    * @generated
    */
-  int DEPTH = 22;
+  int DEPTH = 21;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -700,7 +681,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getFieldInfo()
    * @generated
    */
-  int FIELD_INFO = 23;
+  int FIELD_INFO = 22;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -728,7 +709,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getContains()
    * @generated
    */
-  int CONTAINS = 24;
+  int CONTAINS = 23;
 
   /**
    * The feature id for the '<em><b>Keys</b></em>' containment reference list.
@@ -765,7 +746,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getSelect()
    * @generated
    */
-  int SELECT = 25;
+  int SELECT = 24;
 
   /**
    * The feature id for the '<em><b>Fields</b></em>' containment reference list.
@@ -804,34 +785,6 @@ public interface JsonDslPackage extends EPackage
   int SELECT_FEATURE_COUNT = MANIP_FUNCTIONS_FEATURE_COUNT + 3;
 
   /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.jsonDsl.impl.ConcatImpl <em>Concat</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.jsonDsl.impl.ConcatImpl
-   * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getConcat()
-   * @generated
-   */
-  int CONCAT = 26;
-
-  /**
-   * The feature id for the '<em><b>Expressions</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONCAT__EXPRESSIONS = MANIP_FUNCTIONS_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Concat</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONCAT_FEATURE_COUNT = MANIP_FUNCTIONS_FEATURE_COUNT + 1;
-
-  /**
    * The meta object id for the '{@link org.xtext.example.mydsl.jsonDsl.impl.LengthImpl <em>Length</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -839,7 +792,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getLength()
    * @generated
    */
-  int LENGTH = 27;
+  int LENGTH = 25;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -867,7 +820,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getSum()
    * @generated
    */
-  int SUM = 28;
+  int SUM = 26;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -913,7 +866,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getProduct()
    * @generated
    */
-  int PRODUCT = 29;
+  int PRODUCT = 27;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -952,52 +905,6 @@ public interface JsonDslPackage extends EPackage
   int PRODUCT_FEATURE_COUNT = ARITH_FUNCTIONS_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.jsonDsl.impl.DeleteImpl <em>Delete</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.jsonDsl.impl.DeleteImpl
-   * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getDelete()
-   * @generated
-   */
-  int DELETE = 30;
-
-  /**
-   * The feature id for the '<em><b>Fields</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DELETE__FIELDS = ALTER_FUNCTIONS_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>From Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DELETE__FROM_EXPRESSION = ALTER_FUNCTIONS_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Where Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DELETE__WHERE_EXPRESSION = ALTER_FUNCTIONS_FEATURE_COUNT + 2;
-
-  /**
-   * The number of structural features of the '<em>Delete</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DELETE_FEATURE_COUNT = ALTER_FUNCTIONS_FEATURE_COUNT + 3;
-
-  /**
    * The meta object id for the '{@link org.xtext.example.mydsl.jsonDsl.impl.ConstantImpl <em>Constant</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1005,7 +912,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getConstant()
    * @generated
    */
-  int CONSTANT = 31;
+  int CONSTANT = 28;
 
   /**
    * The number of structural features of the '<em>Constant</em>' class.
@@ -1024,7 +931,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getPrimitive()
    * @generated
    */
-  int PRIMITIVE = 32;
+  int PRIMITIVE = 29;
 
   /**
    * The feature id for the '<em><b>Str</b></em>' attribute.
@@ -1088,7 +995,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getArray()
    * @generated
    */
-  int ARRAY = 33;
+  int ARRAY = 30;
 
   /**
    * The feature id for the '<em><b>Values</b></em>' containment reference list.
@@ -1116,7 +1023,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getJSonObject()
    * @generated
    */
-  int JSON_OBJECT = 34;
+  int JSON_OBJECT = 31;
 
   /**
    * The feature id for the '<em><b>Fields</b></em>' containment reference list.
@@ -1144,7 +1051,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getField()
    * @generated
    */
-  int FIELD = 35;
+  int FIELD = 32;
 
   /**
    * The feature id for the '<em><b>Key</b></em>' containment reference.
@@ -1181,7 +1088,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getDisjunctionExpression()
    * @generated
    */
-  int DISJUNCTION_EXPRESSION = 36;
+  int DISJUNCTION_EXPRESSION = 33;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1218,7 +1125,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getConjunctionExpression()
    * @generated
    */
-  int CONJUNCTION_EXPRESSION = 37;
+  int CONJUNCTION_EXPRESSION = 34;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1255,7 +1162,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getEqualityExpression()
    * @generated
    */
-  int EQUALITY_EXPRESSION = 38;
+  int EQUALITY_EXPRESSION = 35;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1292,7 +1199,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getInequalityExpression()
    * @generated
    */
-  int INEQUALITY_EXPRESSION = 39;
+  int INEQUALITY_EXPRESSION = 36;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1322,80 +1229,6 @@ public interface JsonDslPackage extends EPackage
   int INEQUALITY_EXPRESSION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.jsonDsl.impl.StrictEqualityExpressionImpl <em>Strict Equality Expression</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.jsonDsl.impl.StrictEqualityExpressionImpl
-   * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getStrictEqualityExpression()
-   * @generated
-   */
-  int STRICT_EQUALITY_EXPRESSION = 40;
-
-  /**
-   * The feature id for the '<em><b>Left</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int STRICT_EQUALITY_EXPRESSION__LEFT = EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Right</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int STRICT_EQUALITY_EXPRESSION__RIGHT = EXPRESSION_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Strict Equality Expression</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int STRICT_EQUALITY_EXPRESSION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.jsonDsl.impl.StrictInequalityExpressionImpl <em>Strict Inequality Expression</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.jsonDsl.impl.StrictInequalityExpressionImpl
-   * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getStrictInequalityExpression()
-   * @generated
-   */
-  int STRICT_INEQUALITY_EXPRESSION = 41;
-
-  /**
-   * The feature id for the '<em><b>Left</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int STRICT_INEQUALITY_EXPRESSION__LEFT = EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Right</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int STRICT_INEQUALITY_EXPRESSION__RIGHT = EXPRESSION_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Strict Inequality Expression</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int STRICT_INEQUALITY_EXPRESSION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
-
-  /**
    * The meta object id for the '{@link org.xtext.example.mydsl.jsonDsl.impl.SuperiorExpressionImpl <em>Superior Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1403,7 +1236,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getSuperiorExpression()
    * @generated
    */
-  int SUPERIOR_EXPRESSION = 42;
+  int SUPERIOR_EXPRESSION = 37;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1440,7 +1273,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getSuperiorOrEqualExpression()
    * @generated
    */
-  int SUPERIOR_OR_EQUAL_EXPRESSION = 43;
+  int SUPERIOR_OR_EQUAL_EXPRESSION = 38;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1477,7 +1310,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getInferiorExpression()
    * @generated
    */
-  int INFERIOR_EXPRESSION = 44;
+  int INFERIOR_EXPRESSION = 39;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1514,7 +1347,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getInferiorOrEqualExpression()
    * @generated
    */
-  int INFERIOR_OR_EQUAL_EXPRESSION = 45;
+  int INFERIOR_OR_EQUAL_EXPRESSION = 40;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1551,7 +1384,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getAdditionExpression()
    * @generated
    */
-  int ADDITION_EXPRESSION = 46;
+  int ADDITION_EXPRESSION = 41;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1588,7 +1421,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getSubstractionExpression()
    * @generated
    */
-  int SUBSTRACTION_EXPRESSION = 47;
+  int SUBSTRACTION_EXPRESSION = 42;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1625,7 +1458,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getMultiplicationExpression()
    * @generated
    */
-  int MULTIPLICATION_EXPRESSION = 48;
+  int MULTIPLICATION_EXPRESSION = 43;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1662,7 +1495,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getDivisionExpression()
    * @generated
    */
-  int DIVISION_EXPRESSION = 49;
+  int DIVISION_EXPRESSION = 44;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1699,7 +1532,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getModuloExpression()
    * @generated
    */
-  int MODULO_EXPRESSION = 50;
+  int MODULO_EXPRESSION = 45;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1736,7 +1569,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getArrayCall()
    * @generated
    */
-  int ARRAY_CALL = 51;
+  int ARRAY_CALL = 46;
 
   /**
    * The feature id for the '<em><b>Callee</b></em>' containment reference.
@@ -1773,7 +1606,7 @@ public interface JsonDslPackage extends EPackage
    * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getFieldCall()
    * @generated
    */
-  int FIELD_CALL = 52;
+  int FIELD_CALL = 47;
 
   /**
    * The feature id for the '<em><b>Callee</b></em>' containment reference.
@@ -2139,16 +1972,6 @@ public interface JsonDslPackage extends EPackage
   EReference getArithFunctions_WhereExpression();
 
   /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.jsonDsl.AlterFunctions <em>Alter Functions</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Alter Functions</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.AlterFunctions
-   * @generated
-   */
-  EClass getAlterFunctions();
-
-  /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.jsonDsl.Load <em>Load</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2339,27 +2162,6 @@ public interface JsonDslPackage extends EPackage
   EReference getSelect_WhereExpression();
 
   /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.jsonDsl.Concat <em>Concat</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Concat</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.Concat
-   * @generated
-   */
-  EClass getConcat();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.jsonDsl.Concat#getExpressions <em>Expressions</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Expressions</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.Concat#getExpressions()
-   * @see #getConcat()
-   * @generated
-   */
-  EReference getConcat_Expressions();
-
-  /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.jsonDsl.Length <em>Length</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2399,49 +2201,6 @@ public interface JsonDslPackage extends EPackage
    * @generated
    */
   EClass getProduct();
-
-  /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.jsonDsl.Delete <em>Delete</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Delete</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.Delete
-   * @generated
-   */
-  EClass getDelete();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.jsonDsl.Delete#getFields <em>Fields</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Fields</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.Delete#getFields()
-   * @see #getDelete()
-   * @generated
-   */
-  EReference getDelete_Fields();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.jsonDsl.Delete#getFromExpression <em>From Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>From Expression</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.Delete#getFromExpression()
-   * @see #getDelete()
-   * @generated
-   */
-  EReference getDelete_FromExpression();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.jsonDsl.Delete#getWhereExpression <em>Where Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Where Expression</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.Delete#getWhereExpression()
-   * @see #getDelete()
-   * @generated
-   */
-  EReference getDelete_WhereExpression();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.jsonDsl.Constant <em>Constant</em>}'.
@@ -2719,70 +2478,6 @@ public interface JsonDslPackage extends EPackage
    * @generated
    */
   EReference getInequalityExpression_Right();
-
-  /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression <em>Strict Equality Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Strict Equality Expression</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression
-   * @generated
-   */
-  EClass getStrictEqualityExpression();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression#getLeft <em>Left</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Left</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression#getLeft()
-   * @see #getStrictEqualityExpression()
-   * @generated
-   */
-  EReference getStrictEqualityExpression_Left();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression#getRight <em>Right</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Right</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression#getRight()
-   * @see #getStrictEqualityExpression()
-   * @generated
-   */
-  EReference getStrictEqualityExpression_Right();
-
-  /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression <em>Strict Inequality Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Strict Inequality Expression</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression
-   * @generated
-   */
-  EClass getStrictInequalityExpression();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression#getLeft <em>Left</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Left</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression#getLeft()
-   * @see #getStrictInequalityExpression()
-   * @generated
-   */
-  EReference getStrictInequalityExpression_Left();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression#getRight <em>Right</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Right</em>'.
-   * @see org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression#getRight()
-   * @see #getStrictInequalityExpression()
-   * @generated
-   */
-  EReference getStrictInequalityExpression_Right();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.jsonDsl.SuperiorExpression <em>Superior Expression</em>}'.
@@ -3450,16 +3145,6 @@ public interface JsonDslPackage extends EPackage
     EReference ARITH_FUNCTIONS__WHERE_EXPRESSION = eINSTANCE.getArithFunctions_WhereExpression();
 
     /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.jsonDsl.impl.AlterFunctionsImpl <em>Alter Functions</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.jsonDsl.impl.AlterFunctionsImpl
-     * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getAlterFunctions()
-     * @generated
-     */
-    EClass ALTER_FUNCTIONS = eINSTANCE.getAlterFunctions();
-
-    /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.jsonDsl.impl.LoadImpl <em>Load</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3620,24 +3305,6 @@ public interface JsonDslPackage extends EPackage
     EReference SELECT__WHERE_EXPRESSION = eINSTANCE.getSelect_WhereExpression();
 
     /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.jsonDsl.impl.ConcatImpl <em>Concat</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.jsonDsl.impl.ConcatImpl
-     * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getConcat()
-     * @generated
-     */
-    EClass CONCAT = eINSTANCE.getConcat();
-
-    /**
-     * The meta object literal for the '<em><b>Expressions</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONCAT__EXPRESSIONS = eINSTANCE.getConcat_Expressions();
-
-    /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.jsonDsl.impl.LengthImpl <em>Length</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3674,40 +3341,6 @@ public interface JsonDslPackage extends EPackage
      * @generated
      */
     EClass PRODUCT = eINSTANCE.getProduct();
-
-    /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.jsonDsl.impl.DeleteImpl <em>Delete</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.jsonDsl.impl.DeleteImpl
-     * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getDelete()
-     * @generated
-     */
-    EClass DELETE = eINSTANCE.getDelete();
-
-    /**
-     * The meta object literal for the '<em><b>Fields</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference DELETE__FIELDS = eINSTANCE.getDelete_Fields();
-
-    /**
-     * The meta object literal for the '<em><b>From Expression</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference DELETE__FROM_EXPRESSION = eINSTANCE.getDelete_FromExpression();
-
-    /**
-     * The meta object literal for the '<em><b>Where Expression</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference DELETE__WHERE_EXPRESSION = eINSTANCE.getDelete_WhereExpression();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.jsonDsl.impl.ConstantImpl <em>Constant</em>}' class.
@@ -3934,58 +3567,6 @@ public interface JsonDslPackage extends EPackage
      * @generated
      */
     EReference INEQUALITY_EXPRESSION__RIGHT = eINSTANCE.getInequalityExpression_Right();
-
-    /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.jsonDsl.impl.StrictEqualityExpressionImpl <em>Strict Equality Expression</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.jsonDsl.impl.StrictEqualityExpressionImpl
-     * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getStrictEqualityExpression()
-     * @generated
-     */
-    EClass STRICT_EQUALITY_EXPRESSION = eINSTANCE.getStrictEqualityExpression();
-
-    /**
-     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference STRICT_EQUALITY_EXPRESSION__LEFT = eINSTANCE.getStrictEqualityExpression_Left();
-
-    /**
-     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference STRICT_EQUALITY_EXPRESSION__RIGHT = eINSTANCE.getStrictEqualityExpression_Right();
-
-    /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.jsonDsl.impl.StrictInequalityExpressionImpl <em>Strict Inequality Expression</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.jsonDsl.impl.StrictInequalityExpressionImpl
-     * @see org.xtext.example.mydsl.jsonDsl.impl.JsonDslPackageImpl#getStrictInequalityExpression()
-     * @generated
-     */
-    EClass STRICT_INEQUALITY_EXPRESSION = eINSTANCE.getStrictInequalityExpression();
-
-    /**
-     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference STRICT_INEQUALITY_EXPRESSION__LEFT = eINSTANCE.getStrictInequalityExpression_Left();
-
-    /**
-     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference STRICT_INEQUALITY_EXPRESSION__RIGHT = eINSTANCE.getStrictInequalityExpression_Right();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.jsonDsl.impl.SuperiorExpressionImpl <em>Superior Expression</em>}' class.

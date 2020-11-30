@@ -31,8 +31,6 @@ ExpressionLvl3 returns Expression:
 	ExpressionLvl4 (
 		({EqualityExpression.left = current} '==' right = ExpressionLvl4)
 		|({InequalityExpression.left = current} '!=' right = ExpressionLvl4)
-		|({StrictEqualityExpression.left = current} '===' right = ExpressionLvl4)
-		|({StrictInequalityExpression.left = current} '!==' right = ExpressionLvl4)
 	)*
 ;
 
@@ -109,14 +107,6 @@ VariableCall:
 	name=ID
 ;
 
-/* 
-FieldCaller:
-	callee = PrimaryExpression '~' key=STRING
-;
-
-ArrayCaller:
-	callee = PrimaryExpression '[' specifier = ArraySpecifier ']'
-;*/
 
 ArraySpecifier:
 	UnarySpecifier | RangeSpecifier
@@ -136,8 +126,7 @@ FunctionCall returns Expression:
 	IOFunctions |
 	InfoFunctions |
 	ManipFunctions |
-	ArithFunctions | 
-	AlterFunctions
+	ArithFunctions
 ;
 
 IOFunctions:
@@ -149,21 +138,16 @@ InfoFunctions :
 ;
 
 ManipFunctions :
-	Select |
-	Concat
+	Select
 ;
 
 ArithFunctions : Sum | Product ;
-
-AlterFunctions :
-	Delete
-;
 
 
 // IO FUNCTIONS
 
 Load:
-	'LOAD' fileName=STRING | 'LOAD' '(' fileName=STRING ')'
+	'LOAD' fileName=STRING | 'LOAD' '(' fileName=STRING ')' | {Load} 'LOAD'
 ;
 
 
@@ -172,7 +156,7 @@ Store:
 ;
 
 Export:
-	'EXPORT_CSV' '(' expression=Expression ')' 'IN' '(' fileName=STRING ')'
+	'EXPORT_CSV' '(' expression=Expression ')' ('IN' '(' fileName=STRING ')')?
 ;
 
 Print:
@@ -201,10 +185,6 @@ Select:
 	'SELECT' '(' ('*' | (fields+=Expression (',' fields+=Expression)*)?) ')' 'FROM' '(' fromExpression=Expression ')' (=> 'WHERE' '(' whereExpression=Expression ')')? 
 ;
 
-Concat:
-	'CONCAT' '(' expressions+=Expression (',' expressions+=Expression) ')'
-;
-
 Length:
 	'LENGTH' '(' expression=Expression ')'
 ;
@@ -215,10 +195,6 @@ Sum:
 
 Product:
 	'PRODUCT' '(' expression=Expression ')' ('ON' '(' field= Expression ')')? (=> 'WHERE' '(' whereExpression=Expression ')')?  
-;
-
-Delete:
-	'DELETE' '(' ('*' | (fields+=Expression (',' fields+=Expression)*)?) ')' 'FROM' '(' fromExpression=Expression ')' (=> 'WHERE' '(' whereExpression=Expression ')')? 
 ;
 
 

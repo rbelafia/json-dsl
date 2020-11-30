@@ -20,13 +20,11 @@ import org.xtext.example.mydsl.services.JsonDslGrammarAccess;
 public class JsonDslSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected JsonDslGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_Delete_AsteriskKeyword_2_0_q;
 	protected AbstractElementAlias match_Select_AsteriskKeyword_2_0_q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (JsonDslGrammarAccess) access;
-		match_Delete_AsteriskKeyword_2_0_q = new TokenAlias(false, true, grammarAccess.getDeleteAccess().getAsteriskKeyword_2_0());
 		match_Select_AsteriskKeyword_2_0_q = new TokenAlias(false, true, grammarAccess.getSelectAccess().getAsteriskKeyword_2_0());
 	}
 	
@@ -42,25 +40,12 @@ public class JsonDslSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if (match_Delete_AsteriskKeyword_2_0_q.equals(syntax))
-				emit_Delete_AsteriskKeyword_2_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_Select_AsteriskKeyword_2_0_q.equals(syntax))
+			if (match_Select_AsteriskKeyword_2_0_q.equals(syntax))
 				emit_Select_AsteriskKeyword_2_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
 
-	/**
-	 * Ambiguous syntax:
-	 *     '*'?
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     (rule start) 'DELETE' '(' (ambiguity) ')' 'FROM' '(' fromExpression=Expression
-	 */
-	protected void emit_Delete_AsteriskKeyword_2_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
 	/**
 	 * Ambiguous syntax:
 	 *     '*'?

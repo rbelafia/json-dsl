@@ -14,6 +14,15 @@ import org.xtext.example.mydsl.jsonDsl.Model
 import org.xtext.example.mydsl.jsonDsl.*
 import org.xtext.example.mydsl.jsonDsl.impl.*
 import java.util.HashMap
+import org.xtext.example.mydsl.generator.JsonDslGenerator
+import static org.junit.Assert.assertTrue
+import static org.junit.Assert.assertNotNull
+import static org.junit.Assert.assertEquals
+import org.junit.jupiter.api.BeforeAll
+import java.io.*
+import org.python.util.PythonInterpreter
+import org.junit.jupiter.api.AfterAll
+import static org.junit.Assert.assertThrows
 
 @ExtendWith(InjectionExtension)
 @InjectWith(JsonDslInjectorProvider)
@@ -21,22 +30,1079 @@ class JsonDslParsingTest {
 	@Inject
 	ParseHelper<Model> parseHelper
 	
+	var JsonDslGenerator generator = new JsonDslGenerator()
+	
+	@BeforeAll
+	def static void buildTmp() {
+		var processBuilder = new ProcessBuilder()
+		processBuilder.command("bash", "-c", "mkdir ./tmp");
+			
+		try {
+		    var process = processBuilder.start()
+		    var output = new StringBuilder();
+		    var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		
+		    var String line
+		    while ((line = reader.readLine()) !== null)
+		        output.append(line).append("\n");
+		
+			var exitVal = process.waitFor();
+			
+			if (exitVal == 0) println("tmp created !")
+			else println("A problem occured")
+		
+		}
+		catch (IOException | InterruptedException e) { e.printStackTrace(); }
+	}
+	
 	@Test
-	def void loadModel() {
+	def void testCompilePythonInt() {
+		val result = parseHelper.parse('''2''')
+		
+		assertEquals("2", generator.compilePython(result.stmts.get(0) as Primitive))
+	}
+	
+	
+	@Test
+	def void testCompilePythonFloat() {
+		val result = parseHelper.parse('''2.7''')
+		
+		assertEquals("2.7", generator.compilePython(result.stmts.get(0) as Primitive))
+		
+	}
+	
+	@Test
+	def void testCompilePythonFloatExpo() {
+		val result = parseHelper.parse('''3.4e8''')
+		
+		assertEquals("3.4e8", generator.compilePython(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompilePythonEmptyString() {
+		val result = parseHelper.parse('''""''')
+		
+		assertEquals("''", generator.compilePython(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompilePythonNonEmptyString() {
+		val result = parseHelper.parse('''"Hello World"''')
+		
+		assertEquals("'Hello World'", generator.compilePython(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompilePythonTrue() {
+		val result = parseHelper.parse('''true''')
+		
+		assertEquals("True", generator.compilePython(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompilePythonFalse() {
+		val result = parseHelper.parse('''false''')
+		
+		assertEquals("False", generator.compilePython(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompilePythonNull() {
+		val result = parseHelper.parse('''null''')
+		
+		assertEquals("None", generator.compilePython(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompilePythonEmptyArray() {
+		val result = parseHelper.parse('''[]''')
+		
+		assertEquals("[]", generator.compilePython(result.stmts.get(0) as Array))
+	}
+	
+	@Test
+	def void testCompilePythonFullArray() {
+		val result = parseHelper.parse('''[4, "Hello", true, null]''')
+		
+		assertEquals("[4, 'Hello', True, None]", generator.compilePython(result.stmts.get(0) as Array))
+	}
+	
+	@Test
+	def void testCompilePythonJsonObject() {
 		val result = parseHelper.parse('''
-			2.4e3
+		{
+		    "shop": "Carrefour",
+		    "date": {
+		        "year": 2020,
+		        "month": 7,
+		        "day": 24
+		    },
+		    "is_okay": true,
+		    "customers": [
+		        {
+		            "id": 45609,
+		            "fname": "Lea",
+		            "lname": "Shu",
+		            "address": "6 rue Loch",
+		            "city": "Montpellier",
+		            "country": "France"
+		        }
+		    ]
+		}
 		''')
 		
-		val stmts = result.stmts
-		
-		var elementTable = new HashMap<String, Object>
-		
-		stmts.forEach[ element, index |
-			println((element as Primitive).getStr())
-		]
-		
-		Assertions.assertNotNull(result)
-		//val errors = result.eResource.errors
-		//Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		assertEquals("{'shop': 'Carrefour', 'date': {'year': 2020, 'month': 7, 'day': 24}, 'is_okay': True, 'customers': [{'id': 45609, 'fname': 'Lea', 'lname': 'Shu', 'address': '6 rue Loch', 'city': 'Montpellier', 'country': 'France'}]}", generator.compilePython(result.stmts.get(0) as JSonObject))
 	}
+	
+	@Test
+	def void testCompilePythonVariableCall() {
+		val result = parseHelper.parse('''a;''')
+		
+		assertEquals("a", generator.compilePython(result.stmts.get(0) as VariableCall))	
+	}
+	
+	@Test
+	def void testCompilePythonAssignment() {
+		val result = parseHelper.parse('''a = 9''')
+		
+		assertEquals("a = 9", generator.compilePython(result.stmts.get(0) as Assignment))		
+	}
+	
+	@Test
+	def void testCompilePythonOr() {
+		val result = parseHelper.parse('''a OR b''')
+		
+		assertEquals("disjunction(a, b)", generator.compilePython(result.stmts.get(0) as DisjunctionExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonAnd() {
+		val result = parseHelper.parse('''a AND b''')
+		
+		assertEquals("conjunction(a, b)", generator.compilePython(result.stmts.get(0) as ConjunctionExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonEqual() {
+		val result = parseHelper.parse('''a == b''')
+		
+		assertEquals("equal(a, b)", generator.compilePython(result.stmts.get(0) as EqualityExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonNotEqual() {
+		val result = parseHelper.parse('''a != b''')
+		
+		assertEquals("not_equal(a, b)", generator.compilePython(result.stmts.get(0) as InequalityExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonStrictSuperior() {
+		val result = parseHelper.parse('''a > b''')
+		
+		assertEquals("superior(a, b)", generator.compilePython(result.stmts.get(0) as SuperiorExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonSuperiorOrEqual() {
+		val result = parseHelper.parse('''a >= b''')
+		
+		assertEquals("superior_or_equal(a, b)", generator.compilePython(result.stmts.get(0) as SuperiorOrEqualExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonStrictInferior() {
+		val result = parseHelper.parse('''a < b''')
+		
+		assertEquals("inferior(a, b)", generator.compilePython(result.stmts.get(0) as InferiorExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonInferiorOrEqual() {
+		val result = parseHelper.parse('''a <= b''')
+		
+		assertEquals("inferior_or_equal(a, b)", generator.compilePython(result.stmts.get(0) as InferiorOrEqualExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonAddition() {
+		val result = parseHelper.parse('''a + b''')
+		
+		assertEquals("addition(a, b)", generator.compilePython(result.stmts.get(0) as AdditionExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonSubstraction() {
+		val result = parseHelper.parse('''a - b''')
+		
+		assertEquals("substraction(a, b)", generator.compilePython(result.stmts.get(0) as SubstractionExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonMultiplication() {
+		val result = parseHelper.parse('''a * b''')
+		
+		assertEquals("multiplication(a, b)", generator.compilePython(result.stmts.get(0) as MultiplicationExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonDivision() {
+		val result = parseHelper.parse('''a / b''')
+		
+		assertEquals("division(a, b)", generator.compilePython(result.stmts.get(0) as DivisionExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonModulo() {
+		val result = parseHelper.parse('''a % b''')
+		
+		assertEquals("modulo(a, b)", generator.compilePython(result.stmts.get(0) as ModuloExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonUnaryPlus() {
+		val result = parseHelper.parse('''+ a''')
+		
+		assertEquals("unary_plus(a)", generator.compilePython(result.stmts.get(0) as UnaryPlusExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonUnaryMinus() {
+		val result = parseHelper.parse('''- a''')
+		
+		assertEquals("unary_minus(a)", generator.compilePython(result.stmts.get(0) as UnaryMinusExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonNegation() {
+		val result = parseHelper.parse('''!a''')
+		
+		assertEquals("logical_negation(a)", generator.compilePython(result.stmts.get(0) as LogicalNegationExpression))		
+	}
+	
+	@Test
+	def void testCompilePythonArrayUnaryCall() {
+		val result = parseHelper.parse('''a[1]''')
+		
+		assertEquals("a[1]", generator.compilePython(result.stmts.get(0) as ArrayCall))
+	}
+	
+	@Test
+	def void testCompilePythonRangeArrayCall() {
+		val result = parseHelper.parse('''a[4:9]''')
+		
+		assertEquals("a[4:9]", generator.compilePython(result.stmts.get(0) as ArrayCall))
+	}
+	
+	@Test
+	def void testCompilePythonFieldCall() {
+		val result = parseHelper.parse('''a~"name"''')
+		
+		assertEquals("a['name']", generator.compilePython(result.stmts.get(0) as FieldCall))
+	}
+	
+	@Test
+	def void testCompilePythonSelect() {
+		val result = parseHelper.parse('''SELECT("bar", "soo") FROM (foo) WHERE (.~"age" > 20)''')
+		
+		assertEquals("[{key1: obj1[key1] for key1 in ('bar', 'soo')} for obj1 in foo if (superior(obj1['age'], 20))]", generator.compilePython(result.stmts.get(0) as Select))
+	}
+	
+	@Test
+	def void testCompilePythonSumNoField() {
+		val result = parseHelper.parse('''SUM (foo)''')
+		
+		assertEquals('reduce(addition, [obj1 for obj1 in foo])', generator.compilePython(result.stmts.get(0) as Sum))
+	}
+	
+	@Test
+	def void testCompilePythonSumNoFieldCondition() {
+		val result = parseHelper.parse('''SUM (foo) WHERE (. > 4)''')
+		
+		assertEquals('reduce(addition, [obj1 for obj1 in foo if (superior(obj1, 4))])', generator.compilePython(result.stmts.get(0) as Sum))
+	}
+	
+	@Test
+	def void testCompilePythonSumWith1FieldCondition() {
+		val result = parseHelper.parse('''SUM (foo) ON ("age") WHERE (.~"isAlive")''')
+		
+		assertEquals("reduce(addition, [obj1['age'] for obj1 in foo if (obj1['isAlive'])])", generator.compilePython(result.stmts.get(0) as Sum))
+	}
+	
+	@Test
+	def void testCompilePythonProductNoField() {
+		val result = parseHelper.parse('''PRODUCT (foo)''')
+		
+		assertEquals('reduce(multiplication, [obj1 for obj1 in foo])', generator.compilePython(result.stmts.get(0) as Product))
+	}
+	
+	@Test
+	def void testCompilePythonProductNoFieldCondition() {
+		val result = parseHelper.parse('''PRODUCT (foo) WHERE (. > 4)''')
+		
+		assertEquals('reduce(multiplication, [obj1 for obj1 in foo if (superior(obj1, 4))])', generator.compilePython(result.stmts.get(0) as Product))
+	}
+	
+	@Test
+	def void testCompilePythonProductWith1FieldCondition() {
+		val result = parseHelper.parse('''PRODUCT (foo) ON ("age") WHERE (.~"isAlive")''')
+		
+		assertEquals("reduce(multiplication, [obj1['age'] for obj1 in foo if (obj1['isAlive'])])", generator.compilePython(result.stmts.get(0) as Product))
+	}
+	
+	@Test
+	def void testCompilePythonLoad() {
+		val result = parseHelper.parse('''LOAD("json_file.json")''')
+		
+		assertEquals("load_json('json_file.json')", generator.compilePython(result.stmts.get(0) as Load))
+	}
+	
+	@Test
+	def void testCompilePythonStore() {
+		val result = parseHelper.parse('''STORE(json) IN "json_file.json"''')
+		
+		assertEquals("store_json(json, 'json_file.json')", generator.compilePython(result.stmts.get(0) as Store))
+	}
+	
+	@Test
+	def void testCompilePythonExport() {
+		val result = parseHelper.parse('''EXPORT_CSV(json) IN "csv_file.csv"''')
+		
+		assertEquals("export_csv(json, 'csv_file.csv')", generator.compilePython(result.stmts.get(0) as Export))
+	}
+	
+	@Test
+	def void testCompilePythonExportThrow() {
+		val result = parseHelper.parse('''EXPORT_CSV(json)''')
+		
+		assertThrows(RuntimeException, [ | generator.compilePython(result.stmts.get(0) as Export)])
+	}
+	
+	@Test
+	def void testCompilePythonDepth() {
+		val result = parseHelper.parse('''GET_DEPTH(foo)''')
+		
+		assertEquals("depth_json(foo)", generator.compilePython(result.stmts.get(0) as Depth))
+	}
+	
+	@Test
+	def void testCompilePythonInfos() {
+		val result = parseHelper.parse('''GET_INFOS(foo)''')
+		
+		assertEquals("infos_json(foo)", generator.compilePython(result.stmts.get(0) as FieldInfo))
+	}
+	
+	@Test
+	def void testCompilePythonContains1Field() {
+		val result = parseHelper.parse('''IS("field1") IN (foo)''')
+		
+		assertEquals("contains(foo, 'field1')", generator.compilePython(result.stmts.get(0) as Contains))
+	}
+	
+	@Test
+	def void testCompilePythonContainsMultiField() {
+		val result = parseHelper.parse('''IS("field1", "field2") IN (foo)''')
+		
+		assertEquals("contains(foo, 'field1', 'field2')", generator.compilePython(result.stmts.get(0) as Contains))
+	}
+	
+	@Test
+	def void testCompilePythonPrint() {
+		val result = parseHelper.parse('''PRINT("Hello World")''')
+		
+		assertEquals("json_print('Hello World')", generator.compilePython(result.stmts.get(0) as Print))
+	}
+	
+	private def static void exec(ProcessBuilder processBuilder) {
+        try {
+            var process = processBuilder.start()
+            var output = new StringBuilder();
+            var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            var String line
+            while ((line = reader.readLine()) !== null)
+                output.append(line).append("\n");
+
+            var exitVal = process.waitFor();
+
+            if (exitVal == 0) println("Success build!")
+            else println("A problem occured")
+
+            println(output);
+
+        }
+        catch (IOException | InterruptedException e) { e.printStackTrace(); }
+    }
+	
+	def execPython(String expected, String actual) {
+		
+		val result = parseHelper.parse(actual)
+		
+		var compiled_stms = newArrayList()
+		for (stmt: result.stmts) compiled_stms.add(generator.compilePython(stmt))
+		
+		var processBuilder = new ProcessBuilder()
+		var command = '''echo "from jz_library import *" > tester.py; echo "" >> tester.py; «FOR compiled : compiled_stms» echo "«compiled»" >> tester.py;«ENDFOR»'''
+		println(command)
+		processBuilder.command("bash", "-c", command);
+		
+		exec(processBuilder)
+		
+		processBuilder.command("bash", "./pyscript.sh");
+		
+		try {
+            var process = processBuilder.start()
+            var output = new StringBuilder();
+            var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            var String line
+            while ((line = reader.readLine()) !== null)
+                output.append(line).append("\n");
+
+            var exitVal = process.waitFor();
+
+            if (exitVal == 0) println("Success exec!")
+            else println("A problem occured")
+            
+            println(output)
+            assertEquals(expected, output.toString)
+
+        }
+        catch (IOException | InterruptedException e) { e.printStackTrace(); }
+    	
+	}
+	
+	
+	
+	@Test
+	def void testExecPythonPrint() {
+    	execPython("Hello World\n", '''PRINT("Hello World")''')
+	}
+	
+	
+	@Test
+	def void testExecPythonPrintArray() {
+    	execPython("[\n  1,\n  2,\n  3\n]\n", '''PRINT([1, 2, 3])''')
+	}
+	
+	@Test
+	def void testExecPythonLoad() {
+		execPython("{\n web-app: {\n  servlet: [\n   {\n    servlet-name: cofaxCDS,\n    servlet-class: org.cofax.cds.CDSServlet,\n    init-param: {\n     configGlossary:installationAt: Philadelphia, PA,\n     configGlossary:adminEmail: ksm@pobox.com,\n     configGlossary:poweredBy: Cofax,\n     configGlossary:poweredByIcon: /images/cofax.gif,\n     configGlossary:staticPath: /content/static,\n     templateProcessorClass: org.cofax.WysiwygTemplate,\n     templateLoaderClass: org.cofax.FilesTemplateLoader,\n     templatePath: templates,\n     templateOverridePath: ,\n     defaultListTemplate: listTemplate.htm,\n     defaultFileTemplate: articleTemplate.htm,\n     useJSP: False,\n     jspListTemplate: listTemplate.jsp,\n     jspFileTemplate: articleTemplate.jsp,\n     cachePackageTagsTrack: 200,\n     cachePackageTagsStore: 200,\n     cachePackageTagsRefresh: 60,\n     cacheTemplatesTrack: 100,\n     cacheTemplatesStore: 50,\n     cacheTemplatesRefresh: 15,\n     cachePagesTrack: 200,\n     cachePagesStore: 100,\n     cachePagesRefresh: 10,\n     cachePagesDirtyRead: 10,\n     searchEngineListTemplate: forSearchEnginesList.htm,\n     searchEngineFileTemplate: forSearchEngines.htm,\n     searchEngineRobotsDb: WEB-INF/robots.db,\n     useDataStore: True,\n     dataStoreClass: org.cofax.SqlDataStore,\n     redirectionClass: org.cofax.SqlRedirection,\n     dataStoreName: cofax,\n     dataStoreDriver: com.microsoft.jdbc.sqlserver.SQLServerDriver,\n     dataStoreUrl: jdbc:microsoft:sqlserver://LOCALHOST:1433;DatabaseName=goon,\n     dataStoreUser: sa,\n     dataStorePassword: dataStoreTestQuery,\n     dataStoreTestQuery: SET NOCOUNT ON;select test='test';,\n     dataStoreLogFile: /usr/local/tomcat/logs/datastore.log,\n     dataStoreInitConns: 10,\n     dataStoreMaxConns: 100,\n     dataStoreConnUsageLimit: 100,\n     dataStoreLogLevel: debug,\n     maxUrlLength: 500\n    }\n   },\n   {\n    servlet-name: cofaxEmail,\n    servlet-class: org.cofax.cds.EmailServlet,\n    init-param: {\n     mailHost: mail1,\n     mailHostOverride: mail2\n    }\n   },\n   {\n    servlet-name: cofaxAdmin,\n    servlet-class: org.cofax.cds.AdminServlet\n   },\n   {\n    servlet-name: fileServlet,\n    servlet-class: org.cofax.cds.FileServlet\n   },\n   {\n    servlet-name: cofaxTools,\n    servlet-class: org.cofax.cms.CofaxToolsServlet,\n    init-param: {\n     templatePath: toolstemplates/,\n     log: 1,\n     logLocation: /usr/local/tomcat/logs/CofaxTools.log,\n     logMaxSize: ,\n     dataLog: 1,\n     dataLogLocation: /usr/local/tomcat/logs/dataLog.log,\n     dataLogMaxSize: ,\n     removePageCache: /content/admin/remove?cache=pages&id=,\n     removeTemplateCache: /content/admin/remove?cache=templates&id=,\n     fileTransferFolder: /usr/local/tomcat/webapps/content/fileTransferFolder,\n     lookInContext: 1,\n     adminGroupID: 4,\n     betaServer: True\n    }\n   }\n  ],\n  servlet-mapping: {\n   cofaxCDS: /,\n   cofaxEmail: /cofaxutil/aemail/*,\n   cofaxAdmin: /admin/*,\n   fileServlet: /static/*,\n   cofaxTools: /tools/*\n  },\n  taglib: {\n   taglib-uri: cofax.tld,\n   taglib-location: /WEB-INF/tlds/cofax.tld\n  }\n }\n}\n",
+		'''PRINT(LOAD("./jsonTestFile.json"))''')
+	}
+	
+	@Test
+	def void testExecPythonStore() {
+		execPython("", '''STORE({"foo": 4, "bar": false}) IN ("./tmp/test_store_python.json")''')
+		
+		var processBuilder = new ProcessBuilder()
+		
+		processBuilder.command("bash", "-c", "cat ./tmp/test_store_python.json");
+		
+		try {
+            var process = processBuilder.start()
+            var output = new StringBuilder();
+            var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            var String line
+            while ((line = reader.readLine()) !== null)
+                output.append(line).append("\n");
+
+            var exitVal = process.waitFor();
+
+            if (exitVal == 0) println("Success exec!")
+            else println("A problem occured")
+            
+            println(output)
+            assertEquals('{"foo": 4, "bar": false}\n', output.toString)
+            
+        }
+        catch (IOException | InterruptedException e) { e.printStackTrace(); }
+	}
+	
+	@Test
+	def void testExecPythonExport() {
+		execPython("", '''EXPORT_CSV([{"foo": 4, "bar": false, "sor": "Hello"}, {"foo": 8, "bar": true, "sor": "Good Bye"}]) IN ("./tmp/test_export_python.csv")''')
+		
+		var processBuilder = new ProcessBuilder()
+		
+		processBuilder.command("bash", "-c", "cat ./tmp/test_export_python.csv");
+		
+		try {
+            var process = processBuilder.start()
+            var output = new StringBuilder();
+            var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            var String line
+            while ((line = reader.readLine()) !== null)
+                output.append(line).append("\n");
+
+            var exitVal = process.waitFor();
+
+            if (exitVal == 0) println("Success exec!")
+            else println("A problem occured")
+            
+            println(output)
+            assertEquals('foo,bar,sor\n4,False,Hello\n8,True,Good Bye\n', output.toString)
+            
+        }
+        catch (IOException | InterruptedException e) { e.printStackTrace(); }
+	}
+	
+	
+	// SELECT
+	@Test
+	def void testExecPythonSelect() {
+		execPython('[\n  {\n    "name": "beta",\n    "age": 20\n  },\n  {\n    "name": "delta",\n    "age": 36\n  },\n  {\n    "name": "lambda",\n    "age": 79\n  },\n  {\n    "name": "pi",\n    "age": 31\n  },\n  {\n    "name": "sigma",\n    "age": 68\n  }\n]', '''file = LOAD "./jsonGenTestFile.json"; select = SELECT ("name", "age") FROM (file~"array") WHERE (.~"adress" == "Montpellier"); PRINT(select)''')
+	}
+	
+	// MEAN
+	@Test
+	def void testExecPythonMean() {
+		execPython("38.5\n", '''file = LOAD "./jsonGenTestFile.json"; PRINT((SUM(file~"array") ON ("age")) / (LENGTH(file~"array"));''')
+	}
+	
+	// TEST COMPILE JQ
+	
+	@Test
+	def void testCompileJQInt() {
+		val result = parseHelper.parse('''2''')
+		
+		assertEquals("2", generator.compileJQ(result.stmts.get(0) as Primitive))
+	}
+	
+	
+	@Test
+	def void testCompileJQFloat() {
+		val result = parseHelper.parse('''2.7''')
+		
+		assertEquals("2.7", generator.compileJQ(result.stmts.get(0) as Primitive))
+		
+	}
+	
+	@Test
+	def void testCompileJQFloatExpo() {
+		val result = parseHelper.parse('''3.4e8''')
+		
+		assertEquals("3.4e8", generator.compileJQ(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompileJQEmptyString() {
+		val result = parseHelper.parse('''""''')
+		
+		assertEquals('""', generator.compileJQ(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompileJQNonEmptyString() {
+		val result = parseHelper.parse('''"Hello World"''')
+		
+		assertEquals('"Hello World"', generator.compileJQ(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompileJQTrue() {
+		val result = parseHelper.parse('''true''')
+		
+		assertEquals("true", generator.compileJQ(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompileJQFalse() {
+		val result = parseHelper.parse('''false''')
+		
+		assertEquals("false", generator.compileJQ(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompileJQNull() {
+		val result = parseHelper.parse('''null''')
+		
+		assertEquals("null", generator.compileJQ(result.stmts.get(0) as Primitive))
+	}
+	
+	@Test
+	def void testCompileJQEmptyArray() {
+		val result = parseHelper.parse('''[]''')
+		
+		assertEquals("[]", generator.compileJQ(result.stmts.get(0) as Array))
+	}
+	
+	@Test
+	def void testCompileJQFullArray() {
+		val result = parseHelper.parse('''[4, "Hello", true, null]''')
+		
+		assertEquals('[4, "Hello", true, null]', generator.compileJQ(result.stmts.get(0) as Array))
+	}
+	
+	@Test
+	def void testCompileJQJsonObject() {
+		val result = parseHelper.parse('''
+		{
+		    "shop": "Carrefour",
+		    "date": {
+		        "year": 2020,
+		        "month": 7,
+		        "day": 24
+		    },
+		    "is_okay": true,
+		    "customers": [
+		        {
+		            "id": 45609,
+		            "fname": "Lea",
+		            "lname": "Shu",
+		            "address": "6 rue Loch",
+		            "city": "Montpellier",
+		            "country": "France"
+		        }
+		    ]
+		}
+		''')
+		
+		assertEquals('{"shop": "Carrefour", "date": {"year": 2020, "month": 7, "day": 24}, "is_okay": true, "customers": [{"id": 45609, "fname": "Lea", "lname": "Shu", "address": "6 rue Loch", "city": "Montpellier", "country": "France"}]}', generator.compileJQ(result.stmts.get(0) as JSonObject))
+	}
+	
+	@Test
+	def void testCompileJQVariableCall() {
+		val result = parseHelper.parse('''a;''')
+		
+		assertEquals("$a", generator.compileJQ(result.stmts.get(0) as VariableCall))	
+	}
+	
+	@Test
+	def void testCompileJQAssignment() {
+		val result = parseHelper.parse('''a = 9''')
+		
+		assertEquals("(9) as $a", generator.compileJQ(result.stmts.get(0) as Assignment))		
+	}
+	
+	@Test
+	def void testCompileJQOr() {
+		val result = parseHelper.parse('''a OR b''')
+		
+		assertEquals("$a or $b", generator.compileJQ(result.stmts.get(0) as DisjunctionExpression))		
+	}
+	
+	@Test
+	def void testCompileJQAnd() {
+		val result = parseHelper.parse('''a AND b''')
+		
+		assertEquals("$a and $b", generator.compileJQ(result.stmts.get(0) as ConjunctionExpression))		
+	}
+	
+	@Test
+	def void testCompileJQEqual() {
+		val result = parseHelper.parse('''a == b''')
+		
+		assertEquals("$a == $b", generator.compileJQ(result.stmts.get(0) as EqualityExpression))		
+	}
+	
+	@Test
+	def void testCompileJQNotEqual() {
+		val result = parseHelper.parse('''a != b''')
+		
+		assertEquals("$a != $b", generator.compileJQ(result.stmts.get(0) as InequalityExpression))		
+	}
+	
+	@Test
+	def void testCompileJQStrictSuperior() {
+		val result = parseHelper.parse('''a > b''')
+		
+		assertEquals("$a > $b", generator.compileJQ(result.stmts.get(0) as SuperiorExpression))		
+	}
+	
+	@Test
+	def void testCompileJQSuperiorOrEqual() {
+		val result = parseHelper.parse('''a >= b''')
+		
+		assertEquals("$a >= $b", generator.compileJQ(result.stmts.get(0) as SuperiorOrEqualExpression))		
+	}
+	
+	@Test
+	def void testCompileJQStrictInferior() {
+		val result = parseHelper.parse('''a < b''')
+		
+		assertEquals("$a < $b", generator.compileJQ(result.stmts.get(0) as InferiorExpression))		
+	}
+	
+	@Test
+	def void testCompileJQInferiorOrEqual() {
+		val result = parseHelper.parse('''a <= b''')
+		
+		assertEquals("$a <= $b", generator.compileJQ(result.stmts.get(0) as InferiorOrEqualExpression))		
+	}
+	
+	@Test
+	def void testCompileJQAddition() {
+		val result = parseHelper.parse('''a + b''')
+		
+		assertEquals("$a + $b", generator.compileJQ(result.stmts.get(0) as AdditionExpression))		
+	}
+	
+	@Test
+	def void testCompileJQSubstraction() {
+		val result = parseHelper.parse('''a - b''')
+		
+		assertEquals("$a - $b", generator.compileJQ(result.stmts.get(0) as SubstractionExpression))		
+	}
+	
+	@Test
+	def void testCompileJQMultiplication() {
+		val result = parseHelper.parse('''a * b''')
+		
+		assertEquals("$a * $b", generator.compileJQ(result.stmts.get(0) as MultiplicationExpression))		
+	}
+	
+	@Test
+	def void testCompileJQDivision() {
+		val result = parseHelper.parse('''a / b''')
+		
+		assertEquals("$a / $b", generator.compileJQ(result.stmts.get(0) as DivisionExpression))		
+	}
+	
+	@Test
+	def void testCompileJQModulo() {
+		val result = parseHelper.parse('''a % b''')
+		
+		assertEquals("$a % $b", generator.compileJQ(result.stmts.get(0) as ModuloExpression))		
+	}
+	
+	@Test
+	def void testCompileJQUnaryMinus() {
+		val result = parseHelper.parse('''- a''')
+		
+		assertEquals("- $a", generator.compileJQ(result.stmts.get(0) as UnaryMinusExpression))		
+	}
+	
+	@Test
+	def void testCompileJQUnaryPlus() {
+		val result = parseHelper.parse('''+ a''')
+		
+		assertEquals("+ $a", generator.compileJQ(result.stmts.get(0) as UnaryPlusExpression))		
+	}
+	
+	@Test
+	def void testCompileJQNegation() {
+		val result = parseHelper.parse('''! a''')
+		
+		assertEquals("! $a", generator.compileJQ(result.stmts.get(0) as LogicalNegationExpression))		
+	}
+	
+	@Test
+	def void testCompileJQArrayUnaryCall() {
+		val result = parseHelper.parse('''a[1]''')
+		
+		assertEquals("$a[1]", generator.compileJQ(result.stmts.get(0) as ArrayCall))
+	}
+	
+	@Test
+	def void testCompileJQRangeArrayCall() {
+		val result = parseHelper.parse('''a[4:9]''')
+		
+		assertEquals("$a[4:9]", generator.compileJQ(result.stmts.get(0) as ArrayCall))
+	}
+	
+	@Test
+	def void testCompileJQFieldCall() {
+		val result = parseHelper.parse('''a~"name"''')
+		
+		assertEquals('$a["name"]', generator.compileJQ(result.stmts.get(0) as FieldCall))
+	}
+	
+	@Test
+	def void testCompileJQPrint() {
+		val result = parseHelper.parse('''PRINT("Hello World")''')
+		
+		assertThrows(RuntimeException, [ | generator.compileJQ(result.stmts.get(0) as Print)])
+	}
+	
+	@Test
+	def void testCompileJQLoad() {
+		val result = parseHelper.parse('''LOAD;''')
+		
+		assertEquals('$in', generator.compileJQ(result.stmts.get(0) as Load))
+	}
+	
+	@Test
+	def void testCompileJQStore() {
+		val result = parseHelper.parse('''STORE (f) IN ("test.json")''')
+		
+		assertThrows(RuntimeException, [ | generator.compileJQ(result.stmts.get(0) as Store)])
+	}
+	
+	@Test
+	def void testCompileJQExportThrows() {
+		val result = parseHelper.parse('''EXPORT_CSV (f) IN ("test.csv")''')
+		
+		assertThrows(RuntimeException, [ | generator.compileJQ(result.stmts.get(0) as Export)])
+	}
+	
+	@Test
+	def void testCompileJQDepth() {
+		val result = parseHelper.parse('''GET_DEPTH(obj)''')
+		
+		assertEquals('depth($obj)', generator.compileJQ(result.stmts.get(0) as Depth))
+	}
+	
+	
+	@Test
+	def void testCompileJQFieldInfo() {
+		val result = parseHelper.parse('''GET_INFOS(obj)''')
+		
+		assertEquals('$obj | map_values(type)', generator.compileJQ(result.stmts.get(0) as FieldInfo))
+	}
+	
+	@Test
+	def void testCompileJQContains() {
+		val result = parseHelper.parse('''IS("key1", "key2") IN (foo)''')
+		
+		assertEquals('$foo | has("key1") and has("key2")', generator.compileJQ(result.stmts.get(0) as Contains))
+	}
+	
+	@Test
+	def void testCompileJQSelect() {
+		val result = parseHelper.parse('''SELECT("key1", "key2") FROM (foo) WHERE (.~"age" > 20)''')
+		
+		assertEquals('$foo | map(select(.["age"] > 20)) | map(with_entries(select(.key == "key1" or .key == "key2")))', generator.compileJQ(result.stmts.get(0) as Select))
+	}
+	
+	@Test
+	def void testCompileJQSumNoField() {
+		val result = parseHelper.parse('''SUM (foo)''')
+		
+		assertEquals('$foo | add', generator.compileJQ(result.stmts.get(0) as Sum))
+	}
+	
+	@Test
+	def void testCompileJQSumNoFieldCondition() {
+		val result = parseHelper.parse('''SUM (foo) WHERE (. > 4)''')
+		
+		assertEquals('$foo | map(select(. > 4)) | add', generator.compileJQ(result.stmts.get(0) as Sum))
+	}
+	
+	@Test
+	def void testCompileJQSumWith1FieldCondition() {
+		val result = parseHelper.parse('''SUM (foo) ON ("age") WHERE (.~"isAlive")''')
+		
+		assertEquals('$foo | map(select(.["isAlive"])) | map(.["age"]) | add', generator.compileJQ(result.stmts.get(0) as Sum))
+	}
+	
+	@Test
+	def void testCompileJQProductNoField() {
+		val result = parseHelper.parse('''PRODUCT (foo)''')
+		
+		assertEquals('$foo | product', generator.compileJQ(result.stmts.get(0) as Product))
+	}
+	
+	@Test
+	def void testCompileJQProductNoFieldCondition() {
+		val result = parseHelper.parse('''PRODUCT (foo) WHERE (. > 4)''')
+		
+		assertEquals('$foo | map(select(. > 4)) | product', generator.compileJQ(result.stmts.get(0) as Product))
+	}
+	
+	@Test
+	def void testCompileJQProductWith1FieldCondition() {
+		val result = parseHelper.parse('''PRODUCT (foo) ON ("age") WHERE (.~"isAlive")''')
+		
+		assertEquals('$foo | map(select(.["isAlive"])) | map(.["age"]) | product', generator.compileJQ(result.stmts.get(0) as Product))
+	}
+	
+	
+	// TEST EXEC JQ
+	
+	def execJQ(String expected, String actual, String filename) {
+		
+		var result = parseHelper.parse(actual);
+		
+		var compiled_stms = newArrayList()
+		for (stmt: result.stmts) compiled_stms.add(generator.compileJQ(stmt))
+		
+		println(result.stmts.length)
+		
+		
+		var processBuilder = new ProcessBuilder()
+		var String command
+		if (filename === null) command = '''jq -r -n  '''
+		else command = '''cat «filename» | jq -r '''
+		command += ''' 'def depth (obj): obj | if type == "object" then (map(1 + depth(.)) as $rec | if ($rec | length) == 0 then 1 else ($rec | max) end) else 0 end;'''
+		command += '''def csv : (map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv;'''
+		command += '''def product: . as $array | reduce $array[] as $item ( ($array[0] | type | if . == "number" then 1 elif . == "string" then 1 elif . == "object" then {} else null end); . * $item);'''
+		command += '''. as $in | «FOR stmt : compiled_stms SEPARATOR "|"»«stmt»«ENDFOR»' '''
+		
+		println(command)
+		processBuilder.command("bash", "-c", command);
+		
+		try {
+            var process = processBuilder.start()
+            var output = new StringBuilder();
+            var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            var String line
+            while ((line = reader.readLine()) !== null)
+                output.append(line).append("\n");
+
+            var exitVal = process.waitFor();
+
+            if (exitVal == 0) println("Success exec!")
+            else println("A problem occured")
+            
+            println(output)
+            assertEquals(expected, output.toString)
+
+        }
+        catch (IOException | InterruptedException e) { e.printStackTrace(); }
+        
+	}
+	
+	// PRINT TESTS
+	@Test
+	def void testExecJQPrint() {
+    	execJQ('Hello World\n', '''"Hello World"''', null)
+	}
+	
+	// LOAD
+	@Test
+	def void testExecJQLoad() {
+		execJQ("{\n web-app: {\n  servlet: [\n   {\n    servlet-name: cofaxCDS,\n    servlet-class: org.cofax.cds.CDSServlet,\n    init-param: {\n     configGlossary:installationAt: Philadelphia, PA,\n     configGlossary:adminEmail: ksm@pobox.com,\n     configGlossary:poweredBy: Cofax,\n     configGlossary:poweredByIcon: /images/cofax.gif,\n     configGlossary:staticPath: /content/static,\n     templateProcessorClass: org.cofax.WysiwygTemplate,\n     templateLoaderClass: org.cofax.FilesTemplateLoader,\n     templatePath: templates,\n     templateOverridePath: ,\n     defaultListTemplate: listTemplate.htm,\n     defaultFileTemplate: articleTemplate.htm,\n     useJSP: False,\n     jspListTemplate: listTemplate.jsp,\n     jspFileTemplate: articleTemplate.jsp,\n     cachePackageTagsTrack: 200,\n     cachePackageTagsStore: 200,\n     cachePackageTagsRefresh: 60,\n     cacheTemplatesTrack: 100,\n     cacheTemplatesStore: 50,\n     cacheTemplatesRefresh: 15,\n     cachePagesTrack: 200,\n     cachePagesStore: 100,\n     cachePagesRefresh: 10,\n     cachePagesDirtyRead: 10,\n     searchEngineListTemplate: forSearchEnginesList.htm,\n     searchEngineFileTemplate: forSearchEngines.htm,\n     searchEngineRobotsDb: WEB-INF/robots.db,\n     useDataStore: True,\n     dataStoreClass: org.cofax.SqlDataStore,\n     redirectionClass: org.cofax.SqlRedirection,\n     dataStoreName: cofax,\n     dataStoreDriver: com.microsoft.jdbc.sqlserver.SQLServerDriver,\n     dataStoreUrl: jdbc:microsoft:sqlserver://LOCALHOST:1433;DatabaseName=goon,\n     dataStoreUser: sa,\n     dataStorePassword: dataStoreTestQuery,\n     dataStoreTestQuery: SET NOCOUNT ON;select test='test';,\n     dataStoreLogFile: /usr/local/tomcat/logs/datastore.log,\n     dataStoreInitConns: 10,\n     dataStoreMaxConns: 100,\n     dataStoreConnUsageLimit: 100,\n     dataStoreLogLevel: debug,\n     maxUrlLength: 500\n    }\n   },\n   {\n    servlet-name: cofaxEmail,\n    servlet-class: org.cofax.cds.EmailServlet,\n    init-param: {\n     mailHost: mail1,\n     mailHostOverride: mail2\n    }\n   },\n   {\n    servlet-name: cofaxAdmin,\n    servlet-class: org.cofax.cds.AdminServlet\n   },\n   {\n    servlet-name: fileServlet,\n    servlet-class: org.cofax.cds.FileServlet\n   },\n   {\n    servlet-name: cofaxTools,\n    servlet-class: org.cofax.cms.CofaxToolsServlet,\n    init-param: {\n     templatePath: toolstemplates/,\n     log: 1,\n     logLocation: /usr/local/tomcat/logs/CofaxTools.log,\n     logMaxSize: ,\n     dataLog: 1,\n     dataLogLocation: /usr/local/tomcat/logs/dataLog.log,\n     dataLogMaxSize: ,\n     removePageCache: /content/admin/remove?cache=pages&id=,\n     removeTemplateCache: /content/admin/remove?cache=templates&id=,\n     fileTransferFolder: /usr/local/tomcat/webapps/content/fileTransferFolder,\n     lookInContext: 1,\n     adminGroupID: 4,\n     betaServer: True\n    }\n   }\n  ],\n  servlet-mapping: {\n   cofaxCDS: /,\n   cofaxEmail: /cofaxutil/aemail/*,\n   cofaxAdmin: /admin/*,\n   fileServlet: /static/*,\n   cofaxTools: /tools/*\n  },\n  taglib: {\n   taglib-uri: cofax.tld,\n   taglib-location: /WEB-INF/tlds/cofax.tld\n  }\n }\n}\n",
+		'''LOAD;''', "./jsonTestFile.json")
+	}
+	
+	// EXPORT
+	@Test
+	def void testExecJQExport() {
+		
+		execJQ('"bar","foo","sor"\nfalse,4,"Hello"\ntrue,8,"Good Bye"\n', '''EXPORT_CSV([{"foo": 4, "bar": false, "sor": "Hello"}, {"foo": 8, "bar": true, "sor": "Good Bye"}])''', null)
+	}
+	
+	// SELECT
+	@Test
+	def void testExecJQSelect() {
+		execJQ('[\n  {\n    "name": "beta",\n    "age": 20\n  },\n  {\n    "name": "delta",\n    "age": 36\n  },\n  {\n    "name": "lambda",\n    "age": 79\n  },\n  {\n    "name": "pi",\n    "age": 31\n  },\n  {\n    "name": "sigma",\n    "age": 68\n  }\n]\n', '''file = LOAD; sel = SELECT ("name", "age") FROM (file~"array") WHERE (.~"adress" == "Montpellier"); sel;''', "./jsonGenTestFile.json")
+	}
+	
+	// MEAN
+	@Test
+	def void testExecJQMean() {
+		execJQ("38.5\n", '''file = LOAD; (SUM(file~"array") ON ("age")) / (LENGTH(file~"array"));''', "./jsonGenTestFile.json")
+	}
+	
+	// CHECK OPERATIONS GIVE SAME RESULTS
+	@Test
+	def void testExecPythonAndJQOperatorEquivalence() {
+		val String[] possible_values = #["0", "4", "5.2", '""', '"abc"', '"exemple"', "true", "false", "null", '[]', '[3, 4, 5, 7]', '[1, 4, "Hello", {"a": 7, "b": 9}]', '{}', '{"key1": {"a": 1, "b": 3}, "key2": "se"}', '{"a": {"b": {"c": {"d": 4}}}}', '{"key1": {"a": 6, "c": -1} , "key2": {"e": 1}}']
+		val String[] possible_operators = #["OR", "AND", "+", "-", "*", "%", ">", "<", ">=", "<=", "==", "!="]
+		for (i : possible_values) {
+			for (j : possible_values) {
+				for (op : possible_operators) {
+					println('''«i» «op» «j»''')
+					var jqRes = ""
+					var result = parseHelper.parse('''«i» «op» «j»''');
+		
+					var compiled_stms = newArrayList()
+					for (stmt: result.stmts) compiled_stms.add(generator.compileJQ(stmt))
+					
+					
+					var processBuilder = new ProcessBuilder()
+					var command = '''jq -r -n'''
+					command += ''' 'def depth (obj): obj | if type == "object" then (map(1 + depth(.)) as $rec | if ($rec | length) == 0 then 1 else ($rec | max) end) else 0 end;'''
+					command += '''def csv : (map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv;'''
+					command += '''def product: . as $array | reduce $array[] as $item ( ($array[0] | type | if . == "number" then 1 elif . == "string" then 1 elif . == "object" then {} else null end); . * $item);'''
+					command += '''«FOR stmt : compiled_stms SEPARATOR "|"»«stmt»«ENDFOR» '''
+					if(generator.mustPrint) command += ''' | $printer' '''
+					else if(generator.fileToExport !== null) command += ''' | $store' > «generator.fileToExport» '''
+					else command += "'"
+					
+					println(command)
+					processBuilder.command("bash", "-c", command);
+					
+					try {
+			            var process = processBuilder.start()
+			            var output = new StringBuilder();
+			            var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			
+			            var String line
+			            while ((line = reader.readLine()) !== null)
+			                output.append(line).append("\n");
+			
+			            var exitVal = process.waitFor();
+			
+			            if (exitVal == 0) println("Success exec!")
+			            else println("A problem occured")
+			            
+			            jqRes = output.toString.toLowerCase.replace('"', '')
+			
+			        }
+			        catch (IOException | InterruptedException e) { e.printStackTrace(); }
+			        
+			        var pythonRes = ""
+			        result = parseHelper.parse('''PRINT(«i» «op» «j»)''')
+		
+					compiled_stms = newArrayList()
+					for (stmt: result.stmts) compiled_stms.add(generator.compilePython(stmt))
+					
+					processBuilder = new ProcessBuilder()
+					command = '''echo "from jz_library import *" > tester.py; echo "" >> tester.py; «FOR compiled : compiled_stms» echo "«compiled»" >> tester.py;«ENDFOR»'''
+					println(command)
+					processBuilder.command("bash", "-c", command);
+					
+					exec(processBuilder)
+					
+					processBuilder.command("bash", "./pyscript.sh");
+					
+					try {
+			            var process = processBuilder.start()
+			            var output = new StringBuilder();
+			            var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			
+			            var String line
+			            while ((line = reader.readLine()) !== null)
+			                output.append(line).append("\n");
+			
+			            var exitVal = process.waitFor();
+			
+			            if (exitVal == 0) println("Success exec!")
+			            else println("A problem occured")
+			            
+			            println(output)
+			            pythonRes = output.toString.toLowerCase
+			            if(pythonRes == "none\n") pythonRes = "null\n"
+			
+			        }
+			        catch (IOException | InterruptedException e) { e.printStackTrace(); }
+			        
+			        assertEquals(jqRes, pythonRes)
+				}
+					
+					
+			}
+		}			
+	}
+	
+	@AfterAll
+	def static void removeTmp() {
+		var processBuilder = new ProcessBuilder()
+		processBuilder.command("bash", "-c", "rm  -r ./tmp/");
+			
+		try {
+		    var process = processBuilder.start()
+		    var output = new StringBuilder();
+		    var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		
+		    var String line
+		    while ((line = reader.readLine()) !== null)
+		        output.append(line).append("\n");
+		
+			var exitVal = process.waitFor();
+			
+			if (exitVal == 0) println("tmp erased!")
+			else println("A problem occured")
+		
+		}
+		catch (IOException | InterruptedException e) { e.printStackTrace(); }
+	}
+	
+	
+	
 }

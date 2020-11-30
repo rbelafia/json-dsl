@@ -3,14 +3,9 @@
  */
 package org.xtext.example.mydsl.generator;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -19,20 +14,15 @@ import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Conversions;
-import org.eclipse.xtext.xbase.lib.Exceptions;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.xtext.example.mydsl.generator.FieldPossessor;
 import org.xtext.example.mydsl.jsonDsl.AdditionExpression;
 import org.xtext.example.mydsl.jsonDsl.Array;
 import org.xtext.example.mydsl.jsonDsl.ArrayCall;
-import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
 import org.xtext.example.mydsl.jsonDsl.Assignment;
 import org.xtext.example.mydsl.jsonDsl.BracketExpression;
-import org.xtext.example.mydsl.jsonDsl.Concat;
 import org.xtext.example.mydsl.jsonDsl.ConjunctionExpression;
 import org.xtext.example.mydsl.jsonDsl.Contains;
-import org.xtext.example.mydsl.jsonDsl.Delete;
 import org.xtext.example.mydsl.jsonDsl.Depth;
 import org.xtext.example.mydsl.jsonDsl.DisjunctionExpression;
 import org.xtext.example.mydsl.jsonDsl.DivisionExpression;
@@ -60,8 +50,6 @@ import org.xtext.example.mydsl.jsonDsl.RangeSpecifier;
 import org.xtext.example.mydsl.jsonDsl.Select;
 import org.xtext.example.mydsl.jsonDsl.SimpleStatement;
 import org.xtext.example.mydsl.jsonDsl.Store;
-import org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression;
-import org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression;
 import org.xtext.example.mydsl.jsonDsl.SubstractionExpression;
 import org.xtext.example.mydsl.jsonDsl.Sum;
 import org.xtext.example.mydsl.jsonDsl.SuperiorExpression;
@@ -79,112 +67,14 @@ public class JsonDslGenerator extends AbstractGenerator {
   
   public Object fileToExport = null;
   
-  /**
-   * def dispatch JZObject visit(SimpleStatement statement) {
-   * println("SimpleStatement")
-   * return null
-   * }
-   * 
-   * def dispatch JZObject visit(SubstractionExpression substractionExpression) {
-   * return visit(substractionExpression.left) - visit(substractionExpression.right);
-   * }
-   * 
-   * def dispatch JZObject visit(MultiplicationExpression multiplicationExpression) {
-   * return visit(multiplicationExpression.left) * visit(multiplicationExpression.right);
-   * }
-   * 
-   * def dispatch JZObject visit(DivisionExpression divisionExpression) {
-   * return visit(divisionExpression.left) / visit(divisionExpression.right);
-   * }
-   * 
-   * def dispatch JZObject visit(ModuloExpression moduloExpression) {
-   * return visit(moduloExpression.left) % visit(moduloExpression.right);
-   * }
-   * 
-   * def dispatch JZObject visit(UnaryMinusExpression unaryMinusExpression) {
-   * return - visit(unaryMinusExpression.sub);
-   * }
-   * 
-   * def dispatch JZObject visit(UnaryPlusExpression unaryPlusExpression) {
-   * return + visit(unaryPlusExpression.sub);
-   * }
-   * 
-   * def dispatch JZObject visit(LogicalNegationExpression logicalNegationExpression) {
-   * return !visit(logicalNegationExpression.sub);
-   * }
-   * 
-   * def dispatch JZObject visit(BracketExpression bracketExpression) {
-   * return visit(bracketExpression.sub);
-   * }
-   * 
-   * def dispatch JZObject visit(Assignment assignment) {
-   * println(assignment.leftHandSide.name + "<-" + visit(assignment.rightHandSide))
-   * return null
-   * }
-   * 
-   * def dispatch JZObject visit(Print procCall) {
-   * println(visit(procCall.expression))
-   * return null
-   * }
-   * 
-   * def dispatch JZObject visit(Expression expression) {
-   * return new JZNull()
-   * }
-   * 
-   * def dispatch JZObject visit(DisjunctionExpression disjunctionExpression) {
-   * return visit(disjunctionExpression.left) || visit(disjunctionExpression.right);
-   * }
-   * 
-   * def dispatch JZObject visit(ConjunctionExpression conjunctionExpression) {
-   * return visit(conjunctionExpression.left) && visit(conjunctionExpression.right);
-   * }
-   * 
-   * def dispatch JZObject visit(AdditionExpression additionExpression) {
-   * return visit(additionExpression.left) + visit(additionExpression.right);
-   * }
-   * 
-   * def dispatch JZObject visit(InfoFunctions call) {
-   * println("call")
-   * return null
-   * }
-   * 
-   * def dispatch JZObject visit(Depth depth) {
-   * val dep = new GetDepthFunction(visit(depth.expression) as JZJsonObject)
-   * return dep.evaluate
-   * }
-   * 
-   * def dispatch JZObject visit(FieldInfo fieldInfo) {
-   * val infos = new GetInfosFunction(visit(fieldInfo.expression) as JZJsonObject)
-   * return infos.evaluate
-   * }
-   * 
-   * def dispatch JZObject visit(Contains contains) {
-   * val cont = new ContainsFunction(contains.keys.map[e | e.visit.toString].toList as List<String>, contains.right.visit as JZJsonObject)
-   * return cont.evaluate
-   * }
-   * 
-   * def dispatch JZObject visit(Array array) {
-   * val res = new JZArray
-   * res.addAll(array.values.map[e | visit(e)].toList)
-   * return res
-   * }
-   * 
-   * def dispatch JZObject visit(JSonObject jSonObject) {
-   * var JZJsonObject res = new JZJsonObject
-   * for(field : jSonObject.fields)
-   * res.addField((visit(field.key) as JZString).content, visit(field.value))
-   * return res
-   * }
-   * 
-   * def dispatch JZObject visit(Primitive const) {
-   * if(const.str !== null) return new JZString(const.str)
-   * else if (const.bool !== null) return new JZBoolean(Boolean.parseBoolean(const.bool))
-   * else return new JZNull()
-   * }
-   * def dispatch JZObject visit(String string) {
-   * return new JZString(string)
-   * }
-   */
+  protected String _compilePython(final PointerCall pointer) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("obj");
+    String _index = JsonDslGenerator.index();
+    _builder.append(_index);
+    return _builder.toString();
+  }
+  
   protected String _compilePython(final Assignment assignment) {
     StringConcatenation _builder = new StringConcatenation();
     String _compilePython = this.compilePython(assignment.getLeftHandSide());
@@ -201,11 +91,6 @@ public class JsonDslGenerator extends AbstractGenerator {
     String _compilePython = this.compilePython(procCall.getExpression());
     _builder.append(_compilePython);
     _builder.append(")");
-    return _builder.toString();
-  }
-  
-  protected String _compilePython(final Expression expression) {
-    StringConcatenation _builder = new StringConcatenation();
     return _builder.toString();
   }
   
@@ -232,11 +117,6 @@ public class JsonDslGenerator extends AbstractGenerator {
     return _builder.toString();
   }
   
-  protected String _compilePython(final ArraySpecifier specifier) {
-    StringConcatenation _builder = new StringConcatenation();
-    return _builder.toString();
-  }
-  
   protected String _compilePython(final UnarySpecifier specifier) {
     StringConcatenation _builder = new StringConcatenation();
     int _index = specifier.getIndex();
@@ -258,10 +138,10 @@ public class JsonDslGenerator extends AbstractGenerator {
     StringConcatenation _builder = new StringConcatenation();
     String _compilePython = this.compilePython(call.getCallee());
     _builder.append(_compilePython);
-    _builder.append("[\"");
+    _builder.append("[\'");
     String _field = call.getField();
     _builder.append(_field);
-    _builder.append("\"]");
+    _builder.append("\']");
     return _builder.toString();
   }
   
@@ -297,24 +177,6 @@ public class JsonDslGenerator extends AbstractGenerator {
     _builder.append(", ");
     String _compilePython_1 = this.compilePython(inequalityExpression.getRight());
     _builder.append(_compilePython_1);
-    _builder.append(")");
-    return _builder.toString();
-  }
-  
-  protected String _compilePython(final StrictEqualityExpression strictEqualityExpression) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("strict_equal(");
-    String _compilePython = this.compilePython(strictEqualityExpression.getLeft());
-    _builder.append(_compilePython);
-    _builder.append(")");
-    return _builder.toString();
-  }
-  
-  protected String _compilePython(final StrictInequalityExpression strictInequalityExpression) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("strict_not_equal(");
-    String _compilePython = this.compilePython(strictInequalityExpression.getLeft());
-    _builder.append(_compilePython);
     _builder.append(")");
     return _builder.toString();
   }
@@ -471,7 +333,7 @@ public class JsonDslGenerator extends AbstractGenerator {
   
   protected String _compilePython(final Store store) {
     String _compilePython = this.compilePython(store.getExpression());
-    String _plus = ("store(" + _compilePython);
+    String _plus = ("store_json(" + _compilePython);
     String _plus_1 = (_plus + ", \'");
     String _fileName = store.getFileName();
     String _plus_2 = (_plus_1 + _fileName);
@@ -479,11 +341,16 @@ public class JsonDslGenerator extends AbstractGenerator {
   }
   
   protected String _compilePython(final Export export) {
+    String _fileName = export.getFileName();
+    boolean _tripleEquals = (_fileName == null);
+    if (_tripleEquals) {
+      throw new RuntimeException("Path to csv output must be indicated for a Python compilation");
+    }
     String _compilePython = this.compilePython(export.getExpression());
     String _plus = ("export_csv(" + _compilePython);
     String _plus_1 = (_plus + ", \'");
-    String _fileName = export.getFileName();
-    String _plus_2 = (_plus_1 + _fileName);
+    String _fileName_1 = export.getFileName();
+    String _plus_2 = (_plus_1 + _fileName_1);
     return (_plus_2 + "\')");
   }
   
@@ -501,14 +368,15 @@ public class JsonDslGenerator extends AbstractGenerator {
     _builder.append("infos_json(");
     String _compilePython = this.compilePython(field.getExpression());
     _builder.append(_compilePython);
+    _builder.append(")");
     return _builder.toString();
   }
   
   protected String _compilePython(final Contains contains) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("contains(");
-    Expression _right = contains.getRight();
-    _builder.append(_right);
+    String _compilePython = this.compilePython(contains.getRight());
+    _builder.append(_compilePython);
     _builder.append(", ");
     {
       EList<Expression> _keys = contains.getKeys();
@@ -519,18 +387,36 @@ public class JsonDslGenerator extends AbstractGenerator {
         } else {
           _builder.appendImmediate(", ", "");
         }
-        _builder.append(" compilePython(");
-        _builder.append(key);
-        _builder.append(") ");
+        String _compilePython_1 = this.compilePython(key);
+        _builder.append(_compilePython_1);
       }
     }
     _builder.append(")");
     return _builder.toString();
   }
   
-  protected String _compilePython(final Select select) {
+  public static String index() {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("[{key: obj[key] for key in (");
+    _builder.append(FieldPossessor.index);
+    return _builder.toString();
+  }
+  
+  protected String _compilePython(final Select select) {
+    FieldPossessor.increment();
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("[{key");
+    String _index = JsonDslGenerator.index();
+    _builder.append(_index);
+    _builder.append(": obj");
+    String _index_1 = JsonDslGenerator.index();
+    _builder.append(_index_1);
+    _builder.append("[key");
+    String _index_2 = JsonDslGenerator.index();
+    _builder.append(_index_2);
+    _builder.append("] for key");
+    String _index_3 = JsonDslGenerator.index();
+    _builder.append(_index_3);
+    _builder.append(" in (");
     {
       EList<Expression> _fields = select.getFields();
       boolean _hasElements = false;
@@ -540,32 +426,23 @@ public class JsonDslGenerator extends AbstractGenerator {
         } else {
           _builder.appendImmediate(", ", "");
         }
-        Expression _fromExpression = select.getFromExpression();
-        _builder.append(_fromExpression);
-      }
-    }
-    _builder.append(") if ");
-    String _compilePython = this.compilePython(select.getWhereExpression());
-    _builder.append(_compilePython);
-    _builder.append(")} for obj in ");
-    String _compilePython_1 = this.compilePython(select.getFromExpression());
-    _builder.append(_compilePython_1);
-    _builder.append("]");
-    return _builder.toString();
-  }
-  
-  protected String _compilePython(final Concat concat) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("concat(");
-    {
-      EList<Expression> _expressions = concat.getExpressions();
-      for(final Expression exp : _expressions) {
-        String _compilePython = this.compilePython(exp);
+        String _compilePython = this.compilePython(field);
         _builder.append(_compilePython);
       }
     }
-    _builder.append(")");
-    return _builder.toString();
+    _builder.append(")} for obj");
+    String _index_4 = JsonDslGenerator.index();
+    _builder.append(_index_4);
+    _builder.append(" in ");
+    String _compilePython_1 = this.compilePython(select.getFromExpression());
+    _builder.append(_compilePython_1);
+    _builder.append(" if (");
+    String _compilePython_2 = this.compilePython(select.getWhereExpression());
+    _builder.append(_compilePython_2);
+    _builder.append(")]");
+    final String res = _builder.toString();
+    FieldPossessor.decrement();
+    return res;
   }
   
   protected String _compilePython(final Length length) {
@@ -573,45 +450,84 @@ public class JsonDslGenerator extends AbstractGenerator {
     _builder.append("len(");
     String _compilePython = this.compilePython(length.getExpression());
     _builder.append(_compilePython);
+    _builder.append(")");
     return _builder.toString();
   }
   
-  /**
-   * def dispatch String compilePython(Sum sum)'''[obj for obj in sum(«compilePython(sum.expression)», «FOR field : sum.fields SEPARATOR ", "»«compilePython(field)»«ENDFOR») if «compilePython(sum.whereExpression)»] '''
-   * 
-   * def dispatch String compilePython(Product product)'''[obj for obj in sum(«compilePython(product.expression)», «FOR field : product.fields SEPARATOR ", "»«compilePython(field)»«ENDFOR») if «compilePython(product.whereExpression)»] '''
-   */
-  protected String _compilePython(final Delete delete) {
+  protected String _compilePython(final Sum sum) {
+    FieldPossessor.increment();
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("[delete(obj");
+    _builder.append("reduce(addition, [obj");
+    String _index = JsonDslGenerator.index();
+    _builder.append(_index);
     {
-      EList<Expression> _fields = delete.getFields();
-      boolean _hasElements = false;
-      for(final Expression key : _fields) {
-        if (!_hasElements) {
-          _hasElements = true;
-          _builder.append(", ");
-        } else {
-          _builder.appendImmediate(", ", "");
-        }
-        String _compilePython = this.compilePython(key);
+      Expression _field = sum.getField();
+      boolean _tripleNotEquals = (_field != null);
+      if (_tripleNotEquals) {
+        _builder.append("[");
+        String _compilePython = this.compilePython(sum.getField());
         _builder.append(_compilePython);
+        _builder.append("]");
       }
     }
-    _builder.append(") for obj in ");
-    String _compilePython_1 = this.compilePython(delete.getFromExpression());
+    _builder.append(" for obj");
+    String _index_1 = JsonDslGenerator.index();
+    _builder.append(_index_1);
+    _builder.append(" in ");
+    String _compilePython_1 = this.compilePython(sum.getExpression());
     _builder.append(_compilePython_1);
     {
-      Expression _whereExpression = delete.getWhereExpression();
-      boolean _tripleNotEquals = (_whereExpression != null);
-      if (_tripleNotEquals) {
-        _builder.append("if ");
-        String _compilePython_2 = this.compilePython(delete.getWhereExpression());
+      Expression _whereExpression = sum.getWhereExpression();
+      boolean _tripleNotEquals_1 = (_whereExpression != null);
+      if (_tripleNotEquals_1) {
+        _builder.append(" if (");
+        String _compilePython_2 = this.compilePython(sum.getWhereExpression());
         _builder.append(_compilePython_2);
+        _builder.append(")");
       }
     }
-    _builder.append("]");
-    return _builder.toString();
+    _builder.append("])");
+    final String res = _builder.toString();
+    FieldPossessor.decrement();
+    return res;
+  }
+  
+  protected String _compilePython(final Product prod) {
+    FieldPossessor.increment();
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("reduce(multiplication, [obj");
+    String _index = JsonDslGenerator.index();
+    _builder.append(_index);
+    {
+      Expression _field = prod.getField();
+      boolean _tripleNotEquals = (_field != null);
+      if (_tripleNotEquals) {
+        _builder.append("[");
+        String _compilePython = this.compilePython(prod.getField());
+        _builder.append(_compilePython);
+        _builder.append("]");
+      }
+    }
+    _builder.append(" for obj");
+    String _index_1 = JsonDslGenerator.index();
+    _builder.append(_index_1);
+    _builder.append(" in ");
+    String _compilePython_1 = this.compilePython(prod.getExpression());
+    _builder.append(_compilePython_1);
+    {
+      Expression _whereExpression = prod.getWhereExpression();
+      boolean _tripleNotEquals_1 = (_whereExpression != null);
+      if (_tripleNotEquals_1) {
+        _builder.append(" if (");
+        String _compilePython_2 = this.compilePython(prod.getWhereExpression());
+        _builder.append(_compilePython_2);
+        _builder.append(")");
+      }
+    }
+    _builder.append("])");
+    final String res = _builder.toString();
+    FieldPossessor.decrement();
+    return res;
   }
   
   protected String _compilePython(final Array array) {
@@ -713,18 +629,8 @@ public class JsonDslGenerator extends AbstractGenerator {
     return _builder.toString();
   }
   
-  protected String _compileJQ(final Expression expression) {
-    StringConcatenation _builder = new StringConcatenation();
-    return _builder.toString();
-  }
-  
   protected String _compileJQ(final Print print) {
-    this.mustPrint = true;
-    StringConcatenation _builder = new StringConcatenation();
-    String _compileJQ = this.compileJQ(print.getExpression());
-    _builder.append(_compileJQ);
-    _builder.append(" as $printer");
-    return _builder.toString();
+    throw new RuntimeException("Print not supported for JQ compilation");
   }
   
   protected String _compileJQ(final Primitive primitive) {
@@ -1018,11 +924,6 @@ public class JsonDslGenerator extends AbstractGenerator {
     return _builder.toString();
   }
   
-  protected String _compileJQ(final ArraySpecifier specifier) {
-    StringConcatenation _builder = new StringConcatenation();
-    return _builder.toString();
-  }
-  
   protected String _compileJQ(final UnarySpecifier specifier) {
     StringConcatenation _builder = new StringConcatenation();
     int _index = specifier.getIndex();
@@ -1052,38 +953,35 @@ public class JsonDslGenerator extends AbstractGenerator {
   }
   
   protected String _compileJQ(final Load load) {
-    boolean _containsKey = this.filesToLoad.containsKey(load.getFileName());
-    boolean _not = (!_containsKey);
-    if (_not) {
-      String _fileName = load.getFileName();
-      int _size = this.filesToLoad.size();
-      String _plus = ("f" + Integer.valueOf(_size));
-      this.filesToLoad.put(_fileName, _plus);
+    String _xifexpression = null;
+    String _fileName = load.getFileName();
+    boolean _tripleEquals = (_fileName == null);
+    if (_tripleEquals) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("$in");
+      _xifexpression = _builder.toString();
+    } else {
+      throw new RuntimeException("Load filename not supported for JQ compilation");
     }
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("$");
-    String _get = this.filesToLoad.get(load.getFileName());
-    _builder.append(_get);
-    _builder.append("[0]");
-    return _builder.toString();
+    return _xifexpression;
   }
   
   protected String _compileJQ(final Store store) {
-    this.fileToExport = store.getFileName();
-    StringConcatenation _builder = new StringConcatenation();
-    String _compileJQ = this.compileJQ(store.getExpression());
-    _builder.append(_compileJQ);
-    _builder.append(" | . as $store ");
-    return _builder.toString();
+    throw new RuntimeException("Store not supported for JQ compilation");
   }
   
   protected String _compileJQ(final Export export) {
-    this.fileToExport = export.getFileName();
-    StringConcatenation _builder = new StringConcatenation();
-    String _compileJQ = this.compileJQ(export.getExpression());
-    _builder.append(_compileJQ);
-    _builder.append(" | csv as $store ");
-    return _builder.toString();
+    String _fileName = export.getFileName();
+    boolean _tripleEquals = (_fileName == null);
+    if (_tripleEquals) {
+      StringConcatenation _builder = new StringConcatenation();
+      String _compileJQ = this.compileJQ(export.getExpression());
+      _builder.append(_compileJQ);
+      _builder.append(" | csv");
+      return _builder.toString();
+    } else {
+      throw new RuntimeException("Cannot specify export path for JQ compilation");
+    }
   }
   
   protected String _compileJQ(final Depth depth) {
@@ -1240,112 +1138,40 @@ public class JsonDslGenerator extends AbstractGenerator {
     for (final SimpleStatement stmt : _stmts) {
       compiled_stms.add(this.compileJQ(stmt));
     }
-    InputOutput.<Integer>println(Integer.valueOf(((Object[])Conversions.unwrapArray(root.getStmts(), Object.class)).length));
-    ProcessBuilder processBuilder = new ProcessBuilder();
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("jq -n -r ");
-    {
-      boolean _isEmpty = this.filesToLoad.isEmpty();
-      boolean _not = (!_isEmpty);
-      if (_not) {
-        _builder.append("--slurpfile ");
-        {
-          Set<String> _keySet = this.filesToLoad.keySet();
-          for(final String file : _keySet) {
-            String _get = this.filesToLoad.get(file);
-            _builder.append(_get);
-            _builder.append(" ");
-            _builder.append(file);
-            _builder.append(" ");
-          }
-        }
-      }
-    }
-    String command = _builder.toString();
-    String _command = command;
+    _builder.append("def depth (obj): obj | if type == \"object\" then (map(1 + depth(.)) as $rec | if ($rec | length) == 0 then 1 else ($rec | max) end) else 0 end;");
+    String res = _builder.toString();
+    String _res = res;
     StringConcatenation _builder_1 = new StringConcatenation();
-    _builder_1.append(" ");
-    _builder_1.append("\'def depth (obj): obj | if type == \"object\" then (map(1 + depth(.)) as $rec | if ($rec | length) == 0 then 1 else ($rec | max) end) else 0 end;");
-    command = (_command + _builder_1);
-    String _command_1 = command;
+    _builder_1.append("def csv : (map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv;");
+    res = (_res + _builder_1);
+    String _res_1 = res;
     StringConcatenation _builder_2 = new StringConcatenation();
-    _builder_2.append("def csv : (map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv;");
-    command = (_command_1 + _builder_2);
-    String _command_2 = command;
+    _builder_2.append("def product: . as $array | reduce $array[] as $item ( ($array[0] | type | if . == \"number\" then 1 elif . == \"string\" then 1 elif . == \"object\" then {} else null end); . * $item);");
+    res = (_res_1 + _builder_2);
+    String _res_2 = res;
     StringConcatenation _builder_3 = new StringConcatenation();
-    _builder_3.append("def product: . as $array | reduce $array[] as $item ( ($array[0] | type | if . == \"number\" then 1 elif . == \"string\" then 1 elif . == \"object\" then {} else null end); . * $item);");
-    command = (_command_2 + _builder_3);
-    String _command_3 = command;
-    StringConcatenation _builder_4 = new StringConcatenation();
     {
       boolean _hasElements = false;
       for(final String stmt_1 : compiled_stms) {
         if (!_hasElements) {
           _hasElements = true;
         } else {
-          _builder_4.appendImmediate("|", "");
+          _builder_3.appendImmediate("|", "");
         }
-        _builder_4.append(stmt_1);
+        _builder_3.append(stmt_1);
       }
     }
-    _builder_4.append(" ");
-    command = (_command_3 + _builder_4);
-    if (this.mustPrint) {
-      String _command_4 = command;
-      StringConcatenation _builder_5 = new StringConcatenation();
-      _builder_5.append(" ");
-      _builder_5.append("| $printer\' ");
-      command = (_command_4 + _builder_5);
-    } else {
-      if ((this.fileToExport != null)) {
-        String _command_5 = command;
-        StringConcatenation _builder_6 = new StringConcatenation();
-        _builder_6.append(" ");
-        _builder_6.append("| $store\' ");
-        command = (_command_5 + _builder_6);
-      }
-    }
-    InputOutput.<String>println(command);
-    processBuilder.command("bash", "-c", command);
-    try {
-      Process process = processBuilder.start();
-      StringBuilder output = new StringBuilder();
-      InputStream _inputStream = process.getInputStream();
-      InputStreamReader _inputStreamReader = new InputStreamReader(_inputStream);
-      BufferedReader reader = new BufferedReader(_inputStreamReader);
-      String line = null;
-      while (((line = reader.readLine()) != null)) {
-        output.append(line).append("\n");
-      }
-      int exitVal = process.waitFor();
-      if ((exitVal == 0)) {
-        InputOutput.<String>println("Success exec!");
-      } else {
-        InputOutput.<String>println("A problem occured");
-      }
-      InputOutput.<StringBuilder>println(output);
-      if ((this.fileToExport != null)) {
-        fsa.generateFile(this.fileToExport.toString(), output);
-      }
-    } catch (final Throwable _t) {
-      if (_t instanceof IOException || _t instanceof InterruptedException) {
-        final Exception e = (Exception)_t;
-        e.printStackTrace();
-      } else {
-        throw Exceptions.sneakyThrow(_t);
-      }
-    }
+    _builder_3.append(" ");
+    res = (_res_2 + _builder_3);
+    fsa.generateFile("result.jq", res);
   }
   
   public String compilePython(final EObject array) {
     if (array instanceof Array) {
       return _compilePython((Array)array);
-    } else if (array instanceof Concat) {
-      return _compilePython((Concat)array);
     } else if (array instanceof Contains) {
       return _compilePython((Contains)array);
-    } else if (array instanceof Delete) {
-      return _compilePython((Delete)array);
     } else if (array instanceof Depth) {
       return _compilePython((Depth)array);
     } else if (array instanceof Export) {
@@ -1360,10 +1186,14 @@ public class JsonDslGenerator extends AbstractGenerator {
       return _compilePython((Load)array);
     } else if (array instanceof Primitive) {
       return _compilePython((Primitive)array);
+    } else if (array instanceof Product) {
+      return _compilePython((Product)array);
     } else if (array instanceof Select) {
       return _compilePython((Select)array);
     } else if (array instanceof Store) {
       return _compilePython((Store)array);
+    } else if (array instanceof Sum) {
+      return _compilePython((Sum)array);
     } else if (array instanceof AdditionExpression) {
       return _compilePython((AdditionExpression)array);
     } else if (array instanceof ArrayCall) {
@@ -1392,10 +1222,8 @@ public class JsonDslGenerator extends AbstractGenerator {
       return _compilePython((ModuloExpression)array);
     } else if (array instanceof MultiplicationExpression) {
       return _compilePython((MultiplicationExpression)array);
-    } else if (array instanceof StrictEqualityExpression) {
-      return _compilePython((StrictEqualityExpression)array);
-    } else if (array instanceof StrictInequalityExpression) {
-      return _compilePython((StrictInequalityExpression)array);
+    } else if (array instanceof PointerCall) {
+      return _compilePython((PointerCall)array);
     } else if (array instanceof SubstractionExpression) {
       return _compilePython((SubstractionExpression)array);
     } else if (array instanceof SuperiorExpression) {
@@ -1410,16 +1238,12 @@ public class JsonDslGenerator extends AbstractGenerator {
       return _compilePython((VariableCall)array);
     } else if (array instanceof Assignment) {
       return _compilePython((Assignment)array);
-    } else if (array instanceof Expression) {
-      return _compilePython((Expression)array);
     } else if (array instanceof Print) {
       return _compilePython((Print)array);
     } else if (array instanceof RangeSpecifier) {
       return _compilePython((RangeSpecifier)array);
     } else if (array instanceof UnarySpecifier) {
       return _compilePython((UnarySpecifier)array);
-    } else if (array instanceof ArraySpecifier) {
-      return _compilePython((ArraySpecifier)array);
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
         Arrays.<Object>asList(array).toString());
@@ -1497,16 +1321,12 @@ public class JsonDslGenerator extends AbstractGenerator {
       return _compileJQ((VariableCall)array);
     } else if (array instanceof Assignment) {
       return _compileJQ((Assignment)array);
-    } else if (array instanceof Expression) {
-      return _compileJQ((Expression)array);
     } else if (array instanceof Print) {
       return _compileJQ((Print)array);
     } else if (array instanceof RangeSpecifier) {
       return _compileJQ((RangeSpecifier)array);
     } else if (array instanceof UnarySpecifier) {
       return _compileJQ((UnarySpecifier)array);
-    } else if (array instanceof ArraySpecifier) {
-      return _compileJQ((ArraySpecifier)array);
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
         Arrays.<Object>asList(array).toString());

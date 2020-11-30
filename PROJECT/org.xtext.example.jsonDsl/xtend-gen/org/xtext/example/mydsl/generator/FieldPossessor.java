@@ -10,10 +10,13 @@ package org.xtext.example.mydsl.generator;
  */
 @SuppressWarnings("all")
 public class FieldPossessor {
-  public String possess;
+  public static int index = 0;
   
-  public FieldPossessor previousPossessor;
+  public static void increment() {
+    FieldPossessor.index++;
+  }
   
-  public FieldPossessor(final String possess, final FieldPossessor previousPossessor) {
+  public static void decrement() {
+    FieldPossessor.index--;
   }
 }

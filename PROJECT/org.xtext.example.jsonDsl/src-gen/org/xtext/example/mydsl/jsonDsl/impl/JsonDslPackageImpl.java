@@ -11,18 +11,15 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.xtext.example.mydsl.jsonDsl.AdditionExpression;
-import org.xtext.example.mydsl.jsonDsl.AlterFunctions;
 import org.xtext.example.mydsl.jsonDsl.ArithFunctions;
 import org.xtext.example.mydsl.jsonDsl.Array;
 import org.xtext.example.mydsl.jsonDsl.ArrayCall;
 import org.xtext.example.mydsl.jsonDsl.ArraySpecifier;
 import org.xtext.example.mydsl.jsonDsl.Assignment;
 import org.xtext.example.mydsl.jsonDsl.BracketExpression;
-import org.xtext.example.mydsl.jsonDsl.Concat;
 import org.xtext.example.mydsl.jsonDsl.ConjunctionExpression;
 import org.xtext.example.mydsl.jsonDsl.Constant;
 import org.xtext.example.mydsl.jsonDsl.Contains;
-import org.xtext.example.mydsl.jsonDsl.Delete;
 import org.xtext.example.mydsl.jsonDsl.Depth;
 import org.xtext.example.mydsl.jsonDsl.DisjunctionExpression;
 import org.xtext.example.mydsl.jsonDsl.DivisionExpression;
@@ -55,8 +52,6 @@ import org.xtext.example.mydsl.jsonDsl.RangeSpecifier;
 import org.xtext.example.mydsl.jsonDsl.Select;
 import org.xtext.example.mydsl.jsonDsl.SimpleStatement;
 import org.xtext.example.mydsl.jsonDsl.Store;
-import org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression;
-import org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression;
 import org.xtext.example.mydsl.jsonDsl.SubstractionExpression;
 import org.xtext.example.mydsl.jsonDsl.Sum;
 import org.xtext.example.mydsl.jsonDsl.SuperiorExpression;
@@ -198,13 +193,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass alterFunctionsEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass loadEClass = null;
 
   /**
@@ -261,13 +249,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass concatEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass lengthEClass = null;
 
   /**
@@ -283,13 +264,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   private EClass productEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass deleteEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -353,20 +327,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   private EClass inequalityExpressionEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass strictEqualityExpressionEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass strictInequalityExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -866,17 +826,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getAlterFunctions()
-  {
-    return alterFunctionsEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EClass getLoad()
   {
     return loadEClass;
@@ -1075,28 +1024,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
    * @generated
    */
   @Override
-  public EClass getConcat()
-  {
-    return concatEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getConcat_Expressions()
-  {
-    return (EReference)concatEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EClass getLength()
   {
     return lengthEClass;
@@ -1133,50 +1060,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
   public EClass getProduct()
   {
     return productEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getDelete()
-  {
-    return deleteEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getDelete_Fields()
-  {
-    return (EReference)deleteEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getDelete_FromExpression()
-  {
-    return (EReference)deleteEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getDelete_WhereExpression()
-  {
-    return (EReference)deleteEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1463,72 +1346,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
   public EReference getInequalityExpression_Right()
   {
     return (EReference)inequalityExpressionEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getStrictEqualityExpression()
-  {
-    return strictEqualityExpressionEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getStrictEqualityExpression_Left()
-  {
-    return (EReference)strictEqualityExpressionEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getStrictEqualityExpression_Right()
-  {
-    return (EReference)strictEqualityExpressionEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getStrictInequalityExpression()
-  {
-    return strictInequalityExpressionEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getStrictInequalityExpression_Left()
-  {
-    return (EReference)strictInequalityExpressionEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getStrictInequalityExpression_Right()
-  {
-    return (EReference)strictInequalityExpressionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1974,8 +1791,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     createEReference(arithFunctionsEClass, ARITH_FUNCTIONS__FIELD);
     createEReference(arithFunctionsEClass, ARITH_FUNCTIONS__WHERE_EXPRESSION);
 
-    alterFunctionsEClass = createEClass(ALTER_FUNCTIONS);
-
     loadEClass = createEClass(LOAD);
 
     storeEClass = createEClass(STORE);
@@ -2002,20 +1817,12 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     createEReference(selectEClass, SELECT__FROM_EXPRESSION);
     createEReference(selectEClass, SELECT__WHERE_EXPRESSION);
 
-    concatEClass = createEClass(CONCAT);
-    createEReference(concatEClass, CONCAT__EXPRESSIONS);
-
     lengthEClass = createEClass(LENGTH);
     createEReference(lengthEClass, LENGTH__EXPRESSION);
 
     sumEClass = createEClass(SUM);
 
     productEClass = createEClass(PRODUCT);
-
-    deleteEClass = createEClass(DELETE);
-    createEReference(deleteEClass, DELETE__FIELDS);
-    createEReference(deleteEClass, DELETE__FROM_EXPRESSION);
-    createEReference(deleteEClass, DELETE__WHERE_EXPRESSION);
 
     constantEClass = createEClass(CONSTANT);
 
@@ -2051,14 +1858,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     inequalityExpressionEClass = createEClass(INEQUALITY_EXPRESSION);
     createEReference(inequalityExpressionEClass, INEQUALITY_EXPRESSION__LEFT);
     createEReference(inequalityExpressionEClass, INEQUALITY_EXPRESSION__RIGHT);
-
-    strictEqualityExpressionEClass = createEClass(STRICT_EQUALITY_EXPRESSION);
-    createEReference(strictEqualityExpressionEClass, STRICT_EQUALITY_EXPRESSION__LEFT);
-    createEReference(strictEqualityExpressionEClass, STRICT_EQUALITY_EXPRESSION__RIGHT);
-
-    strictInequalityExpressionEClass = createEClass(STRICT_INEQUALITY_EXPRESSION);
-    createEReference(strictInequalityExpressionEClass, STRICT_INEQUALITY_EXPRESSION__LEFT);
-    createEReference(strictInequalityExpressionEClass, STRICT_INEQUALITY_EXPRESSION__RIGHT);
 
     superiorExpressionEClass = createEClass(SUPERIOR_EXPRESSION);
     createEReference(superiorExpressionEClass, SUPERIOR_EXPRESSION__LEFT);
@@ -2148,7 +1947,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     infoFunctionsEClass.getESuperTypes().add(this.getExpression());
     manipFunctionsEClass.getESuperTypes().add(this.getExpression());
     arithFunctionsEClass.getESuperTypes().add(this.getExpression());
-    alterFunctionsEClass.getESuperTypes().add(this.getExpression());
     loadEClass.getESuperTypes().add(this.getIOFunctions());
     storeEClass.getESuperTypes().add(this.getIOFunctions());
     exportEClass.getESuperTypes().add(this.getIOFunctions());
@@ -2157,11 +1955,9 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     fieldInfoEClass.getESuperTypes().add(this.getInfoFunctions());
     containsEClass.getESuperTypes().add(this.getInfoFunctions());
     selectEClass.getESuperTypes().add(this.getManipFunctions());
-    concatEClass.getESuperTypes().add(this.getManipFunctions());
     lengthEClass.getESuperTypes().add(this.getInfoFunctions());
     sumEClass.getESuperTypes().add(this.getArithFunctions());
     productEClass.getESuperTypes().add(this.getArithFunctions());
-    deleteEClass.getESuperTypes().add(this.getAlterFunctions());
     constantEClass.getESuperTypes().add(this.getExpression());
     primitiveEClass.getESuperTypes().add(this.getConstant());
     arrayEClass.getESuperTypes().add(this.getConstant());
@@ -2170,8 +1966,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     conjunctionExpressionEClass.getESuperTypes().add(this.getExpression());
     equalityExpressionEClass.getESuperTypes().add(this.getExpression());
     inequalityExpressionEClass.getESuperTypes().add(this.getExpression());
-    strictEqualityExpressionEClass.getESuperTypes().add(this.getExpression());
-    strictInequalityExpressionEClass.getESuperTypes().add(this.getExpression());
     superiorExpressionEClass.getESuperTypes().add(this.getExpression());
     superiorOrEqualExpressionEClass.getESuperTypes().add(this.getExpression());
     inferiorExpressionEClass.getESuperTypes().add(this.getExpression());
@@ -2234,8 +2028,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     initEReference(getArithFunctions_Field(), this.getExpression(), null, "field", null, 0, 1, ArithFunctions.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getArithFunctions_WhereExpression(), this.getExpression(), null, "whereExpression", null, 0, 1, ArithFunctions.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(alterFunctionsEClass, AlterFunctions.class, "AlterFunctions", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
     initEClass(loadEClass, Load.class, "Load", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(storeEClass, Store.class, "Store", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2262,20 +2054,12 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     initEReference(getSelect_FromExpression(), this.getExpression(), null, "fromExpression", null, 0, 1, Select.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSelect_WhereExpression(), this.getExpression(), null, "whereExpression", null, 0, 1, Select.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(concatEClass, Concat.class, "Concat", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getConcat_Expressions(), this.getExpression(), null, "expressions", null, 0, -1, Concat.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
     initEClass(lengthEClass, Length.class, "Length", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getLength_Expression(), this.getExpression(), null, "expression", null, 0, 1, Length.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(sumEClass, Sum.class, "Sum", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(productEClass, Product.class, "Product", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(deleteEClass, Delete.class, "Delete", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getDelete_Fields(), this.getExpression(), null, "fields", null, 0, -1, Delete.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getDelete_FromExpression(), this.getExpression(), null, "fromExpression", null, 0, 1, Delete.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getDelete_WhereExpression(), this.getExpression(), null, "whereExpression", null, 0, 1, Delete.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(constantEClass, Constant.class, "Constant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2311,14 +2095,6 @@ public class JsonDslPackageImpl extends EPackageImpl implements JsonDslPackage
     initEClass(inequalityExpressionEClass, InequalityExpression.class, "InequalityExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getInequalityExpression_Left(), this.getExpression(), null, "left", null, 0, 1, InequalityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getInequalityExpression_Right(), this.getExpression(), null, "right", null, 0, 1, InequalityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(strictEqualityExpressionEClass, StrictEqualityExpression.class, "StrictEqualityExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getStrictEqualityExpression_Left(), this.getExpression(), null, "left", null, 0, 1, StrictEqualityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getStrictEqualityExpression_Right(), this.getExpression(), null, "right", null, 0, 1, StrictEqualityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(strictInequalityExpressionEClass, StrictInequalityExpression.class, "StrictInequalityExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getStrictInequalityExpression_Left(), this.getExpression(), null, "left", null, 0, 1, StrictInequalityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getStrictInequalityExpression_Right(), this.getExpression(), null, "right", null, 0, 1, StrictInequalityExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(superiorExpressionEClass, SuperiorExpression.class, "SuperiorExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSuperiorExpression_Left(), this.getExpression(), null, "left", null, 0, 1, SuperiorExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

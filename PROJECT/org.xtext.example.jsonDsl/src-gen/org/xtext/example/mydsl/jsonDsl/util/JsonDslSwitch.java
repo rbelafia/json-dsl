@@ -216,15 +216,6 @@ public class JsonDslSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case JsonDslPackage.ALTER_FUNCTIONS:
-      {
-        AlterFunctions alterFunctions = (AlterFunctions)theEObject;
-        T result = caseAlterFunctions(alterFunctions);
-        if (result == null) result = caseExpression(alterFunctions);
-        if (result == null) result = caseSimpleStatement(alterFunctions);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case JsonDslPackage.LOAD:
       {
         Load load = (Load)theEObject;
@@ -303,16 +294,6 @@ public class JsonDslSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case JsonDslPackage.CONCAT:
-      {
-        Concat concat = (Concat)theEObject;
-        T result = caseConcat(concat);
-        if (result == null) result = caseManipFunctions(concat);
-        if (result == null) result = caseExpression(concat);
-        if (result == null) result = caseSimpleStatement(concat);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case JsonDslPackage.LENGTH:
       {
         Length length = (Length)theEObject;
@@ -340,16 +321,6 @@ public class JsonDslSwitch<T> extends Switch<T>
         if (result == null) result = caseArithFunctions(product);
         if (result == null) result = caseExpression(product);
         if (result == null) result = caseSimpleStatement(product);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.DELETE:
-      {
-        Delete delete = (Delete)theEObject;
-        T result = caseDelete(delete);
-        if (result == null) result = caseAlterFunctions(delete);
-        if (result == null) result = caseExpression(delete);
-        if (result == null) result = caseSimpleStatement(delete);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -432,24 +403,6 @@ public class JsonDslSwitch<T> extends Switch<T>
         T result = caseInequalityExpression(inequalityExpression);
         if (result == null) result = caseExpression(inequalityExpression);
         if (result == null) result = caseSimpleStatement(inequalityExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.STRICT_EQUALITY_EXPRESSION:
-      {
-        StrictEqualityExpression strictEqualityExpression = (StrictEqualityExpression)theEObject;
-        T result = caseStrictEqualityExpression(strictEqualityExpression);
-        if (result == null) result = caseExpression(strictEqualityExpression);
-        if (result == null) result = caseSimpleStatement(strictEqualityExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case JsonDslPackage.STRICT_INEQUALITY_EXPRESSION:
-      {
-        StrictInequalityExpression strictInequalityExpression = (StrictInequalityExpression)theEObject;
-        T result = caseStrictInequalityExpression(strictInequalityExpression);
-        if (result == null) result = caseExpression(strictInequalityExpression);
-        if (result == null) result = caseSimpleStatement(strictInequalityExpression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -829,22 +782,6 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Alter Functions</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Alter Functions</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAlterFunctions(AlterFunctions object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Load</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -973,22 +910,6 @@ public class JsonDslSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Concat</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Concat</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseConcat(Concat object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Length</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1032,22 +953,6 @@ public class JsonDslSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseProduct(Product object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Delete</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Delete</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseDelete(Delete object)
   {
     return null;
   }
@@ -1192,38 +1097,6 @@ public class JsonDslSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseInequalityExpression(InequalityExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Strict Equality Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Strict Equality Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseStrictEqualityExpression(StrictEqualityExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Strict Inequality Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Strict Inequality Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseStrictInequalityExpression(StrictInequalityExpression object)
   {
     return null;
   }

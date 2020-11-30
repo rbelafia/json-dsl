@@ -161,11 +161,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
         return createArithFunctionsAdapter();
       }
       @Override
-      public Adapter caseAlterFunctions(AlterFunctions object)
-      {
-        return createAlterFunctionsAdapter();
-      }
-      @Override
       public Adapter caseLoad(Load object)
       {
         return createLoadAdapter();
@@ -206,11 +201,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
         return createSelectAdapter();
       }
       @Override
-      public Adapter caseConcat(Concat object)
-      {
-        return createConcatAdapter();
-      }
-      @Override
       public Adapter caseLength(Length object)
       {
         return createLengthAdapter();
@@ -224,11 +214,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
       public Adapter caseProduct(Product object)
       {
         return createProductAdapter();
-      }
-      @Override
-      public Adapter caseDelete(Delete object)
-      {
-        return createDeleteAdapter();
       }
       @Override
       public Adapter caseConstant(Constant object)
@@ -274,16 +259,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
       public Adapter caseInequalityExpression(InequalityExpression object)
       {
         return createInequalityExpressionAdapter();
-      }
-      @Override
-      public Adapter caseStrictEqualityExpression(StrictEqualityExpression object)
-      {
-        return createStrictEqualityExpressionAdapter();
-      }
-      @Override
-      public Adapter caseStrictInequalityExpression(StrictInequalityExpression object)
-      {
-        return createStrictInequalityExpressionAdapter();
       }
       @Override
       public Adapter caseSuperiorExpression(SuperiorExpression object)
@@ -618,21 +593,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.AlterFunctions <em>Alter Functions</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.AlterFunctions
-   * @generated
-   */
-  public Adapter createAlterFunctionsAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Load <em>Load</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -753,21 +713,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Concat <em>Concat</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.Concat
-   * @generated
-   */
-  public Adapter createConcatAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Length <em>Length</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -808,21 +753,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createProductAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.Delete <em>Delete</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.Delete
-   * @generated
-   */
-  public Adapter createDeleteAdapter()
   {
     return null;
   }
@@ -958,36 +888,6 @@ public class JsonDslAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createInequalityExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression <em>Strict Equality Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression
-   * @generated
-   */
-  public Adapter createStrictEqualityExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression <em>Strict Inequality Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression
-   * @generated
-   */
-  public Adapter createStrictInequalityExpressionAdapter()
   {
     return null;
   }

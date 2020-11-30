@@ -19,10 +19,8 @@ import org.xtext.example.mydsl.jsonDsl.Array;
 import org.xtext.example.mydsl.jsonDsl.ArrayCall;
 import org.xtext.example.mydsl.jsonDsl.Assignment;
 import org.xtext.example.mydsl.jsonDsl.BracketExpression;
-import org.xtext.example.mydsl.jsonDsl.Concat;
 import org.xtext.example.mydsl.jsonDsl.ConjunctionExpression;
 import org.xtext.example.mydsl.jsonDsl.Contains;
-import org.xtext.example.mydsl.jsonDsl.Delete;
 import org.xtext.example.mydsl.jsonDsl.Depth;
 import org.xtext.example.mydsl.jsonDsl.DisjunctionExpression;
 import org.xtext.example.mydsl.jsonDsl.DivisionExpression;
@@ -49,8 +47,6 @@ import org.xtext.example.mydsl.jsonDsl.Product;
 import org.xtext.example.mydsl.jsonDsl.RangeSpecifier;
 import org.xtext.example.mydsl.jsonDsl.Select;
 import org.xtext.example.mydsl.jsonDsl.Store;
-import org.xtext.example.mydsl.jsonDsl.StrictEqualityExpression;
-import org.xtext.example.mydsl.jsonDsl.StrictInequalityExpression;
 import org.xtext.example.mydsl.jsonDsl.SubstractionExpression;
 import org.xtext.example.mydsl.jsonDsl.Sum;
 import org.xtext.example.mydsl.jsonDsl.SuperiorExpression;
@@ -90,17 +86,11 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case JsonDslPackage.BRACKET_EXPRESSION:
 				sequence_BracketExpression(context, (BracketExpression) semanticObject); 
 				return; 
-			case JsonDslPackage.CONCAT:
-				sequence_Concat(context, (Concat) semanticObject); 
-				return; 
 			case JsonDslPackage.CONJUNCTION_EXPRESSION:
 				sequence_ExpressionLvl2(context, (ConjunctionExpression) semanticObject); 
 				return; 
 			case JsonDslPackage.CONTAINS:
 				sequence_Contains(context, (Contains) semanticObject); 
-				return; 
-			case JsonDslPackage.DELETE:
-				sequence_Delete(context, (Delete) semanticObject); 
 				return; 
 			case JsonDslPackage.DEPTH:
 				sequence_Depth(context, (Depth) semanticObject); 
@@ -177,12 +167,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case JsonDslPackage.STORE:
 				sequence_Store(context, (Store) semanticObject); 
 				return; 
-			case JsonDslPackage.STRICT_EQUALITY_EXPRESSION:
-				sequence_ExpressionLvl3(context, (StrictEqualityExpression) semanticObject); 
-				return; 
-			case JsonDslPackage.STRICT_INEQUALITY_EXPRESSION:
-				sequence_ExpressionLvl3(context, (StrictInequalityExpression) semanticObject); 
-				return; 
 			case JsonDslPackage.SUBSTRACTION_EXPRESSION:
 				sequence_ExpressionLvl5(context, (SubstractionExpression) semanticObject); 
 				return; 
@@ -223,8 +207,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Array
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Array
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Array
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Array
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Array
 	 *     ExpressionLvl4 returns Array
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Array
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Array
@@ -287,8 +269,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns BracketExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns BracketExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns BracketExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns BracketExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns BracketExpression
 	 *     ExpressionLvl4 returns BracketExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns BracketExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns BracketExpression
@@ -325,49 +305,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     SimpleStatement returns Concat
-	 *     Expression returns Concat
-	 *     ExpressionLvl1 returns Concat
-	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Concat
-	 *     ExpressionLvl2 returns Concat
-	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Concat
-	 *     ExpressionLvl3 returns Concat
-	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Concat
-	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Concat
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Concat
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Concat
-	 *     ExpressionLvl4 returns Concat
-	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Concat
-	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Concat
-	 *     ExpressionLvl4.InferiorExpression_1_2_0 returns Concat
-	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Concat
-	 *     ExpressionLvl5 returns Concat
-	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Concat
-	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Concat
-	 *     ExpressionLvl6 returns Concat
-	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Concat
-	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Concat
-	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Concat
-	 *     ExpressionLvl7 returns Concat
-	 *     ExpressionLvl8 returns Concat
-	 *     ExpressionLvl9 returns Concat
-	 *     ExpressionLvl9.ArrayCall_1_0_0 returns Concat
-	 *     ExpressionLvl9.FieldCall_1_1_0 returns Concat
-	 *     PrimaryExpression returns Concat
-	 *     FunctionCall returns Concat
-	 *     ManipFunctions returns Concat
-	 *     Concat returns Concat
-	 *
-	 * Constraint:
-	 *     (expressions+=Expression expressions+=Expression)
-	 */
-	protected void sequence_Concat(ISerializationContext context, Concat semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     SimpleStatement returns Contains
 	 *     Expression returns Contains
 	 *     ExpressionLvl1 returns Contains
@@ -377,8 +314,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Contains
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Contains
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Contains
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Contains
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Contains
 	 *     ExpressionLvl4 returns Contains
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Contains
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Contains
@@ -411,49 +346,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     SimpleStatement returns Delete
-	 *     Expression returns Delete
-	 *     ExpressionLvl1 returns Delete
-	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns Delete
-	 *     ExpressionLvl2 returns Delete
-	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns Delete
-	 *     ExpressionLvl3 returns Delete
-	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Delete
-	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Delete
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Delete
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Delete
-	 *     ExpressionLvl4 returns Delete
-	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Delete
-	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Delete
-	 *     ExpressionLvl4.InferiorExpression_1_2_0 returns Delete
-	 *     ExpressionLvl4.InferiorOrEqualExpression_1_3_0 returns Delete
-	 *     ExpressionLvl5 returns Delete
-	 *     ExpressionLvl5.AdditionExpression_1_0_0 returns Delete
-	 *     ExpressionLvl5.SubstractionExpression_1_1_0 returns Delete
-	 *     ExpressionLvl6 returns Delete
-	 *     ExpressionLvl6.MultiplicationExpression_1_0_0 returns Delete
-	 *     ExpressionLvl6.DivisionExpression_1_1_0 returns Delete
-	 *     ExpressionLvl6.ModuloExpression_1_2_0 returns Delete
-	 *     ExpressionLvl7 returns Delete
-	 *     ExpressionLvl8 returns Delete
-	 *     ExpressionLvl9 returns Delete
-	 *     ExpressionLvl9.ArrayCall_1_0_0 returns Delete
-	 *     ExpressionLvl9.FieldCall_1_1_0 returns Delete
-	 *     PrimaryExpression returns Delete
-	 *     FunctionCall returns Delete
-	 *     AlterFunctions returns Delete
-	 *     Delete returns Delete
-	 *
-	 * Constraint:
-	 *     ((fields+=Expression fields+=Expression*)? fromExpression=Expression whereExpression=Expression?)
-	 */
-	protected void sequence_Delete(ISerializationContext context, Delete semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     SimpleStatement returns Depth
 	 *     Expression returns Depth
 	 *     ExpressionLvl1 returns Depth
@@ -463,8 +355,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Depth
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Depth
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Depth
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Depth
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Depth
 	 *     ExpressionLvl4 returns Depth
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Depth
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Depth
@@ -512,8 +402,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Export
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Export
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Export
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Export
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Export
 	 *     ExpressionLvl4 returns Export
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Export
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Export
@@ -537,19 +425,10 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     Export returns Export
 	 *
 	 * Constraint:
-	 *     (expression=Expression fileName=STRING)
+	 *     (expression=Expression fileName=STRING?)
 	 */
 	protected void sequence_Export(ISerializationContext context, Export semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.EXPORT__EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.EXPORT__EXPRESSION));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.IO_FUNCTIONS__FILE_NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.IO_FUNCTIONS__FILE_NAME));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getExportAccess().getExpressionExpressionParserRuleCall_2_0(), semanticObject.getExpression());
-		feeder.accept(grammarAccess.getExportAccess().getFileNameSTRINGTerminalRuleCall_6_0(), semanticObject.getFileName());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -614,8 +493,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns EqualityExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns EqualityExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns EqualityExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns EqualityExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns EqualityExpression
 	 *
 	 * Constraint:
 	 *     (left=ExpressionLvl3_EqualityExpression_1_0_0 right=ExpressionLvl4)
@@ -645,8 +522,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns InequalityExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns InequalityExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns InequalityExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns InequalityExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns InequalityExpression
 	 *
 	 * Constraint:
 	 *     (left=ExpressionLvl3_InequalityExpression_1_1_0 right=ExpressionLvl4)
@@ -667,68 +542,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     SimpleStatement returns StrictEqualityExpression
-	 *     Expression returns StrictEqualityExpression
-	 *     ExpressionLvl1 returns StrictEqualityExpression
-	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns StrictEqualityExpression
-	 *     ExpressionLvl2 returns StrictEqualityExpression
-	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns StrictEqualityExpression
-	 *     ExpressionLvl3 returns StrictEqualityExpression
-	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns StrictEqualityExpression
-	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns StrictEqualityExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns StrictEqualityExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns StrictEqualityExpression
-	 *
-	 * Constraint:
-	 *     (left=ExpressionLvl3_StrictEqualityExpression_1_2_0 right=ExpressionLvl4)
-	 */
-	protected void sequence_ExpressionLvl3(ISerializationContext context, StrictEqualityExpression semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.STRICT_EQUALITY_EXPRESSION__LEFT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.STRICT_EQUALITY_EXPRESSION__LEFT));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.STRICT_EQUALITY_EXPRESSION__RIGHT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.STRICT_EQUALITY_EXPRESSION__RIGHT));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getExpressionLvl3Access().getStrictEqualityExpressionLeftAction_1_2_0(), semanticObject.getLeft());
-		feeder.accept(grammarAccess.getExpressionLvl3Access().getRightExpressionLvl4ParserRuleCall_1_2_2_0(), semanticObject.getRight());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     SimpleStatement returns StrictInequalityExpression
-	 *     Expression returns StrictInequalityExpression
-	 *     ExpressionLvl1 returns StrictInequalityExpression
-	 *     ExpressionLvl1.DisjunctionExpression_1_0 returns StrictInequalityExpression
-	 *     ExpressionLvl2 returns StrictInequalityExpression
-	 *     ExpressionLvl2.ConjunctionExpression_1_0 returns StrictInequalityExpression
-	 *     ExpressionLvl3 returns StrictInequalityExpression
-	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns StrictInequalityExpression
-	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns StrictInequalityExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns StrictInequalityExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns StrictInequalityExpression
-	 *
-	 * Constraint:
-	 *     (left=ExpressionLvl3_StrictInequalityExpression_1_3_0 right=ExpressionLvl4)
-	 */
-	protected void sequence_ExpressionLvl3(ISerializationContext context, StrictInequalityExpression semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.STRICT_INEQUALITY_EXPRESSION__LEFT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.STRICT_INEQUALITY_EXPRESSION__LEFT));
-			if (transientValues.isValueTransient(semanticObject, JsonDslPackage.Literals.STRICT_INEQUALITY_EXPRESSION__RIGHT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, JsonDslPackage.Literals.STRICT_INEQUALITY_EXPRESSION__RIGHT));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getExpressionLvl3Access().getStrictInequalityExpressionLeftAction_1_3_0(), semanticObject.getLeft());
-		feeder.accept(grammarAccess.getExpressionLvl3Access().getRightExpressionLvl4ParserRuleCall_1_3_2_0(), semanticObject.getRight());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     SimpleStatement returns InferiorExpression
 	 *     Expression returns InferiorExpression
 	 *     ExpressionLvl1 returns InferiorExpression
@@ -738,8 +551,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns InferiorExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns InferiorExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns InferiorExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns InferiorExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns InferiorExpression
 	 *     ExpressionLvl4 returns InferiorExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns InferiorExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns InferiorExpression
@@ -774,8 +585,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns InferiorOrEqualExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns InferiorOrEqualExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns InferiorOrEqualExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns InferiorOrEqualExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns InferiorOrEqualExpression
 	 *     ExpressionLvl4 returns InferiorOrEqualExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns InferiorOrEqualExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns InferiorOrEqualExpression
@@ -810,8 +619,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns SuperiorExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns SuperiorExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns SuperiorExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns SuperiorExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns SuperiorExpression
 	 *     ExpressionLvl4 returns SuperiorExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns SuperiorExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns SuperiorExpression
@@ -846,8 +653,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns SuperiorOrEqualExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns SuperiorOrEqualExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns SuperiorOrEqualExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns SuperiorOrEqualExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns SuperiorOrEqualExpression
 	 *     ExpressionLvl4 returns SuperiorOrEqualExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns SuperiorOrEqualExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns SuperiorOrEqualExpression
@@ -882,8 +687,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns AdditionExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns AdditionExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns AdditionExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns AdditionExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns AdditionExpression
 	 *     ExpressionLvl4 returns AdditionExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns AdditionExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns AdditionExpression
@@ -921,8 +724,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns SubstractionExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns SubstractionExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns SubstractionExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns SubstractionExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns SubstractionExpression
 	 *     ExpressionLvl4 returns SubstractionExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns SubstractionExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns SubstractionExpression
@@ -960,8 +761,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns DivisionExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns DivisionExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns DivisionExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns DivisionExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns DivisionExpression
 	 *     ExpressionLvl4 returns DivisionExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns DivisionExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns DivisionExpression
@@ -1003,8 +802,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns ModuloExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns ModuloExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns ModuloExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns ModuloExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns ModuloExpression
 	 *     ExpressionLvl4 returns ModuloExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns ModuloExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns ModuloExpression
@@ -1046,8 +843,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns MultiplicationExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns MultiplicationExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns MultiplicationExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns MultiplicationExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns MultiplicationExpression
 	 *     ExpressionLvl4 returns MultiplicationExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns MultiplicationExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns MultiplicationExpression
@@ -1089,8 +884,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns ArrayCall
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns ArrayCall
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns ArrayCall
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns ArrayCall
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns ArrayCall
 	 *     ExpressionLvl4 returns ArrayCall
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns ArrayCall
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns ArrayCall
@@ -1137,8 +930,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns FieldCall
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns FieldCall
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns FieldCall
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns FieldCall
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns FieldCall
 	 *     ExpressionLvl4 returns FieldCall
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns FieldCall
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns FieldCall
@@ -1185,8 +976,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns FieldInfo
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns FieldInfo
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns FieldInfo
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns FieldInfo
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns FieldInfo
 	 *     ExpressionLvl4 returns FieldInfo
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns FieldInfo
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns FieldInfo
@@ -1255,8 +1044,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns JSonObject
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns JSonObject
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns JSonObject
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns JSonObject
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns JSonObject
 	 *     ExpressionLvl4 returns JSonObject
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns JSonObject
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns JSonObject
@@ -1297,8 +1084,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Length
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Length
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Length
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Length
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Length
 	 *     ExpressionLvl4 returns Length
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Length
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Length
@@ -1346,8 +1131,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Load
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Load
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Load
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Load
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Load
 	 *     ExpressionLvl4 returns Load
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Load
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Load
@@ -1371,7 +1154,7 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     Load returns Load
 	 *
 	 * Constraint:
-	 *     (fileName=STRING | fileName=STRING)
+	 *     (fileName=STRING | fileName=STRING)?
 	 */
 	protected void sequence_Load(ISerializationContext context, Load semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1389,8 +1172,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns LogicalNegationExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns LogicalNegationExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns LogicalNegationExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns LogicalNegationExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns LogicalNegationExpression
 	 *     ExpressionLvl4 returns LogicalNegationExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns LogicalNegationExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns LogicalNegationExpression
@@ -1444,8 +1225,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns PointerCall
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns PointerCall
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns PointerCall
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns PointerCall
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns PointerCall
 	 *     ExpressionLvl4 returns PointerCall
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns PointerCall
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns PointerCall
@@ -1485,8 +1264,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Primitive
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Primitive
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Primitive
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Primitive
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Primitive
 	 *     ExpressionLvl4 returns Primitive
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Primitive
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Primitive
@@ -1546,8 +1323,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Product
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Product
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Product
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Product
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Product
 	 *     ExpressionLvl4 returns Product
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Product
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Product
@@ -1611,8 +1386,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Select
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Select
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Select
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Select
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Select
 	 *     ExpressionLvl4 returns Select
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Select
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Select
@@ -1654,8 +1427,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Store
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Store
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Store
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Store
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Store
 	 *     ExpressionLvl4 returns Store
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Store
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Store
@@ -1706,8 +1477,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns Sum
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns Sum
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns Sum
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns Sum
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns Sum
 	 *     ExpressionLvl4 returns Sum
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns Sum
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns Sum
@@ -1749,8 +1518,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns UnaryMinusExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns UnaryMinusExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns UnaryMinusExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns UnaryMinusExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns UnaryMinusExpression
 	 *     ExpressionLvl4 returns UnaryMinusExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns UnaryMinusExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns UnaryMinusExpression
@@ -1791,8 +1558,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns UnaryPlusExpression
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns UnaryPlusExpression
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns UnaryPlusExpression
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns UnaryPlusExpression
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns UnaryPlusExpression
 	 *     ExpressionLvl4 returns UnaryPlusExpression
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns UnaryPlusExpression
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns UnaryPlusExpression
@@ -1852,8 +1617,6 @@ public class JsonDslSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     ExpressionLvl3 returns VariableCall
 	 *     ExpressionLvl3.EqualityExpression_1_0_0 returns VariableCall
 	 *     ExpressionLvl3.InequalityExpression_1_1_0 returns VariableCall
-	 *     ExpressionLvl3.StrictEqualityExpression_1_2_0 returns VariableCall
-	 *     ExpressionLvl3.StrictInequalityExpression_1_3_0 returns VariableCall
 	 *     ExpressionLvl4 returns VariableCall
 	 *     ExpressionLvl4.SuperiorExpression_1_0_0 returns VariableCall
 	 *     ExpressionLvl4.SuperiorOrEqualExpression_1_1_0 returns VariableCall

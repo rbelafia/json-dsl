@@ -82,7 +82,6 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
       case JsonDslPackage.INFO_FUNCTIONS: return createInfoFunctions();
       case JsonDslPackage.MANIP_FUNCTIONS: return createManipFunctions();
       case JsonDslPackage.ARITH_FUNCTIONS: return createArithFunctions();
-      case JsonDslPackage.ALTER_FUNCTIONS: return createAlterFunctions();
       case JsonDslPackage.LOAD: return createLoad();
       case JsonDslPackage.STORE: return createStore();
       case JsonDslPackage.EXPORT: return createExport();
@@ -91,11 +90,9 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
       case JsonDslPackage.FIELD_INFO: return createFieldInfo();
       case JsonDslPackage.CONTAINS: return createContains();
       case JsonDslPackage.SELECT: return createSelect();
-      case JsonDslPackage.CONCAT: return createConcat();
       case JsonDslPackage.LENGTH: return createLength();
       case JsonDslPackage.SUM: return createSum();
       case JsonDslPackage.PRODUCT: return createProduct();
-      case JsonDslPackage.DELETE: return createDelete();
       case JsonDslPackage.CONSTANT: return createConstant();
       case JsonDslPackage.PRIMITIVE: return createPrimitive();
       case JsonDslPackage.ARRAY: return createArray();
@@ -105,8 +102,6 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
       case JsonDslPackage.CONJUNCTION_EXPRESSION: return createConjunctionExpression();
       case JsonDslPackage.EQUALITY_EXPRESSION: return createEqualityExpression();
       case JsonDslPackage.INEQUALITY_EXPRESSION: return createInequalityExpression();
-      case JsonDslPackage.STRICT_EQUALITY_EXPRESSION: return createStrictEqualityExpression();
-      case JsonDslPackage.STRICT_INEQUALITY_EXPRESSION: return createStrictInequalityExpression();
       case JsonDslPackage.SUPERIOR_EXPRESSION: return createSuperiorExpression();
       case JsonDslPackage.SUPERIOR_OR_EQUAL_EXPRESSION: return createSuperiorOrEqualExpression();
       case JsonDslPackage.INFERIOR_EXPRESSION: return createInferiorExpression();
@@ -333,18 +328,6 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public AlterFunctions createAlterFunctions()
-  {
-    AlterFunctionsImpl alterFunctions = new AlterFunctionsImpl();
-    return alterFunctions;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public Load createLoad()
   {
     LoadImpl load = new LoadImpl();
@@ -441,18 +424,6 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
    * @generated
    */
   @Override
-  public Concat createConcat()
-  {
-    ConcatImpl concat = new ConcatImpl();
-    return concat;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public Length createLength()
   {
     LengthImpl length = new LengthImpl();
@@ -481,18 +452,6 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
   {
     ProductImpl product = new ProductImpl();
     return product;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Delete createDelete()
-  {
-    DeleteImpl delete = new DeleteImpl();
-    return delete;
   }
 
   /**
@@ -601,30 +560,6 @@ public class JsonDslFactoryImpl extends EFactoryImpl implements JsonDslFactory
   {
     InequalityExpressionImpl inequalityExpression = new InequalityExpressionImpl();
     return inequalityExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public StrictEqualityExpression createStrictEqualityExpression()
-  {
-    StrictEqualityExpressionImpl strictEqualityExpression = new StrictEqualityExpressionImpl();
-    return strictEqualityExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public StrictInequalityExpression createStrictInequalityExpression()
-  {
-    StrictInequalityExpressionImpl strictInequalityExpression = new StrictInequalityExpressionImpl();
-    return strictInequalityExpression;
   }
 
   /**

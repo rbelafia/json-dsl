@@ -177,15 +177,6 @@ public interface JsonDslFactory extends EFactory
   ArithFunctions createArithFunctions();
 
   /**
-   * Returns a new object of class '<em>Alter Functions</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Alter Functions</em>'.
-   * @generated
-   */
-  AlterFunctions createAlterFunctions();
-
-  /**
    * Returns a new object of class '<em>Load</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -258,15 +249,6 @@ public interface JsonDslFactory extends EFactory
   Select createSelect();
 
   /**
-   * Returns a new object of class '<em>Concat</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Concat</em>'.
-   * @generated
-   */
-  Concat createConcat();
-
-  /**
    * Returns a new object of class '<em>Length</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -292,15 +274,6 @@ public interface JsonDslFactory extends EFactory
    * @generated
    */
   Product createProduct();
-
-  /**
-   * Returns a new object of class '<em>Delete</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Delete</em>'.
-   * @generated
-   */
-  Delete createDelete();
 
   /**
    * Returns a new object of class '<em>Constant</em>'.
@@ -382,24 +355,6 @@ public interface JsonDslFactory extends EFactory
    * @generated
    */
   InequalityExpression createInequalityExpression();
-
-  /**
-   * Returns a new object of class '<em>Strict Equality Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Strict Equality Expression</em>'.
-   * @generated
-   */
-  StrictEqualityExpression createStrictEqualityExpression();
-
-  /**
-   * Returns a new object of class '<em>Strict Inequality Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Strict Inequality Expression</em>'.
-   * @generated
-   */
-  StrictInequalityExpression createStrictInequalityExpression();
 
   /**
    * Returns a new object of class '<em>Superior Expression</em>'.
